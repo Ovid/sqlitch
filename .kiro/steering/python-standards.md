@@ -32,6 +32,38 @@
 - Mock external dependencies (databases, file system) in unit tests
 - Write integration tests for end-to-end workflows
 
+### Test Execution Standards
+**MANDATORY before task completion:**
+
+1. **Full test suite must pass without failures:**
+   ```bash
+   python -m pytest tests/ -v
+   ```
+
+2. **Address all test warnings** - Warnings indicate potential issues:
+   ```bash
+   python -m pytest tests/ -v --disable-warnings  # Only if warnings are addressed
+   ```
+
+3. **Run specific test categories:**
+   ```bash
+   # Unit tests only
+   python -m pytest tests/unit/ -v
+   
+   # Integration tests only  
+   python -m pytest tests/integration/ -v
+   
+   # Feature-specific tests
+   python -m pytest tests/ -k "feature_name" -v
+   ```
+
+4. **Verify test coverage** for new code:
+   ```bash
+   python -m pytest tests/ --cov=sqlitch --cov-report=term-missing
+   ```
+
+**Zero tolerance for failing tests or unresolved warnings in completed tasks.**
+
 ## Documentation
 - Write docstrings for all public classes and methods
 - Use Google-style docstrings
