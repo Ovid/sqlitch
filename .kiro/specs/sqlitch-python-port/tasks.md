@@ -118,7 +118,7 @@
   - Write comprehensive unit tests with MySQL test database
   - _Requirements: 2.2, 7.2, 7.3, 10.1, 10.2_
 
-- [ ] 16. Build SQLite database engine
+- [x] 16. Build SQLite database engine
   - Create SQLiteEngine class in sqlitch/engines/sqlite.py
   - Implement SQLite-specific connection and file handling
   - Add SQLite registry table creation with proper constraints

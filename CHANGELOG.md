@@ -18,6 +18,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive unit and integration test coverage
   - Full compatibility with original Perl Sqitch MySQL engine behavior
 
+- **SQLite Database Engine**: Complete implementation of SQLite support with:
+  - SQLite-specific connection handling with proper configuration
+  - Registry table creation with SQLite-specific constraints and foreign keys
+  - SQLite version compatibility checking (3.8.6+)
+  - File-based and in-memory database support
+  - Transaction management with proper rollback on errors
+  - Support for SQLite URI formats (sqlite:, sqlite://, db:sqlite:)
+  - Parameter binding compatibility with base engine interface
+  - Comprehensive unit and integration test coverage
+  - Full compatibility with original Perl Sqitch SQLite engine behavior
+
 - **Deploy Command**: Complete implementation of the `sqlitch deploy` command with:
   - Deployment planning and execution logic
   - Transaction management with automatic rollback on failure
