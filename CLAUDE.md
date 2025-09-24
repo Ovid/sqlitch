@@ -1,105 +1,299 @@
-# CLAUDE.md
+# Sqitch Python Port Project
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Project Goal
+Translate the Perl sqitch database change management tool to Python, maintaining feature parity and improving where possible.
 
-## Project Overview
+## Source Reference
+- Perl source code is in `sqitch-perl-source/` directory (git-ignored, read-only reference)
+- Original project: https://sqitch.org/
+- Documentation: https://metacpan.org/dist/App-Sqitch
 
-Sqitch is a database change management application written in Perl. It provides sensible database change management across multiple database engines without being tied to any specific framework, ORM, or platform.
+## Architecture Decisions
 
-## Common Development Commands
+### Core Principles
+1. Maintain CLI compatibility with original sqitch
+2. Support all database engines (PostgreSQL, MySQL, SQLite, Oracle, Snowflake, Vertica, Exasol, Firebird)
+3. Python 3.9+ compatibility
+4. Use modern Python idioms and type hints
+5. Maintain the same configuration file formats (sqitch.conf, sqitch.plan)
 
-### Build and Installation
-- `perl Build.PL` - Configure the build
-- `./Build installdeps` - Install dependencies
-- `./Build` - Build the project
-- `./Build test` - Run tests
-- `./Build install` - Install Sqitch
+### Python Project Structure
+```
+sqitch_py/
+├── __init__.py
+├── cli.py           # Main CLI entry point (using Click)
+├── core/
+│   ├── __init__.py
+│   ├── sqitch.py    # Main Sqitch class (from App::Sqitch)
+│   ├── engine.py    # Base engine class
+│   ├── plan.py      # Deploy/revert/verify plan management
+│   ├── change.py    # Individual change representation
+│   ├── target.py    # Target database configuration
+│   ├── config.py    # Configuration management
+│   └── exceptions.py # Custom exceptions
+├── engines/         # Database-specific implementations
+│   ├── __init__.py
+│   ├── base.py      # Base engine implementation
+│   ├── pg.py        # PostgreSQL
+│   ├── mysql.py     # MySQL/MariaDB
+│   ├── sqlite.py    # SQLite
+│   ├── oracle.py    # Oracle
+│   ├── snowflake.py # Snowflake
+│   └── ...
+├── commands/        # CLI commands
+│   ├── __init__.py
+│   ├── base.py      # Base command class
+│   ├── init.py      # Initialize a project
+│   ├── add.py       # Add a change
+│   ├── deploy.py    # Deploy changes
+│   ├── revert.py    # Revert changes
+│   ├── verify.py    # Verify changes
+│   ├── status.py    # Show status
+│   ├── log.py       # Show change log
+│   ├── tag.py       # Tag a release
+│   ├── bundle.py    # Bundle a project
+│   ├── checkout.py  # Checkout a database
+│   ├── rebase.py    # Rebase a plan
+│   └── show.py      # Show change details
+└── utils/
+    ├── __init__.py
+    ├── git.py       # VCS integration
+    ├── template.py  # Template handling
+    ├── datetime.py  # Date/time utilities
+    └── terminal.py  # Terminal output formatting
+```
 
-### Development from Git Clone
-- `cpanm Dist::Zilla` - Install Dist::Zilla for development
-- `dzil authordeps --missing | cpanm` - Install author dependencies
-- `dzil listdeps --missing | cpanm` - Install all dependencies
-- `dzil install` - Install from development tree
-- `t/sqitch` - Run Sqitch directly from Git clone
+## Key Perl → Python Translation Guide
 
-### Testing
-- `./Build test` - Run full test suite (51+ test files)
-- `prove t/` - Alternative test runner
-- Tests are located in `t/` directory with `.t` extension
+### Module Mappings
+| Perl Module | Python Equivalent | Notes |
+|------------|-------------------|-------|
+| `App::Sqitch` | `sqitch_py.core.sqitch.Sqitch` | Main application class |
+| `App::Sqitch::Engine` | `sqitch_py.engines.base.Engine` | Abstract base class using ABC |
+| `App::Sqitch::Plan` | `sqitch_py.core.plan.Plan` | Plan file parser and manager |
+| `App::Sqitch::Change` | `sqitch_py.core.change.Change` | Use dataclass |
+| `App::Sqitch::Target` | `sqitch_py.core.target.Target` | Database target configuration |
+| `App::Sqitch::Config` | `sqitch_py.core.config.Config` | Use configparser |
+| `Template::Tiny` | `jinja2` | Template engine |
+| `DBI/DBD::*` | Direct drivers or SQLAlchemy | Database connectivity |
+| `Try::Tiny` | Built-in try/except | Exception handling |
+| `Moo/Moose` | dataclasses + properties | Object system |
+| `Path::Class` | `pathlib.Path` | File path handling |
+| `DateTime` | `datetime` + `python-dateutil` | Date/time handling |
+| `Digest::SHA` | `hashlib` | SHA hashing |
+| `Encode` | Built-in `encode()`/`decode()` | String encoding |
+| `URI` | `urllib.parse` | URI handling |
+| `IPC::Run3` | `subprocess.run()` | External command execution |
 
-### Bundle Creation
-- `./Build bundle --install_base sqitch_bundle` - Create standalone bundle
-- `./Build bundle --install_base sqitch_bundle --with postgres --with sqlite` - Bundle with specific database support
-- `--dual_life 1` - Include dual-life modules in bundle
+### Python Dependencies
+```toml
+# Core dependencies
+click = "^8.1.0"          # CLI framework
+configparser = "^5.3.0"   # Configuration files
+python-dateutil = "^2.8.0" # Date parsing
+jinja2 = "^3.1.0"        # Templates
+colorama = "^0.4.0"      # Cross-platform terminal colors
+tabulate = "^0.9.0"      # Table formatting
 
-## Architecture
+# Database drivers
+psycopg2-binary = "^2.9.0"  # PostgreSQL
+pymysql = "^1.0.0"          # MySQL/MariaDB
+# cx-Oracle = "^8.3.0"      # Oracle (optional)
+# snowflake-connector-python = "^3.0.0" # Snowflake (optional)
 
-### Core Components
+# VCS integration
+gitpython = "^3.1.0"      # Git operations
 
-**Main Application (`lib/App/Sqitch.pm`)**
-- Entry point for the Sqitch application
-- Handles configuration, options, and command dispatch
-- Built using Moo object system
-- Uses Locale::TextDomain for internationalization
+# Development dependencies
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+black = "^23.0.0"
+mypy = "^1.5.0"
+pylint = "^2.17.0"
+```
 
-**Commands (`lib/App/Sqitch/Command/`)**
-- Individual command implementations: add, bundle, check, checkout, config, deploy, engine, help, init, log, plan, rebase, revert, rework, show, status, tag, target, upgrade, verify
-- Each command inherits from `App::Sqitch::Command`
-- Commands follow a consistent pattern with validation and execution phases
+## Translation Priority & Phases
 
-**Database Engines (`lib/App/Sqitch/Engine/`)**
-- Database-specific implementations: cockroach, exasol, firebird, mysql, oracle, pg (PostgreSQL), snowflake, sqlite, vertica
-- Each engine has corresponding `.pm` (Perl module) and `.sql` (SQL schemas) files
-- Engines inherit from `App::Sqitch::Engine` via `App::Sqitch::Role::DBIEngine`
+### Phase 1: Core Framework (Week 1)
+- [ ] `sqitch_py/core/sqitch.py` - Main application class
+- [ ] `sqitch_py/core/config.py` - Configuration loading from sqitch.conf
+- [ ] `sqitch_py/core/plan.py` - Parse sqitch.plan files
+- [ ] `sqitch_py/core/change.py` - Change representation
+- [ ] `sqitch_py/cli.py` - Basic CLI structure with Click
+- [ ] `sqitch_py/commands/init.py` - Project initialization
 
-**Plan Management (`lib/App/Sqitch/Plan.pm`)**
-- Manages database change plans and dependencies
-- Implements Merkle tree-like integrity checking
-- Handles change ordering and dependency resolution
+### Phase 2: PostgreSQL MVP (Week 2)
+- [ ] `sqitch_py/engines/base.py` - Abstract base engine
+- [ ] `sqitch_py/engines/pg.py` - PostgreSQL implementation
+- [ ] `sqitch_py/commands/deploy.py` - Deploy command
+- [ ] `sqitch_py/commands/revert.py` - Revert command
+- [ ] `sqitch_py/commands/verify.py` - Verify command
+- [ ] `sqitch_py/commands/status.py` - Status command
 
-**Configuration (`lib/App/Sqitch/Config.pm`)**
-- Git-like configuration system using Config::GitLike
-- Supports hierarchical configuration (system, global, local)
+### Phase 3: Additional Databases (Week 3)
+- [ ] `sqitch_py/engines/mysql.py` - MySQL/MariaDB
+- [ ] `sqitch_py/engines/sqlite.py` - SQLite
+- [ ] `sqitch_py/commands/log.py` - Change log
+- [ ] `sqitch_py/commands/add.py` - Add changes
 
-### Database Support
+### Phase 4: Full Feature Parity (Week 4+)
+- [ ] Remaining database engines
+- [ ] VCS integration (git, hg)
+- [ ] Template support
+- [ ] Bundle/checkout/rebase commands
+- [ ] Internationalization (i18n)
 
-Sqitch supports these database engines with version-specific features:
-- PostgreSQL 8.4+ (including YugabyteDB 2.6+, CockroachDB 21+)
-- SQLite 3.8.6+
-- MySQL 5.1+/MariaDB 10.0+
-- Oracle 10g+
-- Firebird 2.0+
-- Vertica 7.2+
-- Exasol 6.0+
-- Snowflake
+## Implementation Guidelines
 
-### Key Design Principles
+### Code Style
+1. Use type hints for all function signatures
+2. Follow PEP 8 (enforce with Black)
+3. Use dataclasses for data structures
+4. Implement proper logging with Python's logging module
+5. Docstrings for all public functions/classes (Google style)
+6. Properties instead of getters/setters
 
-1. **Database Agnostic**: Native SQL scripts for each database engine
-2. **Dependency Resolution**: Changes can declare dependencies on other changes
-3. **Deployment Integrity**: Merkle tree pattern ensures deployment integrity
-4. **Iterative Development**: Changes can be modified until tagged/released
-5. **No Framework Lock-in**: Standalone tool independent of ORMs or frameworks
-
-## Development Notes
-
-### Custom Build System
-- Uses custom `Module::Build::Sqitch` (in `inc/Module/Build/Sqitch.pm`)
-- Supports bundling with database-specific dependencies
-- Handles platform-specific requirements (Windows support via Win32 modules)
-
-### Internationalization
-- Uses Locale::TextDomain for i18n
-- Message files in `lib/LocaleData/`
-- UTF-8 encoding forced for all text output
+### Error Handling
+1. Create custom exception hierarchy in `exceptions.py`
+2. Match Perl's error messages for compatibility
+3. Use context managers for database connections
+4. Proper cleanup in finally blocks
 
 ### Testing Strategy
-- Comprehensive test suite with 51+ test files
-- Uses Test::More, Test::Exception, Test::MockModule
-- Database-specific tests require corresponding DBD modules
-- Mock objects used for isolated testing
+1. Use pytest for all tests
+2. Maintain test coverage above 80%
+3. Unit tests for each module
+4. Integration tests using Docker containers for databases
+5. Test against the same test cases as the Perl version
 
-### Documentation
-- Extensive POD documentation in `lib/` directory
-- Tutorial files for each supported database engine
-- Command-specific documentation files
+### Performance Considerations
+1. Lazy loading of plan files
+2. Connection pooling for database operations
+3. Batch operations where possible
+4. Progress indicators for long operations
+
+## Key Perl Files to Analyze
+
+### Essential Files (Start Here)
+1. `lib/App/Sqitch.pm` - Main class, understand overall architecture
+2. `lib/App/Sqitch/Plan.pm` - Plan file format and parsing
+3. `lib/App/Sqitch/Engine.pm` - Base engine interface
+4. `lib/App/Sqitch/Engine/pg.pm` - Complete PostgreSQL implementation
+5. `lib/App/Sqitch/Command/deploy.pm` - Deploy logic
+
+### Configuration & Setup
+1. `lib/App/Sqitch/Config.pm` - Configuration management
+2. `lib/App/Sqitch/Target.pm` - Database target handling
+3. `lib/App/Sqitch/Command/init.pm` - Project initialization
+
+### For Each Command
+- Check `lib/App/Sqitch/Command/*.pm` for implementation
+- Note command-line options and arguments
+- Preserve exact behavior for compatibility
+
+## Specific Translation Challenges
+
+### 1. Plan File Parsing
+The Perl version uses complex regex. In Python:
+- Use a proper parser (consider pyparsing or custom parser)
+- Maintain exact compatibility with existing plan files
+- Handle line continuations and comments correctly
+
+### 2. Database Metadata Tables
+Each engine maintains metadata tables (sqitch.changes, sqitch.tags, etc.)
+- Keep exact same schema
+- Same table/column names
+- Compatible data formats
+
+### 3. Script Execution
+Perl uses complex IPC for running SQL scripts:
+- Use subprocess.run() with proper encoding
+- Handle stdin/stdout/stderr correctly
+- Maintain same error reporting
+
+### 4. Template Variables
+Perl uses Template::Tiny syntax:
+- Map to Jinja2 equivalents
+- Maintain backward compatibility
+- Same variable names
+
+## Questions for Implementation Decisions
+
+1. **CLI Framework**: Click (more Pythonic) or argparse (stdlib)?
+   - Decision: Use Click for better UX and easier testing
+
+2. **Database Abstraction**: SQLAlchemy or direct drivers?
+   - Decision: Direct drivers for performance and control
+
+3. **Configuration Format**: Keep INI or move to TOML?
+   - Decision: Keep INI for compatibility, consider TOML for v2
+
+4. **Async Support**: Add async operations for database work?
+   - Decision: Start synchronous, consider async for v2
+
+5. **Distribution**: pip, conda, or standalone executable?
+   - Decision: pip primary, consider others based on demand
+
+## Current Status Tracker
+
+### Completed
+- [x] Project structure created
+- [x] CLAUDE.md written
+
+### In Progress
+- [ ] Analyzing Perl codebase structure
+- [ ] Setting up Python package skeleton
+
+### Next Steps
+1. Analyze `lib/App/Sqitch.pm` thoroughly
+2. Create `sqitch_py/core/sqitch.py` with class structure
+3. Implement configuration loading
+4. Create basic CLI with `--version` and `--help`
+
+## Notes for Claude Code
+
+### When Translating Perl to Python:
+1. Look for Perl idioms and find Python equivalents
+2. Check for implicit returns (Perl) vs explicit returns (Python)
+3. Handle Perl's `$_` (implicit variable) explicitly in Python
+4. Convert Perl regexes to Python's `re` module syntax
+5. Map Perl's `die` to raising exceptions
+6. Convert Perl's `warn` to logging.warning()
+
+### File Encoding:
+- Sqitch uses UTF-8 throughout
+- Always open files with `encoding='utf-8'`
+- Handle BOM markers if present
+
+### Testing Against Perl Version:
+1. Run Perl sqitch with same inputs
+2. Compare outputs character by character
+3. Ensure database state is identical
+4. Check exit codes match
+
+## Commands Quick Reference
+
+### Essential Commands to Implement First:
+```bash
+sqitch init          # Initialize a project
+sqitch add <change>  # Add a new change
+sqitch deploy        # Deploy changes
+sqitch revert        # Revert changes
+sqitch verify        # Verify deployed changes
+sqitch status        # Show deployment status
+sqitch log           # Show change history
+```
+
+### Each Command Should:
+1. Parse same command-line arguments
+2. Produce same output format
+3. Return same exit codes
+4. Handle same environment variables
+
+## Resources
+
+- [Sqitch Documentation](https://sqitch.org/docs/)
+- [Sqitch GitHub](https://github.com/sqitchers/sqitch)
+- [MetaCPAN Source](https://metacpan.org/dist/App-Sqitch)
+- [Sqitch Plan Spec](https://sqitch.org/docs/manual/sqitch-plan/)
+- [Sqitch Configuration](https://sqitch.org/docs/manual/sqitch-config/)

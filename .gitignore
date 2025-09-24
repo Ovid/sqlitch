@@ -1,5 +1,5 @@
 # Perl source directory (reference only)
-sqitch/
+sqitch-perl-source/
 *.sw[pon]
 
 # Python
