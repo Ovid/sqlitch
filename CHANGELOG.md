@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Show Command Implementation**: Complete show command functionality (COMPLETED)
+  - Implemented ShowCommand class with full CLI compatibility to Perl sqitch
+  - Added functionality to display change details and metadata with proper formatting
+  - Implemented support for showing different object types (changes, tags, deploy/revert/verify scripts)
+  - Added --exists flag for existence checking without output
+  - Added --target option for specifying target database
+  - Implemented proper error handling for unknown objects and missing files
+  - Added info() methods to Change and Tag classes for formatted output display
+  - Created comprehensive unit and integration tests for all show command functionality
+  - Added binary file output support for script contents matching Perl sqitch behavior
+
 - **Rebase Command Implementation**: Complete rebase command functionality (COMPLETED)
   - Implemented RebaseCommand class with full CLI compatibility to Perl sqitch
   - Added plan rebasing and conflict resolution functionality with automatic divergence detection

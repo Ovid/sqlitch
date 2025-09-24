@@ -102,7 +102,21 @@ pip install cx_Oracle
    sqlitch status
    ```
 
-6. **Switch to a different branch with database sync:**
+6. **View change or script details:**
+   ```bash
+   # Show change information
+   sqlitch show change users
+   
+   # Show tag information
+   sqlitch show tag @v1.0
+   
+   # Show script contents
+   sqlitch show deploy users
+   sqlitch show revert users
+   sqlitch show verify users
+   ```
+
+7. **Switch to a different branch with database sync:**
    ```bash
    sqlitch checkout feature-branch
    ```
@@ -148,6 +162,32 @@ Sqlitch provides a comprehensive set of commands for database change management:
 * `sqlitch tag` - Tag the current deployment state
 * `sqlitch bundle` - Bundle project for distribution
 * `sqlitch checkout` - Revert, checkout VCS branch, and redeploy changes
+* `sqlitch rebase` - Rebase deployment plan onto a different base
+* `sqlitch show` - Show information about changes, tags, or script contents
+
+### Show Command Examples
+
+The `show` command provides detailed information about various Sqlitch objects:
+
+```bash
+# Show change metadata and dependencies
+sqlitch show change add_users_table
+
+# Show tag information
+sqlitch show tag @v1.0
+
+# Display script contents
+sqlitch show deploy add_users_table
+sqlitch show revert add_users_table  
+sqlitch show verify add_users_table
+
+# Check if an object exists (exit code 0 if exists, 1 if not)
+sqlitch show --exists change add_users_table
+sqlitch show --exists deploy add_users_table
+
+# Show objects from a specific target
+sqlitch show --target production change add_users_table
+```
 
 Each command supports extensive options for customization. Use `sqlitch <command> --help` for detailed usage information.
 
@@ -211,9 +251,8 @@ Current implementation status:
 - ✅ VCS integration (Git)
 - ✅ Comprehensive error handling and user feedback
 - ✅ Internationalization support (German, French, Italian)
-- ✅ Advanced commands (tag, bundle, checkout)
+- ✅ Advanced commands (tag, bundle, checkout, rebase, show)
 - ⏳ Additional database engines (Snowflake, Vertica, Exasol, Firebird)
-- ⏳ Remaining advanced commands (rebase, show)
 
 ## Contributing
 

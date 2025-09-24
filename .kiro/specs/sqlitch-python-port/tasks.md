@@ -198,7 +198,7 @@
   - Write comprehensive tests for rebase scenarios and conflicts
   - _Requirements: 1.1, 4.3, 7.1, 7.5_
 
-- [ ] 26. Implement show command
+- [x] 26. Implement show command
   - Create ShowCommand class in sqlitch/commands/show.py
   - Add functionality to display change details and metadata
   - Implement support for showing different object types (changes, tags, plans)
