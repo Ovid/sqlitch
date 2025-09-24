@@ -9,6 +9,7 @@ SQL execution with proper error handling and transaction management.
 import logging
 import sqlite3
 from contextlib import contextmanager
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Iterator, Union
 from urllib.parse import urlparse
@@ -337,6 +338,18 @@ class SQLiteEngine(Engine):
                 isolation_level=None,  # Autocommit mode off
                 check_same_thread=False
             )
+            
+            # Configure datetime handling to avoid deprecation warnings
+            # Use the recommended approach for Python 3.12+
+            def adapt_datetime(dt):
+                return dt.isoformat()
+            
+            def convert_datetime(val):
+                from datetime import datetime
+                return datetime.fromisoformat(val.decode())
+            
+            sqlite3.register_adapter(datetime, adapt_datetime)
+            sqlite3.register_converter("DATETIME", convert_datetime)
             
             # Enable foreign key constraints
             connection.execute("PRAGMA foreign_keys = ON")
