@@ -79,3 +79,7 @@ shorter verions of the command, such as:
 
 Obviously, I don't want `python *`, but I'm kinda OK with `python -m pytest *`
 (still can be destructive...). But I have to add the latter version manually.
+
+Sometimes after a task is complete and I merge it, the window still says it's
+working on the task. I click to start a new task and the "completed" task is
+marked as "Task execution aborted".

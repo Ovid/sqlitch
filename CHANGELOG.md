@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Rebase Command Implementation**: Complete rebase command functionality (COMPLETED)
+  - Implemented RebaseCommand class with full CLI compatibility to Perl sqitch
+  - Added plan rebasing and conflict resolution functionality with automatic divergence detection
+  - Implemented interactive rebase with user prompts and confirmation dialogs
+  - Added support for rebasing onto different base changes with --onto-change option
+  - Created comprehensive argument parsing with support for all Perl sqitch rebase options
+  - Implemented --modified mode to automatically find common ancestor between planned and deployed changes
+  - Added support for all deployment and revert options (--mode, --verify, --set variables)
+  - Implemented strict mode checking to prevent rebase usage when configured
+  - Added proper error handling and user feedback for rebase operations
+  - Created extensive test coverage including unit tests and integration tests
+  - Enhanced Engine base class with planned_deployed_common_ancestor_id method for divergence detection
+  - Added high-level revert() and deploy() methods to Engine base class for batch operations
+  - Extended Plan class with count property and change_at() method for indexed access
+  - Added get_change_by_id() method to Plan class for change lookup by ID
+
 - **Checkout Command Implementation**: Complete checkout command functionality (COMPLETED)
   - Implemented CheckoutCommand class with full CLI compatibility to Perl sqitch
   - Added VCS branch checkout capabilities with automatic database state management

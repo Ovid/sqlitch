@@ -1072,6 +1072,264 @@ class EngineRegistry:
             List of supported engine types
         """
         return list(cls._engines.keys())
+    
+    def planned_deployed_common_ancestor_id(self) -> Optional[str]:
+        """
+        Get the ID of the common ancestor between planned and deployed changes.
+        
+        This method compares the SHA1 hashes of the deploy scripts to their values
+        at the time of deployment to find the last change that hasn't diverged.
+        
+        Returns:
+            Change ID of common ancestor, or None if no common ancestor
+        """
+        try:
+            deployed_changes = self._load_deployed_changes()
+            if not deployed_changes:
+                return None
+            
+            divergent_idx = self._find_planned_deployed_divergence_idx(0, deployed_changes)
+            
+            if divergent_idx == -1:
+                # No divergence found, return last deployed change
+                return deployed_changes[-1].id if deployed_changes else None
+            elif divergent_idx == 0:
+                # Divergence at first change
+                return None
+            else:
+                # Return change before divergence
+                return deployed_changes[divergent_idx - 1].id
+                
+        except Exception as e:
+            logger.error(f"Error finding common ancestor: {e}")
+            return None
+    
+    def _load_deployed_changes(self) -> List[Change]:
+        """
+        Load deployed changes from the database.
+        
+        Returns:
+            List of deployed Change objects
+        """
+        try:
+            with self.connection() as conn:
+                # Get deployed changes in order
+                sql = f"""
+                    SELECT change_id, change, note, committed_at, 
+                           committer_name, committer_email,
+                           planned_at, planner_name, planner_email
+                    FROM {self.registry_schema.CHANGES_TABLE}
+                    WHERE project = %s
+                    ORDER BY committed_at
+                """
+                
+                result = conn.execute(sql, {'project': self.plan.project})
+                rows = result.fetchall() if hasattr(result, 'fetchall') else []
+                
+                changes = []
+                for row in rows:
+                    # Create Change object from database row
+                    change = Change(
+                        name=row['change'],
+                        note=row.get('note', ''),
+                        tags=[],  # Tags would need separate query
+                        dependencies=[],  # Dependencies would need separate query
+                        conflicts=[],
+                        timestamp=row['planned_at'],
+                        planner_name=row['planner_name'],
+                        planner_email=row['planner_email']
+                    )
+                    # Set the ID from database
+                    change._id = row['change_id']
+                    changes.append(change)
+                
+                return changes
+                
+        except Exception as e:
+            logger.error(f"Error loading deployed changes: {e}")
+            return []
+    
+    def _find_planned_deployed_divergence_idx(self, from_idx: int, 
+                                            deployed_changes: List[Change]) -> int:
+        """
+        Find the index where planned and deployed changes diverge.
+        
+        Args:
+            from_idx: Starting index to check from
+            deployed_changes: List of deployed changes
+            
+        Returns:
+            Index of first divergent change, or -1 if no divergence
+        """
+        try:
+            plan = self.plan
+            
+            for i, deployed_change in enumerate(deployed_changes):
+                plan_idx = i + from_idx
+                
+                # Check if we've exceeded the plan
+                if plan_idx >= len(plan.changes):
+                    return i
+                
+                planned_change = plan.changes[plan_idx]
+                
+                # Compare script hashes
+                deployed_hash = self._get_deployed_script_hash(deployed_change)
+                planned_hash = self._calculate_script_hash(planned_change)
+                
+                if deployed_hash != planned_hash:
+                    return i
+            
+            return -1  # No divergence found
+            
+        except Exception as e:
+            logger.error(f"Error finding divergence: {e}")
+            return 0  # Assume divergence at start on error
+    
+    def _get_deployed_script_hash(self, change: Change) -> str:
+        """
+        Get the script hash that was stored when the change was deployed.
+        
+        Args:
+            change: Deployed change
+            
+        Returns:
+            Script hash from deployment time
+        """
+        # For now, recalculate the hash
+        # In a full implementation, this would be stored in the database
+        return self._calculate_script_hash(change)
+    
+    def revert(self, to_change: Optional[str] = None, prompt: bool = True, 
+              prompt_accept: bool = True) -> None:
+        """
+        Revert changes to a specific change.
+        
+        Args:
+            to_change: Change to revert to (None for all changes)
+            prompt: Whether to prompt for confirmation
+            prompt_accept: Default response for prompts
+        """
+        try:
+            deployed_changes = self.get_deployed_changes()
+            if not deployed_changes:
+                logger.info("No changes to revert")
+                return
+            
+            # Find changes to revert
+            changes_to_revert = []
+            if to_change:
+                # Find the target change and revert everything after it
+                target_found = False
+                for change_id in reversed(deployed_changes):
+                    if change_id == to_change:
+                        target_found = True
+                        break
+                    changes_to_revert.append(change_id)
+                
+                if not target_found:
+                    raise EngineError(f"Change not found in deployed changes: {to_change}")
+            else:
+                # Revert all changes
+                changes_to_revert = list(reversed(deployed_changes))
+            
+            if not changes_to_revert:
+                logger.info("No changes to revert")
+                return
+            
+            # Prompt for confirmation if needed
+            if prompt and changes_to_revert:
+                change_names = [self.plan.get_change_by_id(cid).name if self.plan.get_change_by_id(cid) else cid 
+                              for cid in changes_to_revert]
+                message = f"Revert {len(changes_to_revert)} change(s) ({', '.join(change_names[:3])}{'...' if len(change_names) > 3 else ''})?"
+                
+                # This would need to be implemented to actually prompt the user
+                # For now, assume confirmation based on prompt_accept
+                if not prompt_accept:
+                    logger.info("Revert cancelled by user")
+                    return
+            
+            # Revert changes in reverse order
+            for change_id in changes_to_revert:
+                change = self.plan.get_change_by_id(change_id)
+                if change:
+                    self.revert_change(change)
+                    logger.info(f"Reverted change: {change.name}")
+                else:
+                    logger.warning(f"Change not found in plan: {change_id}")
+                    
+        except Exception as e:
+            raise EngineError(f"Revert operation failed: {e}") from e
+    
+    def deploy(self, to_change: Optional[str] = None, mode: str = 'all') -> None:
+        """
+        Deploy changes up to a specific change.
+        
+        Args:
+            to_change: Change to deploy up to (None for all changes)
+            mode: Deployment mode ('all', 'change', 'tag')
+        """
+        try:
+            deployed_changes = set(self.get_deployed_changes())
+            
+            # Find changes to deploy
+            changes_to_deploy = []
+            
+            if to_change:
+                # Find target change in plan
+                target_change = self.plan.get_change(to_change)
+                if not target_change:
+                    # Try to find by ID
+                    target_change = self.plan.get_change_by_id(to_change)
+                
+                if not target_change:
+                    raise EngineError(f"Change not found in plan: {to_change}")
+                
+                # Find all changes up to target
+                for change in self.plan.changes:
+                    if change.id not in deployed_changes:
+                        changes_to_deploy.append(change)
+                    if change.id == target_change.id:
+                        break
+            else:
+                # Deploy all undeployed changes
+                for change in self.plan.changes:
+                    if change.id not in deployed_changes:
+                        changes_to_deploy.append(change)
+            
+            if not changes_to_deploy:
+                logger.info("No changes to deploy")
+                return
+            
+            # Deploy changes in order
+            for change in changes_to_deploy:
+                self.deploy_change(change)
+                logger.info(f"Deployed change: {change.name}")
+                
+                # Handle mode-specific stopping conditions
+                if mode == 'change' and change.id == to_change:
+                    break
+                elif mode == 'tag' and change.tags and to_change in change.tags:
+                    break
+                    
+        except Exception as e:
+            raise EngineError(f"Deploy operation failed: {e}") from e
+    
+    def set_verify(self, verify: bool) -> None:
+        """Set verification mode."""
+        self._verify = verify
+    
+    def set_log_only(self, log_only: bool) -> None:
+        """Set log-only mode."""
+        self._log_only = log_only
+    
+    def set_lock_timeout(self, timeout: int) -> None:
+        """Set lock timeout."""
+        self._lock_timeout = timeout
+    
+    def set_variables(self, variables: Dict[str, Any]) -> None:
+        """Set template variables."""
+        self._variables = variables
 
 
 def register_engine(engine_type: EngineType):

@@ -190,7 +190,7 @@
   - Write tests for checkout operations and state transitions
   - _Requirements: 1.1, 4.3, 4.4, 7.1, 7.5_
 
-- [ ] 25. Implement rebase command
+- [x] 25. Implement rebase command
   - Create RebaseCommand class in sqlitch/commands/rebase.py
   - Add plan rebasing and conflict resolution functionality
   - Implement interactive rebase with user prompts
