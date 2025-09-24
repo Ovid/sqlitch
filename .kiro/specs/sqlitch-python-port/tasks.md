@@ -166,23 +166,79 @@
   - Write tests for message translation and locale handling
   - _Requirements: 9.1, 9.2, 9.3, 9.4_
 
-- [ ] 22. Build remaining database engines (Snowflake, Vertica, Exasol, Firebird)
-  - Create engine classes for each remaining database type
-  - Implement database-specific connection and authentication
-  - Add engine-specific SQL dialects and features
-  - Create comprehensive test suites for each engine
-  - Document engine-specific configuration requirements
-  - _Requirements: 2.5, 2.6, 2.7, 2.8, 7.2, 7.3, 8.3_
+- [ ] 22. Implement tag command
+  - Create TagCommand class in sqlitch/commands/tag.py
+  - Add tag creation and management functionality
+  - Implement tag validation and conflict detection
+  - Add support for tagging specific changes in the plan
+  - Write unit and integration tests for tag operations
+  - _Requirements: 1.1, 4.3, 7.1, 7.5_
 
-- [ ] 23. Implement advanced commands (tag, bundle, checkout, rebase, show)
-  - Create command classes for remaining sqitch commands
-  - Implement tag creation and management functionality
-  - Add project bundling and checkout capabilities
-  - Create plan rebasing and conflict resolution
-  - Write comprehensive tests for all advanced commands
+- [ ] 23. Implement bundle command
+  - Create BundleCommand class in sqlitch/commands/bundle.py
+  - Add project bundling functionality for distribution
+  - Implement bundle creation with all necessary files
+  - Add support for bundle extraction and validation
+  - Write tests for bundle creation and extraction
+  - _Requirements: 1.1, 4.4, 7.1, 7.5_
+
+- [ ] 24. Implement checkout command
+  - Create CheckoutCommand class in sqlitch/commands/checkout.py
+  - Add project checkout capabilities from bundles or VCS
+  - Implement workspace switching and state management
+  - Add support for checking out specific tags or changes
+  - Write tests for checkout operations and state transitions
   - _Requirements: 1.1, 4.3, 4.4, 7.1, 7.5_
 
-- [ ] 24. Add performance optimizations and monitoring
+- [ ] 25. Implement rebase command
+  - Create RebaseCommand class in sqlitch/commands/rebase.py
+  - Add plan rebasing and conflict resolution functionality
+  - Implement interactive rebase with user prompts
+  - Add support for rebasing onto different base changes
+  - Write comprehensive tests for rebase scenarios and conflicts
+  - _Requirements: 1.1, 4.3, 7.1, 7.5_
+
+- [ ] 26. Implement show command
+  - Create ShowCommand class in sqlitch/commands/show.py
+  - Add functionality to display change details and metadata
+  - Implement support for showing different object types (changes, tags, plans)
+  - Add formatted output with syntax highlighting where appropriate
+  - Write tests for show command output formatting
+  - _Requirements: 1.1, 7.1, 7.5_
+
+- [ ] 27. Build Snowflake database engine
+  - Create SnowflakeEngine class in sqlitch/engines/snowflake.py
+  - Implement Snowflake-specific connection handling with snowflake-connector-python
+  - Add Snowflake registry table creation with proper schemas
+  - Implement Snowflake-specific SQL execution and warehouse management
+  - Write unit tests with Snowflake test database
+  - _Requirements: 2.5, 7.2, 7.3, 8.3, 10.1, 10.2_
+
+- [ ] 28. Build Vertica database engine
+  - Create VerticaEngine class in sqlitch/engines/vertica.py
+  - Implement Vertica-specific connection handling with vertica-python
+  - Add Vertica registry table creation with proper projections
+  - Implement Vertica-specific SQL execution and cluster management
+  - Write unit tests with Vertica test database
+  - _Requirements: 2.6, 7.2, 7.3, 8.3, 10.1, 10.2_
+
+- [ ] 29. Build Exasol database engine
+  - Create ExasolEngine class in sqlitch/engines/exasol.py
+  - Implement Exasol-specific connection handling with pyexasol
+  - Add Exasol registry table creation with proper schemas
+  - Implement Exasol-specific SQL execution and UDF support
+  - Write unit tests with Exasol test database
+  - _Requirements: 2.7, 7.2, 7.3, 8.3, 10.1, 10.2_
+
+- [ ] 30. Build Firebird database engine
+  - Create FirebirdEngine class in sqlitch/engines/firebird.py
+  - Implement Firebird-specific connection handling with fdb
+  - Add Firebird registry table creation with proper generators
+  - Implement Firebird-specific SQL execution and procedure support
+  - Write unit tests with Firebird test database
+  - _Requirements: 2.8, 7.2, 7.3, 8.3, 10.1, 10.2_
+
+- [ ] 31. Add performance optimizations and monitoring
   - Implement connection pooling for database operations
   - Add lazy loading for plan files and configuration
   - Create batch operation support for multiple changes
@@ -190,7 +246,7 @@
   - Write performance tests and benchmarks against Perl sqitch
   - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
-- [ ] 25. Create comprehensive test suite and CI/CD
+- [ ] 32. Create comprehensive test suite and CI/CD
   - Set up pytest configuration with coverage reporting
   - Create Docker-based test environments for all databases
   - Implement compatibility tests against Perl sqitch
@@ -198,7 +254,7 @@
   - Set up continuous integration with automated testing
   - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-- [ ] 26. Build packaging and distribution system
+- [ ] 33. Build packaging and distribution system
   - Create setup.py and pyproject.toml for pip distribution
   - Add entry point configuration for sqitch command
   - Create installation documentation and requirements
@@ -206,7 +262,7 @@
   - Test installation across different Python versions and platforms
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 27. Create migration utilities and compatibility tools
+- [ ] 34. Create migration utilities and compatibility tools
   - Build project compatibility checker for Perl-to-Python migration
   - Create database state verification tools
   - Add side-by-side operation support during migration
