@@ -19,6 +19,8 @@ Sqlitch is a database change management system that helps you manage database sc
 
 * **Deployment integrity** - Manages changes via a plan file using a Merkle tree pattern similar to Git, ensuring deployment integrity without requiring numbered migrations.
 
+* **Version control integration** - Automatically integrates with Git repositories, including user detection, repository initialization, and branch-aware change naming.
+
 * **Iterative development** - Modify your change scripts as often as you like until you tag and release. Perfect for test-driven database development.
 
 ## Supported Databases
@@ -51,6 +53,7 @@ pip install -e .
    ```bash
    sqlitch init myproject --engine pg
    ```
+   This automatically initializes a Git repository and creates a `.gitignore` file. Use `--no-vcs` to skip version control setup.
 
 2. **Add your first change:**
    ```bash

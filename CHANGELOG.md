@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - CLI integration with Click framework
   - Full test coverage including unit and integration tests
 
+- **VCS Integration Utilities**: Complete Git integration system with:
+  - Repository detection and status checking
+  - User name and email detection from Git configuration
+  - Change file naming based on VCS state (branch-aware naming)
+  - Commit integration for change tracking
+  - Repository initialization and file management
+  - File history and tracking status queries
+  - Branch-aware change name suggestions
+  - Comprehensive error handling for Git operations
+  - Full test coverage with both unit and integration tests
+
 - **Template System**: Complete template processing system with:
   - Jinja2-based template engine with Template Toolkit syntax conversion
   - Built-in templates for all supported database engines (PostgreSQL, MySQL, SQLite, Oracle, Snowflake, Vertica, Exasol, Firebird, CockroachDB)

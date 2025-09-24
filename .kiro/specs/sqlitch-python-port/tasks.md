@@ -102,7 +102,7 @@
   - Write tests for template processing and variable substitution
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 14. Implement VCS integration utilities
+- [x] 14. Implement VCS integration utilities
   - Create Git integration in sqlitch/utils/git.py using GitPython
   - Add repository detection and status checking
   - Implement change file naming based on VCS state
