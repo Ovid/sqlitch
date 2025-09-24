@@ -155,6 +155,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.rebase import rebase_command
+    cli.add_command(rebase_command, name='rebase')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

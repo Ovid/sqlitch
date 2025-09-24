@@ -432,3 +432,37 @@ class Plan:
         # Write to file
         content = '\n'.join(lines) + '\n'
         self.file.write_text(content, encoding='utf-8')
+    
+    @property
+    def count(self) -> int:
+        """Get the number of changes in the plan."""
+        return len(self.changes)
+    
+    def change_at(self, index: int) -> Optional[Change]:
+        """
+        Get change at specific index.
+        
+        Args:
+            index: Index of change to retrieve
+            
+        Returns:
+            Change at index, or None if index is out of range
+        """
+        if 0 <= index < len(self.changes):
+            return self.changes[index]
+        return None
+    
+    def get_change_by_id(self, change_id: str) -> Optional[Change]:
+        """
+        Get change by ID.
+        
+        Args:
+            change_id: Change ID to find
+            
+        Returns:
+            Change with matching ID, or None if not found
+        """
+        for change in self.changes:
+            if change.id == change_id:
+                return change
+        return None
