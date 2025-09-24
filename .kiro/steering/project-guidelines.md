@@ -60,7 +60,12 @@
 
 6. **Test against Perl sqitch reference** when applicable to ensure compatibility
 
-**No task should be marked as completed if the test suite has any failures or unresolved warnings.**
+7. **Update documentation**:
+   - Add entry to `CHANGELOG.md` describing the changes made
+   - Update `README.md` if new features or usage patterns are introduced
+   - Ensure all new functionality is properly documented
+
+**No task should be marked as completed if the test suite has any failures, unresolved warnings, or missing documentation updates.**
 
 ### Documentation
 - Maintain clear docstrings for all classes and methods

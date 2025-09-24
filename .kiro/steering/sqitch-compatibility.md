@@ -40,7 +40,13 @@ Before completing any task:
    - SQL scripts and templates
    - Registry table schemas
 
-**No exceptions: All tests must pass before task completion.**
+**No exceptions: All tests must pass and documentation must be updated before task completion.**
+
+## Documentation Updates Required
+Before completing any task, ensure:
+1. **CHANGELOG.md** is updated with a clear description of changes
+2. **README.md** is updated if new features or usage patterns are introduced
+3. All new functionality includes proper docstrings and examples
 
 ## Key Areas to Verify
 - **Plan file parsing**: Must handle all Sqitch plan file syntax

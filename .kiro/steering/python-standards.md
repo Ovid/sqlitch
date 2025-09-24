@@ -62,7 +62,14 @@
    python -m pytest tests/ --cov=sqlitch --cov-report=term-missing
    ```
 
-**Zero tolerance for failing tests or unresolved warnings in completed tasks.**
+**Zero tolerance for failing tests, unresolved warnings, or missing documentation updates in completed tasks.**
+
+## Documentation Requirements
+Before task completion:
+1. **Update CHANGELOG.md** with clear description of changes
+2. **Update README.md** if new features or usage patterns are added
+3. **Ensure docstrings** are complete for all new code
+4. **Add usage examples** where appropriate
 
 ## Documentation
 - Write docstrings for all public classes and methods
