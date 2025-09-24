@@ -137,6 +137,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.tag import tag_command
+    cli.add_command(tag_command, name='tag')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

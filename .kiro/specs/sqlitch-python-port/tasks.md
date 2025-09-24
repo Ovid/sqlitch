@@ -166,7 +166,7 @@
   - Write tests for message translation and locale handling
   - _Requirements: 9.1, 9.2, 9.3, 9.4_
 
-- [ ] 22. Implement tag command
+- [x] 22. Implement tag command
   - Create TagCommand class in sqlitch/commands/tag.py
   - Add tag creation and management functionality
   - Implement tag validation and conflict detection
