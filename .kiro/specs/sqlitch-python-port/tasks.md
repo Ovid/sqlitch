@@ -110,7 +110,7 @@
   - Write tests for VCS operations and edge cases
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [ ] 15. Build MySQL database engine
+- [x] 15. Build MySQL database engine
   - Create MySQLEngine class in sqlitch/engines/mysql.py
   - Implement MySQL-specific connection handling with PyMySQL
   - Add MySQL registry table creation and management

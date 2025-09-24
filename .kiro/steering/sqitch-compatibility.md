@@ -5,9 +5,32 @@
 - All features should match Perl Sqitch behavior unless explicitly documented otherwise
 - Command-line interface should be identical to original Sqitch
 
+## MANDATORY Perl Source Verification
+**CRITICAL REQUIREMENT**: Before implementing ANY feature or task:
+
+1. **ALWAYS examine the corresponding Perl source files first**:
+   - Read the relevant `.pm` files in `sqitch-perl-source/lib/App/Sqitch/`
+   - Understand the exact behavior, error handling, and edge cases
+   - Note SQL queries, table schemas, and data formats used
+   - Check command-line argument parsing and validation
+
+2. **Key Perl files to reference by feature**:
+   - **Engine implementations**: `lib/App/Sqitch/Engine/{pg,mysql,sqlite}.pm`
+   - **Commands**: `lib/App/Sqitch/Command/{deploy,revert,status,verify,init}.pm`
+   - **Core logic**: `lib/App/Sqitch/{Plan,Config,Change}.pm`
+   - **Base engine**: `lib/App/Sqitch/Engine.pm`
+   - **Main app**: `lib/App/Sqitch.pm`
+
+3. **Implementation verification steps**:
+   - Compare method signatures and return values
+   - Match SQL schema definitions exactly
+   - Replicate error messages and exception handling
+   - Ensure identical command-line behavior
+   - Verify configuration file parsing matches
+
 ## Verification Process
 Before completing any task:
-1. **Compare with Perl source**: Review corresponding Perl modules for the feature
+1. **Compare with Perl source**: Review corresponding Perl modules for the feature (MANDATORY)
 2. **Test command compatibility**: Ensure CLI commands work identically
 3. **Validate database operations**: Check that SQL operations produce same results
 4. **Verify file formats**: Ensure plan files, config files match expected format

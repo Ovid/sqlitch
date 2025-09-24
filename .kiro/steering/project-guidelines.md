@@ -27,6 +27,10 @@
 - Clean up test artifacts after test runs
 
 ### Implementation Fidelity
+**MANDATORY PERL SOURCE VERIFICATION**:
+- **ALWAYS start by reading the corresponding Perl source files** in `sqitch-perl-source/lib/App/Sqitch/`
+- Study the exact implementation details, SQL queries, error handling, and edge cases
+- Match behavior precisely - don't guess or assume functionality
 - Before marking any task as complete, verify implementation against the original Perl Sqitch
 - Check for feature gaps, missing functionality, or behavioral differences
 - Ensure command-line interface matches expected Sqitch behavior
