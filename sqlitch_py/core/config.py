@@ -1,5 +1,5 @@
 """
-Configuration management for sqitch.
+Configuration management for sqlitch.
 
 This module provides configuration file parsing, hierarchy management,
 and validation for sqitch configuration files. It supports the same
@@ -32,7 +32,7 @@ class ConfigSource:
 
 class Config:
     """
-    Configuration management for sqitch.
+    Configuration management for sqlitch.
     
     Handles loading and merging configuration from multiple sources
     in the correct priority order: system < global < local < command-line.
@@ -120,7 +120,7 @@ class Config:
         if sys.platform.startswith('win'):
             # Windows system paths
             if 'PROGRAMFILES' in os.environ:
-                paths.append(Path(os.environ['PROGRAMFILES']) / 'Sqitch' / 'etc' / 'sqitch.conf')
+                paths.append(Path(os.environ['PROGRAMFILES']) / 'Sqlitch' / 'etc' / 'sqitch.conf')
         else:
             # Unix-like system paths
             paths.extend([
@@ -136,14 +136,14 @@ class Config:
         
         if sys.platform.startswith('win'):
             # Windows user config
-            return home / '.sqitch' / 'sqitch.conf'
+            return home / '.sqlitch' / 'sqitch.conf'
         else:
             # Unix-like user config
             xdg_config = os.environ.get('XDG_CONFIG_HOME')
             if xdg_config:
-                return Path(xdg_config) / 'sqitch' / 'sqitch.conf'
+                return Path(xdg_config) / 'sqlitch' / 'sqitch.conf'
             else:
-                return home / '.config' / 'sqitch' / 'sqitch.conf'
+                return home / '.config' / 'sqlitch' / 'sqitch.conf'
     
     def _get_local_config_paths(self) -> List[Path]:
         """Get local project configuration file paths."""

@@ -8,7 +8,7 @@ providing clear error categorization and consistent error handling.
 from typing import Optional, Any, Dict
 
 
-class SqitchError(Exception):
+class SqlitchError(Exception):
     """
     Base exception for all sqitch errors.
     
@@ -33,10 +33,10 @@ class SqitchError(Exception):
     
     def __str__(self) -> str:
         """Format error message for display."""
-        return f"sqitch: {self.message}"
+        return f"sqlitch: {self.message}"
 
 
-class ConfigurationError(SqitchError):
+class ConfigurationError(SqlitchError):
     """
     Configuration-related errors.
     
@@ -60,7 +60,7 @@ class ConfigurationError(SqitchError):
         self.config_key = config_key
 
 
-class PlanError(SqitchError):
+class PlanError(SqlitchError):
     """
     Plan file parsing or validation errors.
     
@@ -93,7 +93,7 @@ class PlanError(SqitchError):
         return base_msg
 
 
-class EngineError(SqitchError):
+class EngineError(SqlitchError):
     """
     Database engine errors.
     
@@ -175,7 +175,7 @@ class DeploymentError(EngineError):
         return base_msg
 
 
-class ValidationError(SqitchError):
+class ValidationError(SqlitchError):
     """
     Data validation errors.
     
@@ -199,7 +199,7 @@ class ValidationError(SqitchError):
         self.field_value = field_value
 
 
-class TemplateError(SqitchError):
+class TemplateError(SqlitchError):
     """
     Template processing errors.
     
@@ -223,7 +223,7 @@ class TemplateError(SqitchError):
         self.template_var = template_var
 
 
-class VCSError(SqitchError):
+class VCSError(SqlitchError):
     """
     Version control system errors.
     
@@ -247,7 +247,7 @@ class VCSError(SqitchError):
         self.repository_path = repository_path
 
 
-class LockError(SqitchError):
+class LockError(SqlitchError):
     """
     Database locking errors.
     
@@ -281,7 +281,7 @@ def format_error_message(error_type: str, details: str, **context: Any) -> str:
     Returns:
         Formatted error message string
     """
-    return f"sqitch: {error_type}: {details}"
+    return f"sqlitch: {error_type}: {details}"
 
 
 def handle_exception(exc: Exception) -> int:
@@ -294,11 +294,11 @@ def handle_exception(exc: Exception) -> int:
     Returns:
         Exit code for the application
     """
-    if isinstance(exc, SqitchError):
+    if isinstance(exc, SqlitchError):
         print(str(exc), file=sys.stderr)
         return exc.error_code or 1
     else:
-        print(f"sqitch: unexpected error: {exc}", file=sys.stderr)
+        print(f"sqlitch: unexpected error: {exc}", file=sys.stderr)
         return 2
 
 

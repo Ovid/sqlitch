@@ -1,4 +1,4 @@
-"""Target configuration for sqitch."""
+"""Target configuration for sqlitch."""
 
 from dataclasses import dataclass
 from pathlib import Path

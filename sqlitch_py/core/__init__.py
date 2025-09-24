@@ -1,12 +1,12 @@
 """
-Core application logic for sqitch.
+Core application logic for sqlitch.
 
 This module contains the main application classes and core functionality
 including configuration management, plan parsing, and change representation.
 """
 
-from sqitch_py.core.exceptions import (
-    SqitchError,
+from sqlitch_py.core.exceptions import (
+    SqlitchError,
     ConfigurationError,
     PlanError,
     EngineError,
@@ -15,7 +15,7 @@ from sqitch_py.core.exceptions import (
 )
 
 __all__ = [
-    "SqitchError",
+    "SqlitchError",
     "ConfigurationError",
     "PlanError", 
     "EngineError",

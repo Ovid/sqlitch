@@ -1,5 +1,5 @@
 """
-Logging configuration and utilities for sqitch.
+Logging configuration and utilities for sqlitch.
 
 This module provides centralized logging configuration and utilities
 to ensure consistent logging behavior across the application.
@@ -12,11 +12,11 @@ from pathlib import Path
 from typing import Optional, Dict, Any, TextIO
 from enum import IntEnum
 
-from sqitch_py.core.types import VerbosityLevel
+from sqlitch_py.core.types import VerbosityLevel
 
 
 class LogLevel(IntEnum):
-    """Custom log levels matching sqitch verbosity."""
+    """Custom log levels matching sqlitch verbosity."""
     TRACE = 5      # Most verbose (-vv)
     DEBUG = 10     # Debug info (-v)
     INFO = 20      # Normal output (default)
@@ -25,9 +25,9 @@ class LogLevel(IntEnum):
     FATAL = 50     # Fatal errors
 
 
-class SqitchFormatter(logging.Formatter):
+class SqlitchFormatter(logging.Formatter):
     """
-    Custom formatter for sqitch log messages.
+    Custom formatter for sqlitch log messages.
     
     Formats log messages to match the style and format of the original
     Perl sqitch tool for consistency.
@@ -70,7 +70,7 @@ class SqitchFormatter(logging.Formatter):
         return " ".join(parts)
 
 
-class ColoredFormatter(SqitchFormatter):
+class ColoredFormatter(SqlitchFormatter):
     """
     Colored formatter for terminal output.
     
@@ -126,17 +126,17 @@ class ColoredFormatter(SqitchFormatter):
         return message
 
 
-class SqitchLogger:
+class SqlitchLogger:
     """
-    Main logger class for sqitch operations.
+    Main logger class for sqlitch operations.
     
     Provides a centralized logging interface with verbosity control
     and consistent formatting across the application.
     """
     
-    def __init__(self, name: str = "sqitch", verbosity: VerbosityLevel = 0) -> None:
+    def __init__(self, name: str = "sqlitch", verbosity: VerbosityLevel = 0) -> None:
         """
-        Initialize sqitch logger.
+        Initialize sqlitch logger.
         
         Args:
             name: Logger name
@@ -238,10 +238,10 @@ class SqitchLogger:
 
 
 # Global logger instance
-_global_logger: Optional[SqitchLogger] = None
+_global_logger: Optional[SqlitchLogger] = None
 
 
-def get_logger(name: str = "sqitch") -> SqitchLogger:
+def get_logger(name: str = "sqlitch") -> SqlitchLogger:
     """
     Get or create global logger instance.
     
@@ -253,12 +253,12 @@ def get_logger(name: str = "sqitch") -> SqitchLogger:
     """
     global _global_logger
     if _global_logger is None:
-        _global_logger = SqitchLogger(name)
+        _global_logger = SqlitchLogger(name)
     return _global_logger
 
 
 def configure_logging(verbosity: VerbosityLevel = 0, 
-                     log_file: Optional[Path] = None) -> SqitchLogger:
+                     log_file: Optional[Path] = None) -> SqlitchLogger:
     """
     Configure global logging settings.
     
@@ -270,7 +270,7 @@ def configure_logging(verbosity: VerbosityLevel = 0,
         Configured logger instance
     """
     global _global_logger
-    _global_logger = SqitchLogger("sqitch", verbosity)
+    _global_logger = SqlitchLogger("sqlitch", verbosity)
     
     # Add file handler if log file specified
     if log_file:
@@ -278,7 +278,7 @@ def configure_logging(verbosity: VerbosityLevel = 0,
         file_handler.setLevel(LogLevel.TRACE)  # Log everything to file
         
         # Use detailed format for file logging
-        file_formatter = SqitchFormatter(show_timestamps=True, show_level=True)
+        file_formatter = SqlitchFormatter(show_timestamps=True, show_level=True)
         file_handler.setFormatter(file_formatter)
         
         _global_logger.logger.addHandler(file_handler)
@@ -362,7 +362,7 @@ class LogContext:
         self.original_verbosity: Optional[VerbosityLevel] = None
         self.original_handlers: list = []
     
-    def __enter__(self) -> SqitchLogger:
+    def __enter__(self) -> SqlitchLogger:
         """Enter context and apply temporary settings."""
         logger = get_logger()
         

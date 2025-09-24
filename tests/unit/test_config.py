@@ -12,9 +12,9 @@ from pathlib import Path
 from unittest.mock import patch, mock_open
 from typing import Dict, Any
 
-from sqitch_py.core.config import Config, ConfigSource
-from sqitch_py.core.exceptions import ConfigurationError
-from sqitch_py.core.types import Target, URI
+from sqlitch_py.core.config import Config, ConfigSource
+from sqlitch_py.core.exceptions import ConfigurationError
+from sqlitch_py.core.types import Target, URI
 
 
 class TestConfig:
@@ -121,7 +121,7 @@ engine = pg
             assert len(paths) > 0
             path_str = str(paths[0])
             assert 'Program Files' in path_str
-            assert 'Sqitch' in path_str
+            assert 'Sqlitch' in path_str
             assert 'sqitch.conf' in path_str
     
     def test_get_global_config_path_unix(self):
@@ -132,7 +132,7 @@ engine = pg
              patch('pathlib.Path.home', return_value=Path('/home/user')):
             path = config._get_global_config_path()
             
-            expected_path = Path('/home/user/.config/sqitch/sqitch.conf')
+            expected_path = Path('/home/user/.config/sqlitch/sqitch.conf')
             assert path == expected_path
     
     def test_get_global_config_path_unix_xdg(self):
@@ -143,7 +143,7 @@ engine = pg
              patch.dict(os.environ, {'XDG_CONFIG_HOME': '/custom/config'}):
             path = config._get_global_config_path()
             
-            expected_path = Path('/custom/config/sqitch/sqitch.conf')
+            expected_path = Path('/custom/config/sqlitch/sqitch.conf')
             assert path == expected_path
     
     def test_get_global_config_path_windows(self):
@@ -155,7 +155,7 @@ engine = pg
             path = config._get_global_config_path()
             
             # On non-Windows systems, Path normalizes to forward slashes
-            expected_path = Path('C:/Users/user/.sqitch/sqitch.conf')
+            expected_path = Path('C:/Users/user/.sqlitch/sqitch.conf')
             assert path == expected_path
     
     def test_get_local_config_paths(self, tmp_path):

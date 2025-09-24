@@ -5,9 +5,9 @@ from datetime import datetime
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from sqitch_py.core.plan import Plan
-from sqitch_py.core.change import Change, Dependency, Tag
-from sqitch_py.core.exceptions import PlanError
+from sqlitch_py.core.plan import Plan
+from sqlitch_py.core.change import Change, Dependency, Tag
+from sqlitch_py.core.exceptions import PlanError
 
 
 class TestDependency:

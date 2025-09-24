@@ -1,5 +1,5 @@
 """
-Database engine implementations for sqitch.
+Database engine implementations for sqlitch.
 
 This module contains database-specific implementations for all supported
 database engines including PostgreSQL, MySQL, SQLite, Oracle, and others.

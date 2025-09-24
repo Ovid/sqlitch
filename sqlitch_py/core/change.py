@@ -1,4 +1,4 @@
-"""Change, Tag, and Dependency dataclasses for sqitch plan management."""
+"""Change, Tag, and Dependency dataclasses for sqlitch plan management."""
 
 import hashlib
 from dataclasses import dataclass, field

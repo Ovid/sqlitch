@@ -4,8 +4,8 @@ import pytest
 from datetime import datetime
 from pathlib import Path
 
-from sqitch_py.core.change import Change, Dependency, Tag
-from sqitch_py.core.target import Target
+from sqlitch_py.core.change import Change, Dependency, Tag
+from sqlitch_py.core.target import Target
 
 
 class TestDependency:
