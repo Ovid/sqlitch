@@ -11,6 +11,11 @@ versions. This should also include ensuring that tests and various files
 mirror the Perl version as much as possible, to make it easier to sync with
 sqitch when it's updated.
 
+## MySQL Tests are skipped
+
+MySQL tests are skipped but the PG ones are not. The latter uses mocks, while
+the former needs a real database. We should figure out how to address this.
+
 ## Sqitch grep
 
 https://github.com/sqitchers/sqitch/issues/532
