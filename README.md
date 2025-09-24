@@ -28,6 +28,7 @@ Sqlitch is a database change management system that helps you manage database sc
 Sqlitch currently supports:
 
 * **PostgreSQL** 8.4+ (including YugabyteDB and CockroachDB)
+* **MySQL** 5.1.0+ and **MariaDB** 5.3.0+
 * **SQLite** 3.8.6+
 * Additional database engines coming soon
 
@@ -104,6 +105,7 @@ Current implementation status:
 - ✅ PostgreSQL engine (partial)
 - ✅ Command-line interface (init, deploy, revert, verify commands)
 - ✅ Change deployment, revert, and verification logic
+- ✅ MySQL/MariaDB engine
 - ⏳ SQLite engine
 - ⏳ Additional database engines
 

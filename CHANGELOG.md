@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **MySQL Database Engine**: Complete implementation of MySQL/MariaDB support with:
+  - MySQL-specific connection handling using PyMySQL driver
+  - Registry table creation and management with proper MySQL schema
+  - MySQL-specific SQL execution with DELIMITER support
+  - Version compatibility checking (MySQL 5.1.0+, MariaDB 5.3.0+)
+  - Transaction management with table locking for concurrent access control
+  - Support for MySQL connection string formats and query parameters
+  - Comprehensive unit and integration test coverage
+  - Full compatibility with original Perl Sqitch MySQL engine behavior
+
 - **Deploy Command**: Complete implementation of the `sqlitch deploy` command with:
   - Deployment planning and execution logic
   - Transaction management with automatic rollback on failure

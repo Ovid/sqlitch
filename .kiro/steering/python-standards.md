@@ -1,5 +1,12 @@
 # Python Development Standards
 
+## Perl Source Reference Requirement
+**MANDATORY BEFORE ANY IMPLEMENTATION**:
+- **Always examine the corresponding Perl source files first** in `sqitch-perl-source/lib/App/Sqitch/`
+- Read and understand the exact behavior, method signatures, and implementation details
+- Note SQL schemas, queries, error handling, and data structures used
+- Match the Perl implementation's behavior precisely in Python
+
 ## Code Style
 - Follow PEP 8 style guidelines
 - Use type hints for all function parameters and return values
