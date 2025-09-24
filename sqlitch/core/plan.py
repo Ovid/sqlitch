@@ -27,6 +27,39 @@ class Plan:
         """Build indexes after initialization."""
         self._build_indexes()
     
+    @property
+    def project_name(self) -> str:
+        """Get project name (alias for project attribute)."""
+        return self.project
+    
+    @property
+    def creator_name(self) -> Optional[str]:
+        """Get creator name from first change or None."""
+        if self.changes:
+            return self.changes[0].planner_name
+        return None
+    
+    @property
+    def creator_email(self) -> Optional[str]:
+        """Get creator email from first change or None."""
+        if self.changes:
+            return self.changes[0].planner_email
+        return None
+    
+    def get_deploy_file(self, change: 'Change') -> Path:
+        """Get deploy script path for a change."""
+        # For now, assume standard directory structure
+        # This should be configurable based on target
+        return Path('deploy') / f"{change.name}.sql"
+    
+    def get_revert_file(self, change: 'Change') -> Path:
+        """Get revert script path for a change."""
+        return Path('revert') / f"{change.name}.sql"
+    
+    def get_verify_file(self, change: 'Change') -> Path:
+        """Get verify script path for a change."""
+        return Path('verify') / f"{change.name}.sql"
+    
     def _build_indexes(self) -> None:
         """Build internal indexes for fast lookups."""
         self._change_index = {change.name: change for change in self.changes}

@@ -62,7 +62,7 @@
   - Write unit and integration tests for init command
   - _Requirements: 4.1, 4.2, 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 9. Implement deploy command
+- [x] 9. Implement deploy command
   - Create DeployCommand class in sqlitch/commands/deploy.py
   - Add deployment planning and execution logic
   - Implement transaction management and rollback on failure
