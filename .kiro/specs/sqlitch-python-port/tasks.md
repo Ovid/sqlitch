@@ -38,7 +38,7 @@
   - Create engine registry and factory pattern
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 10.3, 10.4_
 
-- [ ] 6. Implement PostgreSQL database engine
+- [x] 6. Implement PostgreSQL database engine
   - Create PostgreSQLEngine class in sqlitch_py/engines/pg.py
   - Implement PostgreSQL-specific connection handling with psycopg2
   - Add registry table creation and management SQL
@@ -46,7 +46,7 @@
   - Write comprehensive unit tests with PostgreSQL test database
   - _Requirements: 2.1, 7.2, 7.3, 10.1, 10.2_
 
-- [ ] 7. Build CLI framework with Click
+- [x] 7. Build CLI framework with Click
   - Create main CLI entry point in sqlitch_py/cli.py using Click framework
   - Implement global options (--config, --verbose, --quiet)
   - Add command discovery and registration system
