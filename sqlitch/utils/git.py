@@ -130,7 +130,7 @@ class GitRepository:
             
             # Get status
             status_result = self._run_git_command(['status', '--porcelain'], check=False)
-            status_lines = status_result.stdout.strip().split('\n') if status_result.stdout.strip() else []
+            status_lines = status_result.stdout.rstrip().split('\n') if status_result.stdout.rstrip() else []
             
             has_staged_changes = False
             has_unstaged_changes = False
@@ -142,12 +142,17 @@ class GitRepository:
                     unstaged_status = line[1]
                     filename = line[3:] if len(line) > 3 else ''
                     
+
+                    
+                    # Staged changes: first character is not space or ?
                     if staged_status != ' ' and staged_status != '?':
                         has_staged_changes = True
                     
+                    # Unstaged changes: second character is not space
                     if unstaged_status != ' ':
                         has_unstaged_changes = True
                     
+                    # Untracked files: both characters are ?
                     if staged_status == '?' and unstaged_status == '?':
                         untracked_files.append(filename)
             
