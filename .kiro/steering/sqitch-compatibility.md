@@ -13,6 +13,41 @@ Before completing any task:
 4. **Verify file formats**: Ensure plan files, config files match expected format
 5. **Check error handling**: Verify error messages and exit codes match
 
+## Mandatory Test Verification
+**REQUIRED before marking any task complete:**
+
+1. **Full test suite passes** without failures or warnings:
+   ```bash
+   python -m pytest tests/ -v --tb=short
+   ```
+
+2. **Compatibility tests pass** for implemented features:
+   ```bash
+   python -m pytest tests/ -k "compatibility or integration" -v
+   ```
+
+3. **Manual verification** against Perl sqitch when possible:
+   ```bash
+   # Compare command outputs
+   sqlitch command args > python_output.txt
+   sqitch command args > perl_output.txt
+   diff python_output.txt perl_output.txt
+   ```
+
+4. **File format validation** - Generated files must be identical:
+   - Configuration files (`sqitch.conf`)
+   - Plan files (`sqitch.plan`) 
+   - SQL scripts and templates
+   - Registry table schemas
+
+**No exceptions: All tests must pass and documentation must be updated before task completion.**
+
+## Documentation Updates Required
+Before completing any task, ensure:
+1. **CHANGELOG.md** is updated with a clear description of changes
+2. **README.md** is updated if new features or usage patterns are introduced
+3. All new functionality includes proper docstrings and examples
+
 ## Key Areas to Verify
 - **Plan file parsing**: Must handle all Sqitch plan file syntax
 - **Configuration**: Support all Sqitch configuration options

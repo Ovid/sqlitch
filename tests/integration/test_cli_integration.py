@@ -132,25 +132,35 @@ class TestCliFramework:
         assert 'No such command' in result.output
     
     def test_init_command_available(self):
-        """Test that init command will be available when implemented."""
-        # This test will pass when init command is implemented in task 8
-        # For now, just test that the CLI framework can handle missing commands
+        """Test that init command is available and shows help."""
         result = self.runner.invoke(cli, ['init', '--help'])
         
-        # Should get "No such command" error since init is not implemented yet
-        assert result.exit_code == 2
-        assert 'No such command' in result.output
+        # Should show help for init command
+        assert result.exit_code == 0
+        assert 'Initialize a sqlitch project' in result.output
     
     def test_init_command_execution(self):
-        """Test init command execution framework (will be implemented in task 8)."""
-        # This test verifies the CLI framework can handle command execution
-        # The actual init command will be implemented in task 8
-        
-        # Test that unknown commands are handled gracefully
-        result = self.runner.invoke(cli, ['init', 'pg'])
-        
-        assert result.exit_code == 2
-        assert 'No such command' in result.output
+        """Test init command execution through CLI."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            original_cwd = os.getcwd()
+            try:
+                os.chdir(temp_dir)
+                
+                # Test init command execution
+                result = self.runner.invoke(cli, ['init', 'testproject'])
+                
+                # Should succeed
+                assert result.exit_code == 0
+                
+                # Check that files were created
+                assert os.path.exists('sqitch.conf')
+                assert os.path.exists('sqitch.plan')
+                assert os.path.exists('deploy')
+                assert os.path.exists('revert')
+                assert os.path.exists('verify')
+                
+            finally:
+                os.chdir(original_cwd)
     
     def test_unknown_command(self):
         """Test unknown command handling."""
@@ -208,20 +218,18 @@ class TestMainFunction:
         with patch('sqlitch.cli.cli') as mock_cli:
             mock_cli.side_effect = KeyboardInterrupt()
             
-            with patch('sqlitch.cli.register_commands'):
-                exit_code = main()
-                
-                assert exit_code == 130
+            exit_code = main()
+            
+            assert exit_code == 130
     
     def test_main_function_unexpected_error(self):
         """Test main function with unexpected error."""
         with patch('sqlitch.cli.cli') as mock_cli:
             mock_cli.side_effect = RuntimeError("Unexpected error")
             
-            with patch('sqlitch.cli.register_commands'):
-                exit_code = main()
-                
-                assert exit_code == 2
+            exit_code = main()
+            
+            assert exit_code == 2
 
 
 class TestCliContext:
@@ -318,12 +326,17 @@ class TestCliContext:
 class TestCommandRegistration:
     """Test command registration functionality."""
     
+    def setup_method(self):
+        """Set up test fixtures."""
+        self.runner = CliRunner()
+    
     def test_register_commands_function_exists(self):
-        """Test that register_commands function exists."""
-        from sqlitch.cli import register_commands
-        
-        # Should not raise an exception
-        register_commands()
+        """Test that commands are registered in CLI module."""
+        # Commands are registered directly in the CLI module
+        # Test that the init command is available
+        result = self.runner.invoke(cli, ['--help'])
+        assert result.exit_code == 0
+        assert 'init' in result.output
     
     def test_command_wrapper_creation(self):
         """Test command wrapper creation."""

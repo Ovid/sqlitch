@@ -39,6 +39,34 @@
 - Verify compatibility with multiple database engines
 - Test command-line interface thoroughly
 
+### Task Completion Requirements
+**CRITICAL**: Before marking any task as complete, you MUST:
+
+1. **Run the full test suite** and ensure ALL tests pass without warnings:
+   ```bash
+   python -m pytest tests/ -v --tb=short
+   ```
+
+2. **Verify zero test failures** - Any failing tests must be fixed before task completion
+
+3. **Address all warnings** - Test warnings indicate potential issues that must be resolved
+
+4. **Run focused tests** for the implemented functionality:
+   ```bash
+   python -m pytest tests/ -k "relevant_test_pattern" -v
+   ```
+
+5. **Verify CLI integration** works end-to-end for command implementations
+
+6. **Test against Perl sqitch reference** when applicable to ensure compatibility
+
+7. **Update documentation**:
+   - Add entry to `CHANGELOG.md` describing the changes made
+   - Update `README.md` if new features or usage patterns are introduced
+   - Ensure all new functionality is properly documented
+
+**No task should be marked as completed if the test suite has any failures, unresolved warnings, or missing documentation updates.**
+
 ### Documentation
 - Maintain clear docstrings for all classes and methods
 - Update README and documentation as features are added

@@ -94,42 +94,12 @@ def cli(ctx: click.Context, config: Tuple[Path, ...], verbose: int, quiet: int) 
         click.echo(ctx.get_help())
 
 
-# Command registration functions
-def register_commands():
-    """Register all available commands."""
-    
-    # Import commands dynamically to avoid circular imports
-    command_modules = {
-        'init': ('sqlitch.commands.init', 'init_command'),
-        'add': ('sqlitch.commands.add', 'add_command'),
-        'deploy': ('sqlitch.commands.deploy', 'deploy_command'),
-        'revert': ('sqlitch.commands.revert', 'revert_command'),
-        'verify': ('sqlitch.commands.verify', 'verify_command'),
-        'status': ('sqlitch.commands.status', 'status_command'),
-        'log': ('sqlitch.commands.log', 'log_command'),
-        'tag': ('sqlitch.commands.tag', 'tag_command'),
-        'bundle': ('sqlitch.commands.bundle', 'bundle_command'),
-        'checkout': ('sqlitch.commands.checkout', 'checkout_command'),
-        'rebase': ('sqlitch.commands.rebase', 'rebase_command'),
-        'show': ('sqlitch.commands.show', 'show_command'),
-        'config': ('sqlitch.commands.config', 'config_command'),
-        'engine': ('sqlitch.commands.engine', 'engine_command'),
-        'target': ('sqlitch.commands.target', 'target_command'),
-        'plan': ('sqlitch.commands.plan', 'plan_command'),
-        'help': ('sqlitch.commands.help', 'help_command'),
-    }
-    
-    for command_name, (module_name, function_name) in command_modules.items():
-        try:
-            import importlib
-            module = importlib.import_module(module_name)
-            command_func = getattr(module, function_name, None)
-            
-            if command_func:
-                cli.add_command(command_func, name=command_name)
-        except (ImportError, AttributeError) as e:
-            # Command not implemented yet, skip silently
-            pass
+# Register the init command immediately
+try:
+    from .commands.init import init_command
+    cli.add_command(init_command, name='init')
+except ImportError:
+    pass  # Command not available
 
 
 # Commands will be registered when CLI is invoked
