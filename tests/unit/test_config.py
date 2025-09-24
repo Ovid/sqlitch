@@ -12,9 +12,9 @@ from pathlib import Path
 from unittest.mock import patch, mock_open
 from typing import Dict, Any
 
-from sqlitch_py.core.config import Config, ConfigSource
-from sqlitch_py.core.exceptions import ConfigurationError
-from sqlitch_py.core.types import Target, URI
+from sqlitch.core.config import Config, ConfigSource
+from sqlitch.core.exceptions import ConfigurationError
+from sqlitch.core.types import Target, URI
 
 
 class TestConfig:

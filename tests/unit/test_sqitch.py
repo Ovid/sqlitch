@@ -9,10 +9,10 @@ from typing import Dict, Any
 
 import pytest
 
-from sqlitch_py.core.sqitch import Sqitch, create_sqitch
-from sqlitch_py.core.config import Config
-from sqlitch_py.core.exceptions import SqlitchError, ConfigurationError, EngineError
-from sqlitch_py.core.types import Target, URI
+from sqlitch.core.sqitch import Sqitch, create_sqitch
+from sqlitch.core.config import Config
+from sqlitch.core.exceptions import SqlitchError, ConfigurationError, EngineError
+from sqlitch.core.types import Target, URI
 
 
 class TestSqitch:
@@ -51,7 +51,7 @@ class TestSqitch:
         assert sqitch.verbosity == -2
     
     @patch.dict(os.environ, {'SQITCH_USER_NAME': '', 'USER': '', 'USERNAME': '', 'EMAIL': '', 'SQITCH_USER_EMAIL': ''}, clear=False)
-    @patch('sqlitch_py.core.sqitch.subprocess.run')
+    @patch('sqlitch.core.sqitch.subprocess.run')
     @patch('pwd.getpwuid', side_effect=KeyError())  # Mock system user lookup failure
     def test_user_name_detection_from_git(self, mock_pwd, mock_run):
         """Test user name detection from Git configuration."""
@@ -114,7 +114,7 @@ class TestSqitch:
         assert sqitch.user_name == 'testuser'
     
     @patch.dict(os.environ, {'SQITCH_USER_NAME': '', 'USER': '', 'USERNAME': '', 'EMAIL': '', 'SQITCH_USER_EMAIL': ''}, clear=False)
-    @patch('sqlitch_py.core.sqitch.subprocess.run')
+    @patch('sqlitch.core.sqitch.subprocess.run')
     @patch('pwd.getpwuid', side_effect=KeyError())  # Mock system user lookup failure
     def test_user_detection_git_timeout(self, mock_pwd, mock_run):
         """Test user detection when Git command times out."""
@@ -222,7 +222,7 @@ class TestSqitch:
             engine_class = sqitch._get_engine_class('pg')
             
             assert engine_class is mock_engine_class
-            mock_import.assert_called_once_with('sqlitch_py.engines.pg')
+            mock_import.assert_called_once_with('sqlitch.engines.pg')
     
     def test_get_engine_class_unknown(self):
         """Test getting unknown engine class."""
@@ -555,7 +555,7 @@ class TestCreateSqitch:
     
     def test_create_sqitch_configuration_error(self):
         """Test creating Sqitch with configuration error."""
-        with patch('sqlitch_py.core.sqitch.Config') as mock_config:
+        with patch('sqlitch.core.sqitch.Config') as mock_config:
             mock_config.side_effect = Exception("Config error")
             
             with pytest.raises(ConfigurationError, match="Failed to create sqitch instance"):

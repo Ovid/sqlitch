@@ -5,7 +5,7 @@ This module contains the main application classes and core functionality
 including configuration management, plan parsing, and change representation.
 """
 
-from sqlitch_py.core.exceptions import (
+from sqlitch.core.exceptions import (
     SqlitchError,
     ConfigurationError,
     PlanError,

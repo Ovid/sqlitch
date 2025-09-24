@@ -10,13 +10,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 
-from sqlitch_py.engines.base import (
+from sqlitch.engines.base import (
     Engine, EngineRegistry, RegistrySchema, register_engine
 )
-from sqlitch_py.core.exceptions import EngineError, ConnectionError, DeploymentError
-from sqlitch_py.core.types import Target, URI, EngineType
-from sqlitch_py.core.change import Change
-from sqlitch_py.core.plan import Plan
+from sqlitch.core.exceptions import EngineError, ConnectionError, DeploymentError
+from sqlitch.core.types import Target, URI, EngineType
+from sqlitch.core.change import Change
+from sqlitch.core.plan import Plan
 
 
 class MockConnection:

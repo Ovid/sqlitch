@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any, TextIO
 from enum import IntEnum
 
-from sqlitch_py.core.types import VerbosityLevel
+from sqlitch.core.types import VerbosityLevel
 
 
 class LogLevel(IntEnum):

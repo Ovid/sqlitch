@@ -6,7 +6,7 @@ setup(
     name="sqlitch",
     version="1.0.0",
     description="Python port of sqitch database change management tool",
-    long_description=open("README.md").read() if open("README.md") else "",
+    long_description="Python port of sqitch database change management tool",
     long_description_content_type="text/markdown",
     author="Sqlitch Contributors",
     author_email="contributors@sqlitch.org",
@@ -38,7 +38,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "sqlitch=sqlitch_py.cli:main",
+            "sqlitch=sqlitch.cli:main",
         ],
     },
     classifiers=[

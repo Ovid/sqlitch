@@ -9,7 +9,7 @@ __version__ = "1.0.0"
 __author__ = "Sqlitch Python Port Team"
 __email__ = "sqlitch-py@example.com"
 
-from sqlitch_py.core.exceptions import (
+from sqlitch.core.exceptions import (
     SqlitchError,
     ConfigurationError,
     PlanError,

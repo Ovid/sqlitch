@@ -100,23 +100,23 @@ def register_commands():
     
     # Import commands dynamically to avoid circular imports
     command_modules = {
-        'init': ('sqlitch_py.commands.init', 'init_command'),
-        'add': ('sqlitch_py.commands.add', 'add_command'),
-        'deploy': ('sqlitch_py.commands.deploy', 'deploy_command'),
-        'revert': ('sqlitch_py.commands.revert', 'revert_command'),
-        'verify': ('sqlitch_py.commands.verify', 'verify_command'),
-        'status': ('sqlitch_py.commands.status', 'status_command'),
-        'log': ('sqlitch_py.commands.log', 'log_command'),
-        'tag': ('sqlitch_py.commands.tag', 'tag_command'),
-        'bundle': ('sqlitch_py.commands.bundle', 'bundle_command'),
-        'checkout': ('sqlitch_py.commands.checkout', 'checkout_command'),
-        'rebase': ('sqlitch_py.commands.rebase', 'rebase_command'),
-        'show': ('sqlitch_py.commands.show', 'show_command'),
-        'config': ('sqlitch_py.commands.config', 'config_command'),
-        'engine': ('sqlitch_py.commands.engine', 'engine_command'),
-        'target': ('sqlitch_py.commands.target', 'target_command'),
-        'plan': ('sqlitch_py.commands.plan', 'plan_command'),
-        'help': ('sqlitch_py.commands.help', 'help_command'),
+        'init': ('sqlitch.commands.init', 'init_command'),
+        'add': ('sqlitch.commands.add', 'add_command'),
+        'deploy': ('sqlitch.commands.deploy', 'deploy_command'),
+        'revert': ('sqlitch.commands.revert', 'revert_command'),
+        'verify': ('sqlitch.commands.verify', 'verify_command'),
+        'status': ('sqlitch.commands.status', 'status_command'),
+        'log': ('sqlitch.commands.log', 'log_command'),
+        'tag': ('sqlitch.commands.tag', 'tag_command'),
+        'bundle': ('sqlitch.commands.bundle', 'bundle_command'),
+        'checkout': ('sqlitch.commands.checkout', 'checkout_command'),
+        'rebase': ('sqlitch.commands.rebase', 'rebase_command'),
+        'show': ('sqlitch.commands.show', 'show_command'),
+        'config': ('sqlitch.commands.config', 'config_command'),
+        'engine': ('sqlitch.commands.engine', 'engine_command'),
+        'target': ('sqlitch.commands.target', 'target_command'),
+        'plan': ('sqlitch.commands.plan', 'plan_command'),
+        'help': ('sqlitch.commands.help', 'help_command'),
     }
     
     for command_name, (module_name, function_name) in command_modules.items():
@@ -132,19 +132,7 @@ def register_commands():
             pass
 
 
-# Import and register init command directly
-try:
-    from .commands.init import init_command
-    cli.add_command(init_command, name='init')
-except ImportError:
-    pass
-
-# Register other commands
-try:
-    register_commands()
-except Exception:
-    # Ignore errors during import - commands may not be available yet
-    pass
+# Commands will be registered when CLI is invoked
 
 
 # Error handling
@@ -233,17 +221,4 @@ def create_command_wrapper(command_class):
     return wrapper
 
 
-# Placeholder commands for testing
-@cli.command(name='test-command')
-@click.pass_context
-def test_command(ctx: click.Context):
-    """Test command to verify CLI framework."""
-    try:
-        sqitch = get_sqitch_from_context(ctx)
-        click.echo(f"Sqlitch initialized successfully!")
-        click.echo(f"User: {sqitch.user_name} <{sqitch.user_email}>")
-        click.echo(f"Verbosity: {sqitch.verbosity}")
-        click.echo(f"Config files: {ctx.obj.config_files}")
-    except Exception as e:
-        click.echo(f"Error: {e}", err=True)
-        sys.exit(1)
+# Placeholder commands removed - using dynamic registration

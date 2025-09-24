@@ -11,15 +11,15 @@ from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch, call
 from typing import Dict, Any, List
 
-from sqlitch_py.engines.pg import (
+from sqlitch.engines.pg import (
     PostgreSQLEngine, PostgreSQLConnection, PostgreSQLRegistrySchema
 )
-from sqlitch_py.core.exceptions import (
+from sqlitch.core.exceptions import (
     EngineError, ConnectionError, DeploymentError
 )
-from sqlitch_py.core.types import Target, URI
-from sqlitch_py.core.change import Change, Dependency
-from sqlitch_py.core.plan import Plan
+from sqlitch.core.types import Target, URI
+from sqlitch.core.change import Change, Dependency
+from sqlitch.core.plan import Plan
 
 
 class MockPsycopg2Connection:
@@ -86,7 +86,7 @@ class MockPsycopg2Cursor:
 @pytest.fixture
 def mock_psycopg2():
     """Mock psycopg2 module."""
-    with patch('sqlitch_py.engines.pg.psycopg2') as mock_pg:
+    with patch('sqlitch.engines.pg.psycopg2') as mock_pg:
         mock_pg.connect = Mock(return_value=MockPsycopg2Connection())
         mock_pg.Error = Exception
         mock_pg.extras = Mock()
@@ -274,7 +274,7 @@ class TestPostgreSQLEngine:
     
     def test_initialization_without_psycopg2(self, pg_target, mock_plan):
         """Test engine initialization fails without psycopg2."""
-        with patch('sqlitch_py.engines.pg.psycopg2', None):
+        with patch('sqlitch.engines.pg.psycopg2', None):
             with pytest.raises(EngineError) as exc_info:
                 PostgreSQLEngine(pg_target, mock_plan)
             

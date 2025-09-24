@@ -9,11 +9,11 @@ import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from sqlitch_py.engines.pg import PostgreSQLEngine
-from sqlitch_py.core.types import Target, URI
-from sqlitch_py.core.plan import Plan
-from sqlitch_py.core.change import Change, Dependency
-from sqlitch_py.engines.base import EngineRegistry
+from sqlitch.engines.pg import PostgreSQLEngine
+from sqlitch.core.types import Target, URI
+from sqlitch.core.plan import Plan
+from sqlitch.core.change import Change, Dependency
+from sqlitch.engines.base import EngineRegistry
 from datetime import datetime
 
 
@@ -43,7 +43,7 @@ class TestPostgreSQLEngineIntegration:
         plan.creator_name = "Test User"
         plan.creator_email = "test@example.com"
         
-        with patch('sqlitch_py.engines.pg.psycopg2') as mock_pg:
+        with patch('sqlitch.engines.pg.psycopg2') as mock_pg:
             mock_pg.connect = Mock()
             mock_pg.Error = Exception
             mock_pg.extras = Mock()
@@ -112,7 +112,7 @@ class TestPostgreSQLEngineIntegration:
         plan.get_revert_file = mock_get_revert_file
         plan.get_verify_file = mock_get_verify_file
         
-        with patch('sqlitch_py.engines.pg.psycopg2') as mock_pg:
+        with patch('sqlitch.engines.pg.psycopg2') as mock_pg:
             mock_pg.connect = Mock()
             mock_pg.Error = Exception
             mock_pg.extras = Mock()
@@ -208,7 +208,7 @@ class TestPostgreSQLEngineIntegration:
             )
         ]
         
-        with patch('sqlitch_py.engines.pg.psycopg2') as mock_pg:
+        with patch('sqlitch.engines.pg.psycopg2') as mock_pg:
             mock_pg.connect = Mock()
             mock_pg.Error = Exception
             mock_pg.extras = Mock()
@@ -230,7 +230,7 @@ class TestPostgreSQLEngineIntegration:
     
     def test_registry_schema_sql_generation(self):
         """Test that registry schema generates valid SQL."""
-        from sqlitch_py.engines.pg import PostgreSQLRegistrySchema
+        from sqlitch.engines.pg import PostgreSQLRegistrySchema
         
         statements = PostgreSQLRegistrySchema.get_create_statements('pg')
         

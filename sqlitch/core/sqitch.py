@@ -199,15 +199,15 @@ class Sqitch:
             Engine class or None if not found
         """
         engine_modules = {
-            'pg': 'sqlitch_py.engines.pg',
-            'mysql': 'sqlitch_py.engines.mysql',
-            'sqlite': 'sqlitch_py.engines.sqlite',
-            'oracle': 'sqlitch_py.engines.oracle',
-            'snowflake': 'sqlitch_py.engines.snowflake',
-            'vertica': 'sqlitch_py.engines.vertica',
-            'exasol': 'sqlitch_py.engines.exasol',
-            'firebird': 'sqlitch_py.engines.firebird',
-            'cockroach': 'sqlitch_py.engines.cockroach',
+            'pg': 'sqlitch.engines.pg',
+            'mysql': 'sqlitch.engines.mysql',
+            'sqlite': 'sqlitch.engines.sqlite',
+            'oracle': 'sqlitch.engines.oracle',
+            'snowflake': 'sqlitch.engines.snowflake',
+            'vertica': 'sqlitch.engines.vertica',
+            'exasol': 'sqlitch.engines.exasol',
+            'firebird': 'sqlitch.engines.firebird',
+            'cockroach': 'sqlitch.engines.cockroach',
         }
         
         engine_classes = {
@@ -302,23 +302,23 @@ class Sqitch:
             Command class or None if not found
         """
         command_modules = {
-            'init': 'sqlitch_py.commands.init',
-            'add': 'sqlitch_py.commands.add',
-            'deploy': 'sqlitch_py.commands.deploy',
-            'revert': 'sqlitch_py.commands.revert',
-            'verify': 'sqlitch_py.commands.verify',
-            'status': 'sqlitch_py.commands.status',
-            'log': 'sqlitch_py.commands.log',
-            'tag': 'sqlitch_py.commands.tag',
-            'bundle': 'sqlitch_py.commands.bundle',
-            'checkout': 'sqlitch_py.commands.checkout',
-            'rebase': 'sqlitch_py.commands.rebase',
-            'show': 'sqlitch_py.commands.show',
-            'config': 'sqlitch_py.commands.config',
-            'engine': 'sqlitch_py.commands.engine',
-            'target': 'sqlitch_py.commands.target',
-            'plan': 'sqlitch_py.commands.plan',
-            'help': 'sqlitch_py.commands.help',
+            'init': 'sqlitch.commands.init',
+            'add': 'sqlitch.commands.add',
+            'deploy': 'sqlitch.commands.deploy',
+            'revert': 'sqlitch.commands.revert',
+            'verify': 'sqlitch.commands.verify',
+            'status': 'sqlitch.commands.status',
+            'log': 'sqlitch.commands.log',
+            'tag': 'sqlitch.commands.tag',
+            'bundle': 'sqlitch.commands.bundle',
+            'checkout': 'sqlitch.commands.checkout',
+            'rebase': 'sqlitch.commands.rebase',
+            'show': 'sqlitch.commands.show',
+            'config': 'sqlitch.commands.config',
+            'engine': 'sqlitch.commands.engine',
+            'target': 'sqlitch.commands.target',
+            'plan': 'sqlitch.commands.plan',
+            'help': 'sqlitch.commands.help',
         }
         
         command_classes = {
