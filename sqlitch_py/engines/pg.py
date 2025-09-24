@@ -694,3 +694,73 @@ class PostgreSQLEngine(Engine):
                 'planner_email': change.planner_email
             }
         )
+    
+    def _calculate_script_hash(self, change: Change) -> str:
+        """
+        Calculate hash of change scripts for integrity checking.
+        
+        Args:
+            change: Change to calculate hash for
+            
+        Returns:
+            SHA1 hash of combined scripts
+        """
+        import hashlib
+        
+        hasher = hashlib.sha1()
+        
+        # Hash deploy script
+        deploy_file = self.plan.get_deploy_file(change)
+        if deploy_file.exists():
+            hasher.update(deploy_file.read_bytes())
+        
+        # Hash revert script
+        revert_file = self.plan.get_revert_file(change)
+        if revert_file.exists():
+            hasher.update(revert_file.read_bytes())
+        
+        # Hash verify script
+        verify_file = self.plan.get_verify_file(change)
+        if verify_file.exists():
+            hasher.update(verify_file.read_bytes())
+        
+        return hasher.hexdigest()
+    
+    def _resolve_dependency_id(self, dependency_name: str) -> Optional[str]:
+        """
+        Resolve dependency name to change ID.
+        
+        Args:
+            dependency_name: Name of dependency change
+            
+        Returns:
+            Change ID of dependency or None if not found
+        """
+        for change in self.plan.changes:
+            if change.name == dependency_name:
+                return change.id
+        return None
+    
+    def _format_dependencies(self, dependencies: List[str]) -> str:
+        """
+        Format dependencies list for storage.
+        
+        Args:
+            dependencies: List of dependency names
+            
+        Returns:
+            Formatted dependency string
+        """
+        return ' '.join(dependencies) if dependencies else ''
+    
+    def _format_tags(self, tags: List[str]) -> str:
+        """
+        Format tags list for storage.
+        
+        Args:
+            tags: List of tag names
+            
+        Returns:
+            Formatted tag string
+        """
+        return ' '.join(tags) if tags else ''

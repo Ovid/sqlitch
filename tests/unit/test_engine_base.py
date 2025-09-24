@@ -230,8 +230,8 @@ class TestEngineBase:
         change.name = "test_change"
         change.id = "abc123"
         change.note = "Test change"
-        change.author_name = "Test User"
-        change.author_email = "test@example.com"
+        change.planner_name = "Test User"
+        change.planner_email = "test@example.com"
         change.timestamp = datetime.utcnow()
         change.dependencies = []
         change.requires = []
@@ -262,8 +262,8 @@ class TestEngineBase:
         change.name = "test_change"
         change.id = "abc123"
         change.note = "Test change"
-        change.author_name = "Test User"
-        change.author_email = "test@example.com"
+        change.planner_name = "Test User"
+        change.planner_email = "test@example.com"
         change.timestamp = datetime.utcnow()
         change.dependencies = []
         change.requires = []

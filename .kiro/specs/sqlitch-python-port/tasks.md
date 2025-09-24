@@ -38,7 +38,7 @@
   - Create engine registry and factory pattern
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 10.3, 10.4_
 
-- [x] 6. Implement PostgreSQL database engine
+- [ ] 6. Implement PostgreSQL database engine
   - Create PostgreSQLEngine class in sqlitch_py/engines/pg.py
   - Implement PostgreSQL-specific connection handling with psycopg2
   - Add registry table creation and management SQL

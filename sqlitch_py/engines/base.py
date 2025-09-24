@@ -520,11 +520,11 @@ class Engine(ABC):
                 'project': self.plan.project_name,
                 'note': change.note or '',
                 'committed_at': now,
-                'committer_name': change.author_name,
-                'committer_email': change.author_email,
+                'committer_name': change.planner_name,
+                'committer_email': change.planner_email,
                 'planned_at': change.timestamp,
-                'planner_name': change.author_name,
-                'planner_email': change.author_email
+                'planner_name': change.planner_name,
+                'planner_email': change.planner_email
             }
         )
         
@@ -538,7 +538,7 @@ class Engine(ABC):
                 """,
                 {
                     'change_id': change.id,
-                    'type': dep.type.value,
+                    'type': dep.type,
                     'dependency': dep.change,
                     'dependency_id': self._resolve_dependency_id(dep.change)
                 }
@@ -557,15 +557,15 @@ class Engine(ABC):
                 'change': change.name,
                 'project': self.plan.project_name,
                 'note': change.note or '',
-                'requires': self._format_dependencies(change.requires),
-                'conflicts': self._format_dependencies(change.conflicts),
+                'requires': self._format_dependencies([dep.change for dep in change.dependencies if dep.type == 'require']),
+                'conflicts': self._format_dependencies([dep.change for dep in change.dependencies if dep.type == 'conflict']),
                 'tags': self._format_tags(change.tags),
                 'committed_at': now,
-                'committer_name': change.author_name,
-                'committer_email': change.author_email,
+                'committer_name': change.planner_name,
+                'committer_email': change.planner_email,
                 'planned_at': change.timestamp,
-                'planner_name': change.author_name,
-                'planner_email': change.author_email
+                'planner_name': change.planner_name,
+                'planner_email': change.planner_email
             }
         )
     
@@ -604,15 +604,15 @@ class Engine(ABC):
                 'change': change.name,
                 'project': self.plan.project_name,
                 'note': change.note or '',
-                'requires': self._format_dependencies(change.requires),
-                'conflicts': self._format_dependencies(change.conflicts),
+                'requires': self._format_dependencies([dep.change for dep in change.dependencies if dep.type == 'require']),
+                'conflicts': self._format_dependencies([dep.change for dep in change.dependencies if dep.type == 'conflict']),
                 'tags': self._format_tags(change.tags),
                 'committed_at': now,
-                'committer_name': change.author_name,
-                'committer_email': change.author_email,
+                'committer_name': change.planner_name,
+                'committer_email': change.planner_email,
                 'planned_at': change.timestamp,
-                'planner_name': change.author_name,
-                'planner_email': change.author_email
+                'planner_name': change.planner_name,
+                'planner_email': change.planner_email
             }
         )
     
