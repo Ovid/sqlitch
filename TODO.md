@@ -4,6 +4,10 @@ None of this work should be done now, but things to consider.
 
 # Tasks
 
+## Docs
+
+README references missing docs
+
 ## Python best practices
 
 Does it follow them?

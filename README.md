@@ -102,6 +102,12 @@ pip install cx_Oracle
    sqlitch status
    ```
 
+6. **Switch to a different branch with database sync:**
+   ```bash
+   sqlitch checkout feature-branch
+   ```
+   This automatically reverts to the common change, switches Git branches, and deploys the new changes.
+
 ## Database-Specific Configuration
 
 ### Oracle
@@ -129,6 +135,7 @@ sqlitch init myproject --engine oracle --target oracle://user:pass@
 
 Sqlitch provides a comprehensive set of commands for database change management:
 
+### Core Commands
 * `sqlitch init` - Initialize a new Sqlitch project
 * `sqlitch add` - Add a new change to the plan
 * `sqlitch deploy` - Deploy changes to the database
@@ -136,6 +143,11 @@ Sqlitch provides a comprehensive set of commands for database change management:
 * `sqlitch verify` - Verify deployed changes
 * `sqlitch status` - Show current deployment status
 * `sqlitch log` - Show deployment history
+
+### Advanced Commands
+* `sqlitch tag` - Tag the current deployment state
+* `sqlitch bundle` - Bundle project for distribution
+* `sqlitch checkout` - Revert, checkout VCS branch, and redeploy changes
 
 Each command supports extensive options for customization. Use `sqlitch <command> --help` for detailed usage information.
 
@@ -199,8 +211,9 @@ Current implementation status:
 - ✅ VCS integration (Git)
 - ✅ Comprehensive error handling and user feedback
 - ✅ Internationalization support (German, French, Italian)
+- ✅ Advanced commands (tag, bundle, checkout)
 - ⏳ Additional database engines (Snowflake, Vertica, Exasol, Firebird)
-- ⏳ Advanced commands (tag, bundle, checkout, rebase, show)
+- ⏳ Remaining advanced commands (rebase, show)
 
 ## Contributing
 
