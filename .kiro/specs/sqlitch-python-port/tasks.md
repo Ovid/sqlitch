@@ -150,7 +150,7 @@
   - Write tests for error scenarios and user feedback
   - _Requirements: 1.1, 1.4, 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [x] 20. Build Oracle database engine
+- [ ] 20. Build Oracle database engine
   - Create OracleEngine class in sqlitch/engines/oracle.py
   - Implement Oracle-specific connection handling with cx_Oracle
   - Add Oracle registry table creation with proper schemas
@@ -158,7 +158,7 @@
   - Write unit tests with Oracle test database container
   - _Requirements: 2.4, 7.2, 7.3, 8.3, 10.1, 10.2_
 
-- [ ] 21. Implement internationalization support
+- [x] 21. Implement internationalization support
   - Set up gettext-based message translation system
   - Create message catalogs for supported languages (German, French, Italian)
   - Implement locale-aware date/time formatting

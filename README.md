@@ -23,6 +23,8 @@ Sqlitch is a database change management system that helps you manage database sc
 
 * **Iterative development** - Modify your change scripts as often as you like until you tag and release. Perfect for test-driven database development.
 
+* **Internationalization** - Full i18n support with translations for German, French, and Italian. Automatic locale detection with graceful English fallback.
+
 ## Supported Databases
 
 Sqlitch currently supports:
@@ -137,12 +139,36 @@ Sqlitch provides a comprehensive set of commands for database change management:
 
 Each command supports extensive options for customization. Use `sqlitch <command> --help` for detailed usage information.
 
+## Internationalization
+
+Sqlitch supports multiple languages with automatic locale detection:
+
+* **English** (default)
+* **German (Deutsch)** - Complete translation
+* **French (Français)** - Complete translation  
+* **Italian (Italiano)** - Complete translation
+
+Set your locale to see Sqlitch messages in your preferred language:
+
+```bash
+# Linux/macOS
+export LANG=de_DE.UTF-8  # German
+export LANG=fr_FR.UTF-8  # French
+export LANG=it_IT.UTF-8  # Italian
+
+# Windows
+set LANG=de_DE.UTF-8
+```
+
+Date and time formatting automatically adapts to your locale settings.
+
 ## Documentation
 
 * [Getting Started Guide](docs/getting-started.md) - Your first steps with Sqlitch
 * [Command Reference](docs/commands.md) - Complete command documentation
 * [Configuration](docs/configuration.md) - How to configure Sqlitch
 * [PostgreSQL Tutorial](docs/tutorial-postgresql.md) - Detailed PostgreSQL walkthrough
+* [Internationalization](docs/i18n.md) - Multi-language support and localization
 
 ## Relationship to Original Sqitch
 
@@ -172,9 +198,9 @@ Current implementation status:
 - ✅ Template system with Jinja2 support
 - ✅ VCS integration (Git)
 - ✅ Comprehensive error handling and user feedback
+- ✅ Internationalization support (German, French, Italian)
 - ⏳ Additional database engines (Snowflake, Vertica, Exasol, Firebird)
 - ⏳ Advanced commands (tag, bundle, checkout, rebase, show)
-- ⏳ Internationalization support
 
 ## Contributing
 
