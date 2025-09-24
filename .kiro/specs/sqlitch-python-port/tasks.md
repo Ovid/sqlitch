@@ -54,7 +54,7 @@
   - Write CLI integration tests
   - _Requirements: 1.1, 1.4, 8.1, 8.2_
 
-- [ ] 8. Implement init command
+- [x] 8. Implement init command
   - Create InitCommand class in sqlitch_py/commands/init.py
   - Add project initialization logic (directories, config, plan file)
   - Implement engine-specific initialization templates
