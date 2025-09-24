@@ -67,6 +67,46 @@ class Tag:
         content = f"{self.name} {self.timestamp.isoformat()} {self.planner_name} {self.planner_email} {self.note}"
         return hashlib.sha1(content.encode('utf-8')).hexdigest()
     
+    def info(self, plan=None) -> str:
+        """
+        Return information about the tag for display.
+        
+        This matches the Perl sqitch format for tag information.
+        
+        Args:
+            plan: Optional plan object to get project/uri info from
+        """
+        lines = []
+        
+        # Add project info
+        project = plan.project if plan else getattr(self, 'project', 'unknown')
+        lines.append(f"project {project}")
+        
+        # Add URI if available
+        uri = plan.uri if plan else getattr(self, 'uri', None)
+        if uri:
+            lines.append(f"uri {uri}")
+        
+        # Add tag name
+        lines.append(f"tag @{self.name}")
+        
+        # Add associated change ID
+        if self.change:
+            lines.append(f"change {self.change.id}")
+        
+        # Add planner info
+        lines.append(f"planner {self.planner_name} <{self.planner_email}>")
+        
+        # Add date
+        lines.append(f"date {self.timestamp.strftime('%Y-%m-%d %H:%M:%S %z')}")
+        
+        # Add note if present
+        if self.note:
+            lines.append("")
+            lines.append(self.note)
+        
+        return "\n".join(lines)
+    
     def __str__(self) -> str:
         """String representation for plan file format."""
         timestamp_str = self.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -126,6 +166,61 @@ class Change:
         # For simple changes, just return the filename
         # For nested changes, this would split on directory separators
         return [f"{self.name}.sql"]
+    
+    def info(self, plan=None) -> str:
+        """
+        Return information about the change for display.
+        
+        This matches the Perl sqitch format for change information.
+        
+        Args:
+            plan: Optional plan object to get project/uri info from
+        """
+        lines = []
+        
+        # Add project info
+        project = plan.project if plan else getattr(self, 'project', 'unknown')
+        lines.append(f"project {project}")
+        
+        # Add URI if available
+        uri = plan.uri if plan else getattr(self, 'uri', None)
+        if uri:
+            lines.append(f"uri {uri}")
+        
+        # Add change name
+        lines.append(f"change {self.name}")
+        
+        # Add parent if this is a reworked change
+        if hasattr(self, 'parent') and self.parent:
+            lines.append(f"parent {self.parent.id}")
+        
+        # Add planner info
+        lines.append(f"planner {self.planner_name} <{self.planner_email}>")
+        
+        # Add date
+        lines.append(f"date {self.timestamp.strftime('%Y-%m-%d %H:%M:%S %z')}")
+        
+        # Add requirements
+        if self.dependencies:
+            requires = [dep for dep in self.dependencies if dep.type == 'require']
+            if requires:
+                lines.append("requires")
+                for req in requires:
+                    lines.append(f"  + {req}")
+        
+        # Add conflicts
+        conflicts = [dep for dep in self.dependencies if dep.type == 'conflict']
+        if conflicts:
+            lines.append("conflicts")
+            for conf in conflicts:
+                lines.append(f"  - {conf}")
+        
+        # Add note if present
+        if self.note:
+            lines.append("")
+            lines.append(self.note)
+        
+        return "\n".join(lines)
     
     def __str__(self) -> str:
         """String representation for plan file format."""

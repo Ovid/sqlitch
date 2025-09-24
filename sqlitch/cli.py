@@ -161,6 +161,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.show import show_command
+    cli.add_command(show_command, name='show')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

@@ -466,3 +466,23 @@ class Plan:
             if change.id == change_id:
                 return change
         return None
+    
+    def get(self, identifier: str) -> Optional[Change]:
+        """
+        Get change by name or ID.
+        
+        This method provides compatibility with the Perl sqitch interface.
+        
+        Args:
+            identifier: Change name or ID to find
+            
+        Returns:
+            Change with matching name or ID, or None if not found
+        """
+        # First try by name
+        change = self.get_change(identifier)
+        if change:
+            return change
+        
+        # Then try by ID
+        return self.get_change_by_id(identifier)
