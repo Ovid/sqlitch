@@ -4,6 +4,10 @@ None of this work should be done now, but things to consider.
 
 # Tasks
 
+## Python best practices
+
+Does it follow them?
+
 ## Gap Analysis
 
 When initial work is done, run a gap analysis across the Perl and Python
@@ -30,7 +34,7 @@ to the right level.
 # Issues
 
 Never do all subtasks at once. One small error at the top and it cascades
-across them.
+across them. (https://github.com/kirodotdev/Kiro/issues/2980)
 
 Watch the output carefully. If the code gives a poor error message (such as
 showing an unterminated string at the end of the file), Kiro can get confused
@@ -51,3 +55,13 @@ limiations in its only available model: Claude Sonnet 4. While it's been
 bumped to 1 million tokens
 (https://every.to/vibe-check/vibe-check-claude-sonnet-4-now-has-a-1-million-token-context-window),
 not AI tool has access to that lovely window.
+
+As a result of the above, anything you tell it to do at the start of a new
+task, it tends to do. Things you tell it to do at the end of a task tend to be
+forgotten.
+
+Read your tasks *carefully*. I found that at one point, after creating a bunch
+of excellent, independent tasks, that near the end of a long task list, it
+seemed to get "lazy" and would bundle multiple related changes inside of a
+single task and I'd have to ask it to separate them into separate tasks or
+subtasks.

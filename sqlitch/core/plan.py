@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
@@ -327,6 +327,63 @@ class Plan:
         
         self.tags.append(tag)
         self._tag_index[tag.name] = tag
+    
+    def create_tag(self, name: str, change_name: Optional[str] = None, note: str = "", 
+                   planner_name: str = "", planner_email: str = "") -> Tag:
+        """
+        Create a new tag in the plan.
+        
+        Args:
+            name: Tag name (without @ prefix)
+            change_name: Name of change to tag (defaults to last change)
+            note: Tag note
+            planner_name: Name of person creating the tag
+            planner_email: Email of person creating the tag
+            
+        Returns:
+            Created Tag object
+            
+        Raises:
+            PlanError: If tag already exists or change not found
+        """
+        # Remove @ prefix if present
+        if name.startswith('@'):
+            name = name[1:]
+        
+        # Check if tag already exists
+        if name in self._tag_index:
+            raise PlanError(f'Tag "@{name}" already exists')
+        
+        # Find the change to tag
+        change = None
+        if change_name:
+            change = self.get_change(change_name)
+            if not change:
+                raise PlanError(f'Unknown change: "{change_name}"')
+        else:
+            # Tag the last change
+            if not self.changes:
+                raise PlanError(f'Cannot apply tag "@{name}" to a plan with no changes')
+            change = self.changes[-1]
+        
+        # Create tag
+        tag = Tag(
+            name=name,
+            note=note,
+            timestamp=datetime.now(timezone.utc),
+            planner_name=planner_name,
+            planner_email=planner_email,
+            change=change
+        )
+        
+        # Add to plan
+        self.add_tag(tag)
+        
+        # Associate tag with change
+        if name not in change.tags:
+            change.tags.append(name)
+        
+        return tag
     
     def save(self) -> None:
         """Save plan to file."""

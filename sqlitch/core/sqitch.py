@@ -635,6 +635,66 @@ class Sqitch:
         
         return None
     
+    def request_note_for(self, object_type: str) -> str:
+        """
+        Request a note from the user for the specified object type.
+        
+        Args:
+            object_type: Type of object (e.g., 'tag', 'change')
+            
+        Returns:
+            Note text from user
+        """
+        import tempfile
+        import subprocess
+        
+        editor = self.editor
+        if not editor:
+            # Fall back to simple prompt
+            return self.prompt(f"{object_type.capitalize()} note (optional): ", default="")
+        
+        # Create temporary file for note editing
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.txt', delete=False) as f:
+            temp_file = Path(f.name)
+            f.write(f"\n# Please enter the note for the {object_type}.\n")
+            f.write(f"# Lines starting with '#' will be ignored.\n")
+        
+        try:
+            # Open editor
+            if ' ' in editor:
+                import shlex
+                cmd = shlex.split(editor) + [str(temp_file)]
+            else:
+                cmd = [editor, str(temp_file)]
+            
+            result = subprocess.run(cmd, check=False)
+            if result.returncode != 0:
+                self.warn(f"Editor exited with code {result.returncode}")
+            
+            # Read the note
+            content = temp_file.read_text(encoding='utf-8')
+            
+            # Filter out comment lines and empty lines
+            lines = []
+            for line in content.splitlines():
+                line = line.rstrip()
+                if line and not line.startswith('#'):
+                    lines.append(line)
+            
+            # Join lines and strip whitespace
+            note = '\n'.join(lines).strip()
+            return note
+            
+        except Exception as e:
+            self.warn(f"Failed to open editor: {e}")
+            return self.prompt(f"{object_type.capitalize()} note (optional): ", default="")
+        finally:
+            # Clean up temporary file
+            try:
+                temp_file.unlink()
+            except OSError:
+                pass
+    
     def __repr__(self) -> str:
         """String representation for debugging."""
         return (
