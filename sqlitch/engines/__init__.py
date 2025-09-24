@@ -23,6 +23,11 @@ try:
 except ImportError:
     pass  # SQLite engine not available
 
+try:
+    from . import oracle
+except ImportError:
+    pass  # Oracle engine not available
+
 __all__ = [
     'Engine',
     'EngineRegistry', 
