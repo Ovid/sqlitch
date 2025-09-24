@@ -18,6 +18,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive dependency validation
   - CLI integration with Click framework
   - Full test coverage including unit and integration tests
+
+- **Status Command**: Complete implementation of the `sqlitch status` command with:
+  - Current deployment state reporting with project, change, and deployment details
+  - Optional display of deployed changes list (`--show-changes`)
+  - Optional display of deployed tags list (`--show-tags`)
+  - Comparison with plan file to show undeployed changes
+  - Support for multiple date formats (ISO, RFC, custom strftime)
+  - Proper alignment and formatting for tabular output
+  - Target database selection (`--target`)
+  - Custom plan file support (`--plan-file`)
+  - Project-specific status queries (`--project`)
+  - CLI integration with Click framework
+  - Comprehensive unit and integration test coverage
 - **Revert Command**: Complete implementation of the `sqlitch revert` command with:
   - Revert planning and execution logic with proper change ordering
   - Interactive confirmation prompts with safety checks (`--no-prompt`/`-y` to skip)

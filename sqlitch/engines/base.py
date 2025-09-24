@@ -400,6 +400,177 @@ class Engine(ABC):
                     engine_name=self.engine_type
                 ) from e
     
+    def get_current_state(self, project: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """
+        Get current deployment state of the database.
+        
+        Args:
+            project: Project name (defaults to plan project)
+            
+        Returns:
+            Dictionary with current state information or None if no changes deployed
+            
+        Raises:
+            EngineError: If query fails
+        """
+        self.ensure_registry()
+        
+        project_name = project or self.plan.project_name
+        
+        with self.connection() as conn:
+            try:
+                # Get the most recent change with tags
+                conn.execute(
+                    f"""
+                    SELECT c.change_id, c.script_hash, c.change, c.project, c.note,
+                           c.committer_name, c.committer_email, c.committed_at,
+                           c.planner_name, c.planner_email, c.planned_at,
+                           GROUP_CONCAT(t.tag, ' ') as tags
+                    FROM {self.registry_schema.CHANGES_TABLE} c
+                    LEFT JOIN {self.registry_schema.TAGS_TABLE} t ON c.change_id = t.change_id
+                    WHERE c.project = ?
+                    GROUP BY c.change_id, c.script_hash, c.change, c.project, c.note,
+                             c.committer_name, c.committer_email, c.committed_at,
+                             c.planner_name, c.planner_email, c.planned_at
+                    ORDER BY c.committed_at DESC
+                    LIMIT 1
+                    """,
+                    {'project': project_name}
+                )
+                row = conn.fetchone()
+                
+                if not row:
+                    return None
+                
+                # Parse tags
+                tags = []
+                if row.get('tags'):
+                    tags = [tag.strip() for tag in row['tags'].split(' ') if tag.strip()]
+                
+                return {
+                    'change_id': row['change_id'],
+                    'script_hash': row['script_hash'],
+                    'change': row['change'],
+                    'project': row['project'],
+                    'note': row['note'] or '',
+                    'committer_name': row['committer_name'],
+                    'committer_email': row['committer_email'],
+                    'committed_at': row['committed_at'],
+                    'planner_name': row['planner_name'],
+                    'planner_email': row['planner_email'],
+                    'planned_at': row['planned_at'],
+                    'tags': tags
+                }
+                
+            except Exception as e:
+                raise EngineError(
+                    f"Failed to get current state: {e}",
+                    engine_name=self.engine_type
+                ) from e
+    
+    def get_current_changes(self, project: Optional[str] = None) -> Iterator[Dict[str, Any]]:
+        """
+        Get iterator over all deployed changes.
+        
+        Args:
+            project: Project name (defaults to plan project)
+            
+        Yields:
+            Dictionary with change information
+            
+        Raises:
+            EngineError: If query fails
+        """
+        self.ensure_registry()
+        
+        project_name = project or self.plan.project_name
+        
+        with self.connection() as conn:
+            try:
+                conn.execute(
+                    f"""
+                    SELECT change_id, script_hash, change, committer_name, committer_email,
+                           committed_at, planner_name, planner_email, planned_at
+                    FROM {self.registry_schema.CHANGES_TABLE}
+                    WHERE project = ?
+                    ORDER BY committed_at DESC
+                    """,
+                    {'project': project_name}
+                )
+                
+                while True:
+                    row = conn.fetchone()
+                    if not row:
+                        break
+                    yield {
+                        'change_id': row['change_id'],
+                        'script_hash': row['script_hash'],
+                        'change': row['change'],
+                        'committer_name': row['committer_name'],
+                        'committer_email': row['committer_email'],
+                        'committed_at': row['committed_at'],
+                        'planner_name': row['planner_name'],
+                        'planner_email': row['planner_email'],
+                        'planned_at': row['planned_at']
+                    }
+                    
+            except Exception as e:
+                raise EngineError(
+                    f"Failed to get current changes: {e}",
+                    engine_name=self.engine_type
+                ) from e
+    
+    def get_current_tags(self, project: Optional[str] = None) -> Iterator[Dict[str, Any]]:
+        """
+        Get iterator over all deployed tags.
+        
+        Args:
+            project: Project name (defaults to plan project)
+            
+        Yields:
+            Dictionary with tag information
+            
+        Raises:
+            EngineError: If query fails
+        """
+        self.ensure_registry()
+        
+        project_name = project or self.plan.project_name
+        
+        with self.connection() as conn:
+            try:
+                conn.execute(
+                    f"""
+                    SELECT tag_id, tag, committer_name, committer_email, committed_at,
+                           planner_name, planner_email, planned_at
+                    FROM {self.registry_schema.TAGS_TABLE}
+                    WHERE project = ?
+                    ORDER BY committed_at DESC
+                    """,
+                    {'project': project_name}
+                )
+                
+                while True:
+                    row = conn.fetchone()
+                    if not row:
+                        break
+                    yield {
+                        'tag_id': row['tag_id'],
+                        'tag': row['tag'],
+                        'committer_name': row['committer_name'],
+                        'committer_email': row['committer_email'],
+                        'committed_at': row['committed_at'],
+                        'planner_name': row['planner_name'],
+                        'planner_email': row['planner_email'],
+                        'planned_at': row['planned_at']
+                    }
+                    
+            except Exception as e:
+                raise EngineError(
+                    f"Failed to get current tags: {e}",
+                    engine_name=self.engine_type
+                ) from e
+    
     def deploy_change(self, change: Change) -> None:
         """
         Deploy a single change to the database.
