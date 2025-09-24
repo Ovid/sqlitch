@@ -28,7 +28,7 @@ graph TB
 ### Package Structure
 
 ```
-sqlitch_py/
+sqlitch/
 ├── __init__.py              # Package initialization and version
 ├── cli.py                   # Main CLI entry point using Click
 ├── core/                    # Core application logic
@@ -79,7 +79,7 @@ sqlitch_py/
 
 ### Core Application Layer
 
-#### Sqitch Class (`sqlitch_py/core/sqitch.py`)
+#### Sqitch Class (`sqlitch/core/sqitch.py`)
 
 The main application class that coordinates all operations:
 
@@ -107,7 +107,7 @@ class Sqitch:
         """Execute a sqitch command."""
 ```
 
-#### Configuration Management (`sqlitch_py/core/config.py`)
+#### Configuration Management (`sqlitch/core/config.py`)
 
 Handles sqitch.conf file parsing and configuration hierarchy:
 
@@ -129,7 +129,7 @@ class Config:
         """Get target configuration."""
 ```
 
-#### Plan Management (`sqlitch_py/core/plan.py`)
+#### Plan Management (`sqlitch/core/plan.py`)
 
 Parses and manages sqitch.plan files:
 
@@ -155,7 +155,7 @@ class Plan:
         """Validate plan consistency."""
 ```
 
-#### Change Representation (`sqlitch_py/core/change.py`)
+#### Change Representation (`sqlitch/core/change.py`)
 
 Represents individual database changes:
 
@@ -189,7 +189,7 @@ class Change:
 
 ### Database Engine Layer
 
-#### Base Engine (`sqlitch_py/engines/base.py`)
+#### Base Engine (`sqlitch/engines/base.py`)
 
 Abstract base class for all database engines:
 
@@ -235,7 +235,7 @@ class Engine(ABC):
         """Close database connection."""
 ```
 
-#### PostgreSQL Engine (`sqlitch_py/engines/pg.py`)
+#### PostgreSQL Engine (`sqlitch/engines/pg.py`)
 
 PostgreSQL-specific implementation:
 
@@ -265,7 +265,7 @@ class PostgreSQLEngine(Engine):
 
 ### CLI Layer
 
-#### Main CLI (`sqlitch_py/cli.py`)
+#### Main CLI (`sqlitch/cli.py`)
 
 Click-based command-line interface:
 
@@ -290,12 +290,12 @@ def cli(ctx: click.Context, config: tuple, verbose: int, quiet: int) -> None:
 @click.pass_context
 def init(ctx: click.Context, engine: Optional[str], top_dir: Optional[str]) -> None:
     """Initialize a sqlitch project."""
-    from sqlitch_py.commands.init import InitCommand
+    from sqlitch.commands.init import InitCommand
     cmd = InitCommand(ctx.obj)
     return cmd.execute(engine=engine, top_dir=top_dir)
 ```
 
-#### Base Command (`sqlitch_py/commands/base.py`)
+#### Base Command (`sqlitch/commands/base.py`)
 
 Base class for all commands:
 
