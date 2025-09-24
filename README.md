@@ -94,8 +94,8 @@ Current implementation status:
 - ✅ Core plan file parsing
 - ✅ Configuration management
 - ✅ PostgreSQL engine (partial)
-- 🚧 Command-line interface
-- 🚧 Change deployment logic
+- ✅ Command-line interface (init, deploy, revert commands)
+- ✅ Change deployment and revert logic
 - ⏳ SQLite engine
 - ⏳ Additional database engines
 

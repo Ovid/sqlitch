@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive dependency validation
   - CLI integration with Click framework
   - Full test coverage including unit and integration tests
+- **Revert Command**: Complete implementation of the `sqlitch revert` command with:
+  - Revert planning and execution logic with proper change ordering
+  - Interactive confirmation prompts with safety checks (`--no-prompt`/`-y` to skip)
+  - Support for reverting to specific changes or tags (`--to-change`, `--to-tag`)
+  - Log-only mode for previewing reverts (`--log-only`)
+  - Strict mode requiring target specification (`--strict`)
+  - Modified mode for VCS integration (`--modified`)
+  - Comprehensive error handling and user feedback
+  - CLI integration with Click framework
+  - Full test coverage including unit and integration tests with 45 unit tests and 18 integration tests
 - Enhanced Plan class with additional properties and methods:
   - Added `project_name`, `creator_name`, `creator_email` properties
   - Added `get_deploy_file()`, `get_revert_file()`, `get_verify_file()` methods

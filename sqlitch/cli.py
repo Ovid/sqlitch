@@ -107,6 +107,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.revert import revert_command
+    cli.add_command(revert_command, name='revert')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 
