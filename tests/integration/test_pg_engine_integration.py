@@ -10,7 +10,8 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from sqlitch.engines.pg import PostgreSQLEngine
-from sqlitch.core.types import Target, URI
+from sqlitch.core.types import URI
+from sqlitch.core.target import Target
 from sqlitch.core.plan import Plan
 from sqlitch.core.change import Change, Dependency
 from sqlitch.engines.base import EngineRegistry

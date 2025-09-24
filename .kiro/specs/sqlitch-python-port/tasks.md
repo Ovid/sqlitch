@@ -126,7 +126,7 @@
   - Write unit tests with temporary SQLite databases
   - _Requirements: 2.3, 7.2, 7.3, 10.1, 10.2_
 
-- [ ] 17. Implement add command
+- [-] 17. Implement add command
   - Create AddCommand class in sqlitch/commands/add.py
   - Add change creation logic with template processing
   - Implement dependency resolution and validation

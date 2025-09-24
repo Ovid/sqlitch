@@ -125,6 +125,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.add import add_command
+    cli.add_command(add_command, name='add')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

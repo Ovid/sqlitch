@@ -14,7 +14,8 @@ from unittest.mock import Mock, patch, MagicMock
 from datetime import datetime, timezone
 
 from sqlitch.engines.sqlite import SQLiteEngine, SQLiteConnection, SQLiteRegistrySchema
-from sqlitch.core.types import Target, EngineType
+from sqlitch.core.types import EngineType
+from sqlitch.core.target import Target
 from sqlitch.core.plan import Plan
 from sqlitch.core.change import Change, Dependency
 from sqlitch.core.exceptions import EngineError, ConnectionError, DeploymentError

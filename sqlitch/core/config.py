@@ -15,10 +15,11 @@ from dataclasses import dataclass, field
 
 from .exceptions import ConfigurationError
 from .types import (
-    ConfigValue, ConfigDict, Target, EngineType, URI, 
+    ConfigValue, ConfigDict, EngineType, URI, 
     validate_config_key, validate_uri, validate_email,
     coerce_config_value, sanitize_connection_string
 )
+from .target import Target
 
 
 @dataclass
@@ -288,7 +289,7 @@ class Config:
         # Set the final value
         current[parts[-1]] = value
     
-    def get(self, key: str, default: Any = None, expected_type: Optional[type] = None) -> Any:
+    def get(self, key: str, default: Any = None, expected_type: Optional[type] = None, as_bool: bool = False) -> Any:
         """
         Get configuration value with dot notation.
         
@@ -296,6 +297,7 @@ class Config:
             key: Configuration key in dot notation (e.g., 'core.engine')
             default: Default value if key not found
             expected_type: Expected type for value coercion
+            as_bool: Whether to coerce value to boolean
             
         Returns:
             Configuration value, coerced to expected type if specified
@@ -310,6 +312,12 @@ class Config:
         
         if value is None:
             return default
+        
+        # Boolean coercion if requested
+        if as_bool:
+            if isinstance(value, str):
+                return value.lower() in ('true', '1', 'yes', 'on')
+            return bool(value)
         
         # Type coercion if requested
         if expected_type and isinstance(value, str):
@@ -365,6 +373,8 @@ class Config:
         Raises:
             ConfigurationError: If target not found or invalid
         """
+        from pathlib import Path
+        
         # Look for target in targets section
         target_config = self._get_nested_value(self._merged_config, f'target.{name}')
         
@@ -384,11 +394,24 @@ class Config:
                 if not uri:
                     raise ConfigurationError(f"No target URI configured for engine '{engine}'")
                 
+                # Get directory configuration
+                top_dir = Path(self.get('core.top_dir', '.'))
+                deploy_dir = Path(self.get('core.deploy_dir', 'deploy'))
+                revert_dir = Path(self.get('core.revert_dir', 'revert'))
+                verify_dir = Path(self.get('core.verify_dir', 'verify'))
+                plan_file = Path(self.get('core.plan_file', 'sqitch.plan'))
+                
                 return Target(
                     name='default',
-                    uri=URI(uri),
+                    uri=uri,
+                    engine=engine,
                     registry=engine_config.get('registry'),
-                    client=engine_config.get('client')
+                    client=engine_config.get('client'),
+                    top_dir=top_dir,
+                    deploy_dir=deploy_dir,
+                    revert_dir=revert_dir,
+                    verify_dir=verify_dir,
+                    plan_file=plan_file
                 )
             else:
                 raise ConfigurationError(f"Target '{name}' not found")
@@ -401,11 +424,36 @@ class Config:
         if not validate_uri(uri):
             raise ConfigurationError(f"Invalid URI for target '{name}': {uri}")
         
+        # Extract engine from URI or use configured engine
+        engine = target_config.get('engine')
+        if not engine:
+            if uri.startswith('db:pg:'):
+                engine = 'pg'
+            elif uri.startswith('db:mysql:'):
+                engine = 'mysql'
+            elif uri.startswith('db:sqlite:'):
+                engine = 'sqlite'
+            else:
+                engine = self.get('core.engine', 'pg')
+        
+        # Get directory configuration
+        top_dir = Path(target_config.get('top_dir', self.get('core.top_dir', '.')))
+        deploy_dir = Path(target_config.get('deploy_dir', self.get('core.deploy_dir', 'deploy')))
+        revert_dir = Path(target_config.get('revert_dir', self.get('core.revert_dir', 'revert')))
+        verify_dir = Path(target_config.get('verify_dir', self.get('core.verify_dir', 'verify')))
+        plan_file = Path(target_config.get('plan_file', self.get('core.plan_file', 'sqitch.plan')))
+        
         return Target(
             name=name,
-            uri=URI(uri),
+            uri=uri,
+            engine=engine,
             registry=target_config.get('registry'),
-            client=target_config.get('client')
+            client=target_config.get('client'),
+            top_dir=top_dir,
+            deploy_dir=deploy_dir,
+            revert_dir=revert_dir,
+            verify_dir=verify_dir,
+            plan_file=plan_file
         )
     
     def get_engine_config(self, engine_type: EngineType) -> Dict[str, Any]:
@@ -435,6 +483,18 @@ class Config:
     def get_core_config(self) -> Dict[str, Any]:
         """Get core configuration section."""
         return self._get_nested_value(self._merged_config, 'core') or {}
+    
+    def get_section(self, section: str) -> Dict[str, Any]:
+        """
+        Get configuration section.
+        
+        Args:
+            section: Section name (e.g., 'add.variables')
+            
+        Returns:
+            Dictionary of section values
+        """
+        return self._get_nested_value(self._merged_config, section) or {}
     
     def list_targets(self) -> List[str]:
         """List all configured targets."""

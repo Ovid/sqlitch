@@ -291,7 +291,7 @@ class TestChange:
             dependencies=[dep]
         )
         
-        expected = "users [[initial_schema]] 2023-01-15T10:30:00Z John Doe <john@example.com> # Add users table"
+        expected = "users [initial_schema] 2023-01-15T10:30:00Z John Doe <john@example.com> # Add users table"
         assert str(change) == expected
     
     def test_str_representation_multiple_dependencies(self):
@@ -307,7 +307,7 @@ class TestChange:
             dependencies=[dep1, dep2]
         )
         
-        expected = "users [[initial_schema] [permissions]] 2023-01-15T10:30:00Z John Doe <john@example.com> # Add users table"
+        expected = "users [initial_schema permissions] 2023-01-15T10:30:00Z John Doe <john@example.com> # Add users table"
         assert str(change) == expected
     
     def test_str_representation_empty_note(self):

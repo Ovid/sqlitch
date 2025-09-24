@@ -12,7 +12,8 @@ import pytest
 from sqlitch.core.sqitch import Sqitch, create_sqitch
 from sqlitch.core.config import Config
 from sqlitch.core.exceptions import SqlitchError, ConfigurationError, EngineError
-from sqlitch.core.types import Target, URI
+from sqlitch.core.types import URI
+from sqlitch.core.target import Target
 
 
 class TestSqitch:
@@ -165,7 +166,11 @@ class TestSqitch:
             uri=URI('db:pg://user@localhost/test')
         )
         
-        with patch.object(sqitch, '_get_engine_class') as mock_get_class:
+        # Mock Plan.from_file to avoid file system dependency
+        mock_plan = Mock()
+        
+        with patch.object(sqitch, '_get_engine_class') as mock_get_class, \
+             patch('sqlitch.core.plan.Plan.from_file', return_value=mock_plan):
             mock_engine_class = Mock()
             mock_engine = Mock()
             mock_engine_class.return_value = mock_engine
@@ -175,7 +180,7 @@ class TestSqitch:
             
             assert engine is mock_engine
             mock_get_class.assert_called_once_with('pg')
-            mock_engine_class.assert_called_once_with(sqitch, target)
+            mock_engine_class.assert_called_once_with(target, mock_plan)
     
     def test_engine_for_target_unsupported(self):
         """Test engine creation for unsupported target."""

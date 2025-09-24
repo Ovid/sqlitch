@@ -16,7 +16,8 @@ from urllib.parse import urlparse, parse_qs
 from ..core.exceptions import (
     EngineError, ConnectionError, DeploymentError
 )
-from ..core.types import EngineType, Target, sanitize_connection_string
+from ..core.types import EngineType, sanitize_connection_string
+from ..core.target import Target
 from ..core.change import Change
 from ..core.plan import Plan
 from .base import Engine, RegistrySchema, register_engine

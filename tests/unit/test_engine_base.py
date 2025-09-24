@@ -14,7 +14,8 @@ from sqlitch.engines.base import (
     Engine, EngineRegistry, RegistrySchema, register_engine
 )
 from sqlitch.core.exceptions import EngineError, ConnectionError, DeploymentError
-from sqlitch.core.types import Target, URI, EngineType
+from sqlitch.core.types import URI, EngineType
+from sqlitch.core.target import Target
 from sqlitch.core.change import Change
 from sqlitch.core.plan import Plan
 
