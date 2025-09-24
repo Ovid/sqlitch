@@ -40,7 +40,7 @@ pip install sqlitch
 ### From Source
 
 ```bash
-git clone https://github.com/your-org/sqlitch.git
+git clone git@github.com:Ovid/sqlitch.git
 cd sqlitch
 pip install -e .
 ```
