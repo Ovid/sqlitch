@@ -150,7 +150,7 @@
   - Write tests for error scenarios and user feedback
   - _Requirements: 1.1, 1.4, 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 20. Build Oracle database engine
+- [x] 20. Build Oracle database engine
   - Create OracleEngine class in sqlitch/engines/oracle.py
   - Implement Oracle-specific connection handling with cx_Oracle
   - Add Oracle registry table creation with proper schemas
