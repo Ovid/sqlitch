@@ -66,3 +66,12 @@ of excellent, independent tasks, that near the end of a long task list, it
 seemed to get "lazy" and would bundle multiple related changes inside of a
 single task and I'd have to ask it to separate them into separate tasks or
 subtasks.
+
+When it offers to "trust" a command, it often offers a choice between that and
+shorter verions of the command, such as:
+
+    python -m pytest tests/integration/test_bundle_integration.py -v
+    python *
+
+Obviously, I don't want `python *`, but I'm kinda OK with `python -m pytest *`
+(still can be destructive...). But I have to add the latter version manually.

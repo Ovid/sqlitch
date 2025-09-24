@@ -174,7 +174,7 @@
   - Write unit and integration tests for tag operations
   - _Requirements: 1.1, 4.3, 7.1, 7.5_
 
-- [ ] 23. Implement bundle command
+- [x] 23. Implement bundle command
   - Create BundleCommand class in sqlitch/commands/bundle.py
   - Add project bundling functionality for distribution
   - Implement bundle creation with all necessary files

@@ -113,6 +113,20 @@ class Change:
             return f"{self.name} {tags_str}"
         return self.name
     
+    @property
+    def is_reworked(self) -> bool:
+        """Check if this is a reworked change."""
+        # For now, assume no reworked changes
+        # This would be determined by the presence of @tag in the change name
+        return '@' in self.name
+    
+    @property
+    def path_segments(self) -> List[str]:
+        """Get path segments for nested directory structure."""
+        # For simple changes, just return the filename
+        # For nested changes, this would split on directory separators
+        return [f"{self.name}.sql"]
+    
     def __str__(self) -> str:
         """String representation for plan file format."""
         result = self.name
