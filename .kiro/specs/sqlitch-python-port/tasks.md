@@ -78,7 +78,7 @@
   - Write unit tests for revert scenarios and edge cases
   - _Requirements: 1.1, 5.1, 5.2, 5.3, 7.1, 7.5_
 
-- [ ] 11. Implement verify command
+- [x] 11. Implement verify command
   - Create VerifyCommand class in sqlitch/commands/verify.py
   - Add verification script execution and result reporting
   - Implement parallel verification for performance
