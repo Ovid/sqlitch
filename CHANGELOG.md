@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Oracle Database Engine**: Complete Oracle database support (COMPLETED)
+  - Implemented OracleEngine class with cx_Oracle driver integration
+  - Added Oracle-specific connection handling with proper session configuration
+  - Created Oracle registry table schema matching Perl sqitch exactly
+  - Implemented Oracle-specific SQL execution with PL/SQL block support
+  - Added Oracle statement splitting for proper / delimiter handling
+  - Implemented Oracle-specific registry operations and metadata management
+  - Added comprehensive unit tests with mock Oracle connections
+  - Added integration tests for full Oracle workflow testing
+  - Supports Oracle 10g and higher with proper UTF-8 encoding
+  - Includes Oracle-specific error handling and transaction management
+
 ### Fixed
 - **Enhanced Error Handling and User Feedback**: Comprehensive improvements to error handling system (COMPLETED)
   - Fixed exception hierarchy for proper error handling inheritance (ConnectionError and DeploymentError)
