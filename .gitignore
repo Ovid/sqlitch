@@ -2,8 +2,6 @@
 sqitch-perl-source/
 *.sw[pon]
 
-.kiro
-
 # Python
 __pycache__/
 *.py[cod]
