@@ -134,7 +134,7 @@
   - Write tests for change addition and template generation
   - _Requirements: 1.1, 4.2, 6.1, 6.2, 6.3, 6.4, 7.1, 7.5_
 
-- [ ] 18. Implement log command
+- [x] 18. Implement log command
   - Create LogCommand class in sqlitch/commands/log.py
   - Add change history display with formatting options
   - Implement filtering by date, author, and change patterns

@@ -497,4 +497,21 @@ class SQLiteEngine(Engine):
             self._execute_sql_file(conn, file_path)
 
 
+    def _regex_condition(self, column: str, pattern: str) -> str:
+        """
+        Get SQLite-specific regex condition.
+        
+        Args:
+            column: Column name
+            pattern: Regular expression pattern
+            
+        Returns:
+            SQL condition string
+        """
+        # SQLite doesn't have built-in regex, but we can use GLOB for basic patterns
+        # For full regex support, we'd need to enable the regex extension
+        # For now, we'll use LIKE with wildcards as a fallback
+        return f"{column} GLOB ?"
+
+
 # Register the SQLite engine

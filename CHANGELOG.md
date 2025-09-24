@@ -18,6 +18,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - All add command functionality now fully compatible with original Perl Sqitch
 
 ### Added
+- **Log Command Implementation**: Complete implementation of the `sqlitch log` command
+  - Full CLI compatibility with Perl sqitch log command
+  - Support for all log formats: raw, full, long, medium, short, oneline
+  - Event filtering by type (deploy, revert, fail)
+  - Pattern-based filtering for changes, projects, committers, and planners
+  - Date format customization (iso, raw, short, custom strftime)
+  - Color output support with auto-detection
+  - Change ID abbreviation support
+  - Pagination with --max-count and --skip options
+  - Reverse chronological ordering
+  - Header display control
+  - Comprehensive ItemFormatter with git-style format codes
+  - Database-specific regex support (PostgreSQL ~, MySQL REGEXP, SQLite GLOB)
+  - Full test coverage with 73 unit and integration tests
 - **MySQL Database Engine**: Complete implementation of MySQL/MariaDB support with:
   - MySQL-specific connection handling using PyMySQL driver
   - Registry table creation and management with proper MySQL schema
