@@ -7,6 +7,22 @@ database engines including PostgreSQL, MySQL, SQLite, Oracle, and others.
 
 from .base import Engine, EngineRegistry, RegistrySchema, register_engine
 
+# Import engines to register them
+try:
+    from . import pg
+except ImportError:
+    pass  # PostgreSQL engine not available
+
+try:
+    from . import mysql
+except ImportError:
+    pass  # MySQL engine not available
+
+try:
+    from . import sqlite
+except ImportError:
+    pass  # SQLite engine not available
+
 __all__ = [
     'Engine',
     'EngineRegistry', 

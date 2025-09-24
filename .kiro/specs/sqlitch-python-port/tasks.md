@@ -70,7 +70,7 @@
   - Write comprehensive tests including failure scenarios
   - _Requirements: 1.1, 5.1, 5.2, 5.3, 7.1, 7.5, 10.1, 10.4_
 
-- [ ] 10. Implement revert command
+- [x] 10. Implement revert command
   - Create RevertCommand class in sqlitch/commands/revert.py
   - Add revert planning and execution logic
   - Implement confirmation prompts and safety checks
