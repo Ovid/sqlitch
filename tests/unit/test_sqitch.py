@@ -319,7 +319,7 @@ class TestSqitch:
         with patch.object(sqitch, '_get_command_class') as mock_get_class:
             mock_command_class = Mock()
             mock_command = Mock()
-            mock_command.execute.side_effect = SqlitchError("Test error", error_code=5)
+            mock_command.execute.side_effect = SqlitchError("Test error", exitval=5)
             mock_command_class.return_value = mock_command
             mock_get_class.return_value = mock_command_class
             

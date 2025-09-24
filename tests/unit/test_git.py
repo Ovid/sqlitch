@@ -697,5 +697,5 @@ class TestVCSError:
     def test_vcs_error_creation(self):
         """Test VCSError creation."""
         error = VCSError("Test error")
-        assert str(error) == "sqlitch: Test error"
+        assert str(error) == "Test error"  # SqlitchError.__str__ returns just the message
         assert isinstance(error, Exception)

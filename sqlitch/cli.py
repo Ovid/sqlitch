@@ -142,39 +142,97 @@ except ImportError:
 
 
 # Error handling
-def handle_sqlitch_error(e: SqlitchError) -> int:
+def handle_sqlitch_error(e: SqlitchError, sqitch: Optional[Sqitch] = None) -> int:
     """Handle SqlitchError and return appropriate exit code."""
-    click.echo(f"sqlitch: {e}", err=True)
-    error_code = getattr(e, 'error_code', None)
-    return error_code if error_code is not None else 1
+    from .core.exceptions import handle_exception
+    return handle_exception(e, sqitch)
 
 
-def handle_keyboard_interrupt() -> int:
+def handle_keyboard_interrupt(sqitch: Optional[Sqitch] = None) -> int:
     """Handle KeyboardInterrupt."""
-    click.echo("\nsqlitch: Operation cancelled by user", err=True)
+    if sqitch:
+        sqitch.vent("\nsqlitch: Operation cancelled by user")
+    else:
+        click.echo("\nsqlitch: Operation cancelled by user", err=True)
     return 130
 
 
-def handle_unexpected_error(e: Exception) -> int:
+def handle_unexpected_error(e: Exception, sqitch: Optional[Sqitch] = None) -> int:
     """Handle unexpected errors."""
-    click.echo(f"sqlitch: Unexpected error: {e}", err=True)
+    if sqitch:
+        sqitch.vent(f"sqlitch: Unexpected error: {e}")
+        if sqitch.verbosity >= 2:
+            import traceback
+            sqitch.trace(traceback.format_exc())
+    else:
+        click.echo(f"sqlitch: Unexpected error: {e}", err=True)
     return 2
+
+
+def format_command_error(command: str, error: str, suggestion: Optional[str] = None) -> str:
+    """
+    Format command error message in Perl sqitch style.
+    
+    Args:
+        command: Command that failed
+        error: Error description
+        suggestion: Optional suggestion for fixing the error
+    
+    Returns:
+        Formatted error message
+    """
+    message = f'sqlitch {command}: {error}'
+    if suggestion:
+        message += f'\n{suggestion}'
+    return message
+
+
+def suggest_command_help(command: str, available_commands: List[str]) -> str:
+    """
+    Suggest help for invalid commands.
+    
+    Args:
+        command: Invalid command
+        available_commands: List of available commands
+    
+    Returns:
+        Helpful suggestion message
+    """
+    # Find similar commands
+    similar = []
+    for cmd in available_commands:
+        if command in cmd or cmd in command:
+            similar.append(cmd)
+    
+    if similar:
+        return f'Did you mean one of: {", ".join(similar)}?\nTry "sqlitch help" for more information.'
+    else:
+        return f'"{command}" is not a valid command.\nTry "sqlitch help" for available commands.'
 
 
 # Main entry point
 def main() -> int:
     """Main entry point for the CLI."""
+    sqitch = None
     try:
         # Run CLI (commands are already registered at module level)
         cli(standalone_mode=False)
         return 0
         
     except SqlitchError as e:
-        return handle_sqlitch_error(e)
+        return handle_sqlitch_error(e, sqitch)
     except KeyboardInterrupt:
-        return handle_keyboard_interrupt()
+        return handle_keyboard_interrupt(sqitch)
+    except click.ClickException as e:
+        # Handle Click-specific errors (like bad parameters)
+        e.show()
+        return e.exit_code
+    except click.Abort:
+        # Handle Ctrl+C during Click prompts
+        click.echo("\nsqlitch: Operation cancelled by user", err=True)
+        return 130
     except Exception as e:
-        return handle_unexpected_error(e)
+        return handle_unexpected_error(e, sqitch)
 
 
 if __name__ == '__main__':
@@ -198,6 +256,7 @@ def create_command_wrapper(command_class):
     def wrapper(**kwargs):
         @click.pass_context
         def command_func(ctx: click.Context, **cmd_kwargs):
+            sqitch = None
             try:
                 sqitch = get_sqitch_from_context(ctx)
                 command = command_class(sqitch)
@@ -216,11 +275,14 @@ def create_command_wrapper(command_class):
                     sys.exit(exit_code)
                     
             except SqlitchError as e:
-                sys.exit(handle_sqlitch_error(e))
+                sys.exit(handle_sqlitch_error(e, sqitch))
             except KeyboardInterrupt:
-                sys.exit(handle_keyboard_interrupt())
+                sys.exit(handle_keyboard_interrupt(sqitch))
+            except click.ClickException as e:
+                # Let Click handle its own exceptions
+                raise
             except Exception as e:
-                sys.exit(handle_unexpected_error(e))
+                sys.exit(handle_unexpected_error(e, sqitch))
         
         return command_func(**kwargs)
     

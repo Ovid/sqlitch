@@ -207,7 +207,7 @@ class TestMainFunction:
     def test_main_function_sqlitch_error(self):
         """Test main function with SqlitchError."""
         with patch('sqlitch.cli.cli') as mock_cli:
-            mock_cli.side_effect = SqlitchError("Test error")
+            mock_cli.side_effect = SqlitchError("Test error", exitval=1)
             
             exit_code = main()
             

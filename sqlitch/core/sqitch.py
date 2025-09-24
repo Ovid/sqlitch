@@ -152,6 +152,150 @@ class Sqitch:
         Returns:
             Configured logger instance
         """
+        return configure_logging(self.verbosity)
+    
+    def info(self, message: str) -> None:
+        """Send informational message to stdout if verbosity >= 1."""
+        if self.verbosity >= 1:
+            self.emit(message)
+    
+    def debug(self, message: str) -> None:
+        """Send debug message to stderr if verbosity >= 2."""
+        if self.verbosity >= 2:
+            self.vent(f"debug: {message}")
+    
+    def trace(self, message: str) -> None:
+        """Send trace message to stderr if verbosity >= 3."""
+        if self.verbosity >= 3:
+            self.vent(f"trace: {message}")
+    
+    def comment(self, message: str) -> None:
+        """Send comment to stdout (always shown)."""
+        lines = message.split('\n')
+        for line in lines:
+            print(f"# {line}")
+    
+    def emit(self, message: str) -> None:
+        """Send message to stdout."""
+        print(message)
+    
+    def vent(self, message: str) -> None:
+        """Send message to stderr."""
+        print(message, file=sys.stderr)
+    
+    def warn(self, message: str) -> None:
+        """Send warning message to stderr."""
+        lines = message.split('\n')
+        for line in lines:
+            self.vent(f"warning: {line}")
+    
+    def ask_yes_no(self, message: str, default: Optional[bool] = None) -> bool:
+        """
+        Prompt user for yes/no confirmation.
+        
+        Args:
+            message: Confirmation message
+            default: Default response (True for yes, False for no, None for no default)
+            
+        Returns:
+            True if user confirms, False otherwise
+            
+        Raises:
+            IOError: If running unattended with no default
+        """
+        from ..utils.progress import confirm_action
+        return confirm_action(message, default)
+    
+    def prompt(self, message: str, default: Optional[str] = None) -> str:
+        """
+        Prompt user for input.
+        
+        Args:
+            message: Prompt message
+            default: Default value
+            
+        Returns:
+            User input or default value
+            
+        Raises:
+            IOError: If running unattended with no default
+        """
+        from ..utils.progress import prompt_for_input
+        return prompt_for_input(message, default)
+    
+    def is_interactive(self) -> bool:
+        """Check if running in interactive mode."""
+        return sys.stdin.isatty() and (sys.stdout.isatty() or not (
+            hasattr(sys.stdout, 'mode') and 'w' in sys.stdout.mode
+        ))
+    
+    def is_unattended(self) -> bool:
+        """Check if running unattended."""
+        return not self.is_interactive() and sys.stdin.isatty()
+    
+    def validate_user_info(self) -> List[str]:
+        """
+        Validate user name and email configuration.
+        
+        Returns:
+            List of validation error messages
+        """
+        issues = []
+        
+        if not self.user_name:
+            issues.append(
+                'Cannot find your name; run sqlitch config --user user.name "YOUR NAME"'
+            )
+        
+        if not self.user_email:
+            issues.append(
+                'Cannot infer your email address; run sqlitch config --user user.email you@host.com'
+            )
+        
+        return issues
+    
+    def require_initialized(self) -> None:
+        """
+        Ensure current directory is a sqitch project.
+        
+        Raises:
+            SqlitchError: If not initialized
+        """
+        plan_file = Path(self.config.get('core.plan_file', 'sqitch.plan'))
+        if not plan_file.exists():
+            from .exceptions import hurl
+            hurl("init", f"Not a sqitch project; run 'sqlitch init' to initialize one")
+    
+    def get_target(self, target_name: Optional[str] = None) -> 'Target':
+        """
+        Get target configuration.
+        
+        Args:
+            target_name: Target name (defaults to configured default)
+            
+        Returns:
+            Target configuration
+        """
+        if not target_name:
+            target_name = self.config.get('core.target')
+        
+        if not target_name:
+            # Use default target based on engine
+            engine = self.config.get('core.engine')
+            if not engine:
+                from .exceptions import hurl
+                hurl("config", "No engine specified; run 'sqlitch init' or set core.engine")
+            target_name = engine
+        
+        return Target.from_config(self.config, target_name)
+    
+    def _setup_logging(self) -> SqlitchLogger:
+        """
+        Set up logging configuration.
+        
+        Returns:
+            Configured logger instance
+        """
         log_file = self.options.get('log_file')
         log_file_path = Path(log_file) if log_file else None
         
@@ -283,7 +427,7 @@ class Sqitch:
             
         except SqlitchError as e:
             self.logger.error(str(e))
-            return e.error_code or 1
+            return e.exitval or 1
         except KeyboardInterrupt:
             self.logger.error("Operation cancelled by user")
             return 130  # Standard exit code for SIGINT
@@ -518,4 +662,5 @@ def create_sqitch(config_files: Optional[List[Path]] = None,
         config = Config(config_files, cli_options)
         return Sqitch(config=config, options=cli_options or {})
     except Exception as e:
+        raise ConfigurationError(f"Failed to create sqitch instance: {e}")
         raise ConfigurationError(f"Failed to create sqitch instance: {e}")
