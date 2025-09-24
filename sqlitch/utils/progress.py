@@ -11,6 +11,8 @@ import threading
 from typing import Optional, TextIO, Iterator, Any
 from contextlib import contextmanager
 
+from .. import i18n
+
 
 class ProgressIndicator:
     """
@@ -407,11 +409,11 @@ def confirm_action(message: str, default: Optional[bool] = None) -> bool:
     # Check if running unattended
     if not sys.stdin.isatty():
         if default is not None:
-            print(prompt + ("Y" if default else "N"))
+            print(prompt + (getattr(i18n, '__')("Yes") if default else getattr(i18n, '__')("No")))
             return default
         else:
             from ..core.exceptions import IOError
-            raise IOError("Sqitch seems to be unattended and there is no default value for this question")
+            raise IOError(getattr(i18n, '__')("Sqlitch seems to be unattended and there is no default value for this question"))
     
     max_attempts = 3
     for attempt in range(max_attempts):
@@ -422,22 +424,22 @@ def confirm_action(message: str, default: Optional[bool] = None) -> bool:
                 if default is not None:
                     return default
                 else:
-                    print('Please answer "y" or "n".')
+                    print(getattr(i18n, '__')('Please answer "y" or "n".'))
                     continue
             
-            if response in ('y', 'yes'):
+            if response in ('y', 'yes', getattr(i18n, '__')('Yes').lower(), getattr(i18n, '__')('yes')):
                 return True
-            elif response in ('n', 'no'):
+            elif response in ('n', 'no', getattr(i18n, '__')('No').lower(), getattr(i18n, '__')('no')):
                 return False
             else:
-                print('Please answer "y" or "n".')
+                print(getattr(i18n, '__')('Please answer "y" or "n".'))
         
         except (EOFError, KeyboardInterrupt):
             print()  # New line after ^C
             return False
     
     from ..core.exceptions import IOError
-    raise IOError("No valid answer after 3 attempts; aborting")
+    raise IOError(getattr(i18n, '__')("No valid answer after 3 attempts; aborting"))
 
 
 def prompt_for_input(message: str, default: Optional[str] = None) -> str:
@@ -466,7 +468,7 @@ def prompt_for_input(message: str, default: Optional[str] = None) -> str:
             return default
         else:
             from ..core.exceptions import IOError
-            raise IOError("Sqitch seems to be unattended and there is no default value for this question")
+            raise IOError(getattr(i18n, '__')("Sqlitch seems to be unattended and there is no default value for this question"))
     
     try:
         response = input(prompt).strip()
@@ -474,4 +476,4 @@ def prompt_for_input(message: str, default: Optional[str] = None) -> str:
     except (EOFError, KeyboardInterrupt):
         print()  # New line after ^C
         from ..core.exceptions import IOError
-        raise IOError("Operation cancelled by user")
+        raise IOError(getattr(i18n, '__')("Operation cancelled by user"))

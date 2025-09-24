@@ -284,7 +284,7 @@ COMMIT;
         with runner.isolated_filesystem():
             result = runner.invoke(cli, ['add', 'test'])
             assert result.exit_code != 0
-            assert 'Not a sqitch project' in result.output
+            assert 'No project configuration found' in result.output
     
     @patch.dict(os.environ, {}, clear=True)
     @patch('sqlitch.core.sqitch.Sqitch._get_user_name', return_value=None)

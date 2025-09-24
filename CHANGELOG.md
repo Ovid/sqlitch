@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Internationalization Support**: Complete i18n system implementation (COMPLETED)
+  - Implemented gettext-based message translation system compatible with Perl sqitch
+  - Added translation functions (__(), __x(), __n()) for simple, parameterized, and plural messages
+  - Created message catalogs for German (de_DE), French (fr_FR), and Italian (it_IT) languages
+  - Implemented locale-aware date/time formatting with multiple format support (ISO, RFC, CLDR)
+  - Added translation markers throughout the codebase for user-facing messages
+  - Created message extraction utility for maintaining translation files
+  - Added comprehensive unit and integration tests for i18n functionality
+  - Supports automatic locale detection and graceful fallback to English
+  - Compatible with all existing Perl sqitch translated messages
+
 - **Oracle Database Engine**: Complete Oracle database support (COMPLETED)
   - Implemented OracleEngine class with cx_Oracle driver integration
   - Added Oracle-specific connection handling with proper session configuration

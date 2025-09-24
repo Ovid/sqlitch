@@ -17,6 +17,7 @@ from .exceptions import SqlitchError, ConfigurationError, EngineError
 from .types import EngineType, VerbosityLevel
 from .target import Target
 from ..utils.logging import SqlitchLogger, configure_logging, get_logger
+from .. import i18n
 
 if TYPE_CHECKING:
     from ..engines.base import Engine
@@ -244,12 +245,12 @@ class Sqitch:
         
         if not self.user_name:
             issues.append(
-                'Cannot find your name; run sqlitch config --user user.name "YOUR NAME"'
+                getattr(i18n, '__')('Cannot find your name; run sqlitch config --user user.name "YOUR NAME"')
             )
         
         if not self.user_email:
             issues.append(
-                'Cannot infer your email address; run sqlitch config --user user.email you@host.com'
+                getattr(i18n, '__')('Cannot infer your email address; run sqlitch config --user user.email you@host.com')
             )
         
         return issues
@@ -284,7 +285,7 @@ class Sqitch:
             engine = self.config.get('core.engine')
             if not engine:
                 from .exceptions import hurl
-                hurl("config", "No engine specified; run 'sqlitch init' or set core.engine")
+                hurl("config", getattr(i18n, '__')("No engine specified; specify via target or core.engine"))
             target_name = engine
         
         return Target.from_config(self.config, target_name)
@@ -320,20 +321,20 @@ class Sqitch:
         try:
             engine_type = target.engine_type
         except ValueError as e:
-            raise EngineError(f"Unsupported engine type in URI: {target.uri}")
+            raise EngineError(getattr(i18n, '__x')("Unsupported engine type in URI: {uri}", uri=target.uri))
         
         # Import engine classes dynamically to avoid circular imports
         engine_class = self._get_engine_class(engine_type)
         
         if not engine_class:
-            raise EngineError(f"Unsupported engine type: {engine_type}")
+            raise EngineError(getattr(i18n, '__x')("Unknown engine: {engine}", engine=engine_type))
         
         try:
             # Get the plan for this target
             plan = target.plan
             return engine_class(target, plan)
         except Exception as e:
-            raise EngineError(f"Failed to create {engine_type} engine: {e}")
+            raise EngineError(getattr(i18n, '__x')("Failed to create {engine} engine: {error}", engine=engine_type, error=str(e)))
     
     def _get_engine_class(self, engine_type: EngineType) -> Optional[Type['Engine']]:
         """
@@ -418,7 +419,7 @@ class Sqitch:
             command_class = self._get_command_class(command_name)
             
             if not command_class:
-                self.logger.error(f"Unknown command: {command_name}")
+                self.logger.error(getattr(i18n, '__x')('"{command}" is not a valid command', command=command_name))
                 return 1
             
             # Create and execute command
@@ -429,10 +430,10 @@ class Sqitch:
             self.logger.error(str(e))
             return e.exitval or 1
         except KeyboardInterrupt:
-            self.logger.error("Operation cancelled by user")
+            self.logger.error(getattr(i18n, '__')("Operation cancelled by user"))
             return 130  # Standard exit code for SIGINT
         except Exception as e:
-            self.logger.error(f"Unexpected error: {e}")
+            self.logger.error(getattr(i18n, '__x')("Unexpected error: {error}", error=str(e)))
             if self.verbosity >= 2:
                 import traceback
                 self.logger.debug(traceback.format_exc())
@@ -512,10 +513,10 @@ class Sqitch:
         issues = []
         
         if not self.user_name:
-            issues.append("User name not configured. Set user.name in configuration or SQITCH_USER_NAME environment variable.")
+            issues.append(getattr(i18n, '__')("Cannot find your name; run sqlitch config --user user.name \"YOUR NAME\""))
         
         if not self.user_email:
-            issues.append("User email not configured. Set user.email in configuration or SQITCH_USER_EMAIL environment variable.")
+            issues.append(getattr(i18n, '__')("Cannot infer your email address; run sqlitch config --user user.email you@host.com"))
         
         return issues
     
@@ -610,7 +611,7 @@ class Sqitch:
         """
         if not self.is_initialized():
             raise SqlitchError(
-                "Not a sqitch project. Run 'sqitch init' to initialize one."
+                getattr(i18n, '__')("No project configuration found. Run the \"init\" command to initialize a project")
             )
     
     @property

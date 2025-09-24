@@ -1,0 +1,268 @@
+# Sqlitch Italian Localization Messages
+# Copyright (c) 2025 Sqlitch Contributors
+# This file is distributed under the same license as the sqlitch package.
+# Based on original Perl sqitch translations
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sqlitch 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-20 12:00+0000\n"
+"PO-Revision-Date: 2025-01-20 12:00+0000\n"
+"Last-Translator: Sqlitch Contributors\n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Core application messages
+msgid "Cannot find your name; run sqlitch config --user user.name \"YOUR NAME\""
+msgstr "Impossibile trovare il tuo nome; esegui sqlitch config --user user.name \"IL TUO NOME\""
+
+msgid "Cannot infer your email address; run sqlitch config --user user.email you@host.com"
+msgstr "Impossibile dedurre il tuo indirizzo email; esegui sqlitch config --user user.email tu@host.com"
+
+msgid "Cannot change to directory {directory}: {error}"
+msgstr "Impossibile cambiare alla directory {directory}: {error}"
+
+msgid "\"{command}\" is not a valid command"
+msgstr "\"{command}\" non è un comando valido"
+
+msgid "Sqlitch seems to be unattended and there is no default value for this question"
+msgstr "Sqlitch sembra essere in modalità non supervisionata e non c'è un valore predefinito per questa domanda"
+
+msgctxt "Confirm prompt answer yes"
+msgid "Yes"
+msgstr "Sì"
+
+msgctxt "Confirm prompt answer no"
+msgid "No"
+msgstr "No"
+
+# Engine messages
+msgid "No engine specified; specify via target or core.engine"
+msgstr "Nessun motore specificato; specifica tramite target o core.engine"
+
+msgid "Unknown engine: {engine}"
+msgstr "Motore sconosciuto: {engine}"
+
+msgid "{driver} required to manage {engine}"
+msgstr "{driver} richiesto per gestire {engine}"
+
+msgid "Sqitch database {database} already initialized"
+msgstr "Database Sqitch {database} già inizializzato"
+
+msgid "Sqitch schema \"{schema}\" already exists"
+msgstr "Lo schema Sqitch \"{schema}\" esiste già"
+
+# Plan messages
+msgid "Unknown change: \"{change}\""
+msgstr "Modifica sconosciuta: \"{change}\""
+
+msgid "Change not deployed: \"{change}\""
+msgstr "Modifica non distribuita: \"{change}\""
+
+msgid "Nothing to deploy (already at \"{change}\")"
+msgstr "Niente da distribuire (già a \"{change}\")"
+
+msgid "Deploying changes through {change} to {destination}"
+msgstr "Distribuzione delle modifiche fino a {change} verso {destination}"
+
+msgid "Deploying changes to {destination}"
+msgstr "Distribuzione delle modifiche verso {destination}"
+
+msgid "Reverting changes to {change} from {destination}"
+msgstr "Ripristino delle modifiche a {change} da {destination}"
+
+msgid "Reverting all changes from {destination}"
+msgstr "Ripristino di tutte le modifiche da {destination}"
+
+msgid "Revert changes to {change} from {destination}?"
+msgstr "Ripristinare le modifiche a {change} da {destination}?"
+
+msgid "Revert all changes from {destination}?"
+msgstr "Ripristinare tutte le modifiche da {destination}?"
+
+msgid "Nothing reverted"
+msgstr "Niente ripristinato"
+
+msgid "Verifying {destination}"
+msgstr "Verifica di {destination}"
+
+msgid "Change \"{change}\" has not been deployed"
+msgstr "La modifica \"{change}\" non è stata distribuita"
+
+msgid "Cannot find \"{change}\" in the database or the plan"
+msgstr "Impossibile trovare \"{change}\" nel database o nel piano"
+
+msgid "Change \"{change}\" is deployed, but not planned"
+msgstr "La modifica \"{change}\" è distribuita, ma non pianificata"
+
+msgid "Verify script \"{script}\" failed."
+msgstr "Lo script di verifica \"{script}\" è fallito."
+
+msgid "Verify script {file} does not exist"
+msgstr "Lo script di verifica {file} non esiste"
+
+msgid "Deploy script {file} does not exist"
+msgstr "Lo script di distribuzione {file} non esiste"
+
+msgid "Revert script {file} does not exist"
+msgstr "Lo script di ripristino {file} non esiste"
+
+# Configuration messages
+msgid "Could not determine home directory"
+msgstr "Impossibile determinare la directory home"
+
+msgid "Cannot overwrite multiple values with a single value"
+msgstr "Impossibile sovrascrivere più valori con un singolo valore"
+
+msgid "Cannot unset key with multiple values"
+msgstr "Impossibile annullare la chiave con più valori"
+
+# Target messages
+msgid "URI"
+msgstr "URI"
+
+msgid "Registry"
+msgstr "Registro"
+
+msgid "Client"
+msgstr "Client"
+
+msgid "Top Directory"
+msgstr "Directory Principale"
+
+msgid "Plan File"
+msgstr "File di Piano"
+
+msgid "Extension"
+msgstr "Estensione"
+
+msgid "Deploy"
+msgstr "Distribuisci"
+
+msgid "Revert"
+msgstr "Ripristina"
+
+msgid "Script Directories"
+msgstr "Directory degli Script"
+
+msgid "Reworked Script Directories"
+msgstr "Directory degli Script Rielaborati"
+
+msgid "Variables"
+msgstr "Variabili"
+
+msgid "No Variables"
+msgstr "Nessuna Variabile"
+
+# Status messages
+msgid "On database {destination}"
+msgstr "Sul database {destination}"
+
+msgid "Project: {project}"
+msgstr "Progetto: {project}"
+
+msgid "Change: {change}"
+msgstr "Modifica: {change}"
+
+msgid "Name: {name}"
+msgstr "Nome: {name}"
+
+msgid "Deployed: {date}"
+msgstr "Distribuito: {date}"
+
+msgid "By: {name} <{email}>"
+msgstr "Da: {name} <{email}>"
+
+# Error messages
+msgid "Invalid dependency: {dependency}"
+msgstr "Dipendenza non valida: {dependency}"
+
+msgid "Change \"{change}\" is ambiguous. Please specify a tag-qualified change:"
+msgstr "La modifica \"{change}\" è ambigua. Specifica una modifica qualificata da tag:"
+
+msgid "Reverting to {change}"
+msgstr "Ripristino a {change}"
+
+msgid "Reverting all changes"
+msgstr "Ripristino di tutte le modifiche"
+
+msgid "Cannot remove {file}: {error}"
+msgstr "Impossibile rimuovere {file}: {error}"
+
+msgid "Cannot copy {file} to {alias}: {error}"
+msgstr "Impossibile copiare {file} in {alias}: {error}"
+
+msgid "Cannot symlink {file} to {alias}: {error}"
+msgstr "Impossibile creare un collegamento simbolico da {file} a {alias}: {error}"
+
+msgid "Cannot open {file}: {error}"
+msgstr "Impossibile aprire {file}: {error}"
+
+# Database-specific messages
+msgid "Sqitch requires {rdbms} {want_version} or higher; this is {have_version}"
+msgstr "Sqitch richiede {rdbms} {want_version} o superiore; questo è {have_version}"
+
+msgid "Sqitch requires SQLite 3.8.6 or later; DBD::SQLite was built with {version}"
+msgstr "Sqitch richiede SQLite 3.8.6 o successivo; DBD::SQLite è stato costruito con {version}"
+
+msgid "Sqitch requires SQLite 3.3.9 or later; {client} is {version}"
+msgstr "Sqitch richiede SQLite 3.3.9 o successivo; {client} è {version}"
+
+msgid "Database name missing in URI {uri}"
+msgstr "Nome del database mancante nell'URI {uri}"
+
+msgid "Cannot determine Snowflake account name"
+msgstr "Impossibile determinare il nome dell'account Snowflake"
+
+# Command-specific messages
+msgid "Cannot specify both --all and engine, target, or plan arguments"
+msgstr "Impossibile specificare sia --all che gli argomenti engine, target o plan"
+
+msgid "Cannot specify both --from or --to and change arguments"
+msgstr "Impossibile specificare sia --from o --to che gli argomenti di modifica"
+
+msgid "Use of --to or --from to bundle multiple targets is not recommended.\\nPass them as arguments after each target argument, instead."
+msgstr "L'uso di --to o --from per raggruppare più target non è raccomandato.\\nPassali invece come argomenti dopo ogni argomento target."
+
+msgid "Missing required parameter $prompt_default"
+msgstr "Parametro richiesto mancante $prompt_default"
+
+msgid "No project configuration found. Run the \"init\" command to initialize a project"
+msgstr "Nessuna configurazione di progetto trovata. Esegui il comando \"init\" per inizializzare un progetto"
+
+msgid "Cannot unset an engine target"
+msgstr "Impossibile annullare un target del motore"
+
+# Lock and concurrency messages
+msgid "Blocked by another instance of Sqlitch working on {dest}; waiting {secs} seconds..."
+msgstr "Bloccato da un'altra istanza di Sqlitch che lavora su {dest}; attesa di {secs} secondi..."
+
+msgid "Timed out waiting for lock on {destination}"
+msgstr "Timeout nell'attesa del blocco su {destination}"
+
+# Verification messages
+msgid "Conflicts:"
+msgstr "Conflitti:"
+
+msgid "Adding registry tables to {destination}"
+msgstr "Aggiunta delle tabelle di registro a {destination}"
+
+msgid "No changes deployed since: \"{change}\""
+msgstr "Nessuna modifica distribuita da: \"{change}\""
+
+msgid "{command} unexpectedly failed; exit value = {exitval}"
+msgstr "{command} è fallito inaspettatamente; valore di uscita = {exitval}"
+
+msgid "{command} unexpectedly returned exit value {exitval}"
+msgstr "{command} ha restituito inaspettatamente il valore di uscita {exitval}"
+
+msgid "Unable to locate Firebird ISQL; set \"engine.firebird.client\" via sqlitch config"
+msgstr "Impossibile localizzare Firebird ISQL; imposta \"engine.firebird.client\" tramite sqlitch config"
+
+msgid "Insufficient permissions to create the checkit() function; skipping."
+msgstr "Permessi insufficienti per creare la funzione checkit(); saltato."

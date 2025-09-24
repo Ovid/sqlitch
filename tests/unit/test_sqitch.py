@@ -378,7 +378,7 @@ class TestSqitch:
         
         issues = sqitch.validate_user_info()
         assert len(issues) == 1
-        assert "User name not configured" in issues[0]
+        assert "Cannot find your name" in issues[0]
     
     def test_validate_user_info_missing_email(self):
         """Test user info validation with missing email."""
@@ -389,7 +389,7 @@ class TestSqitch:
         
         issues = sqitch.validate_user_info()
         assert len(issues) == 1
-        assert "User email not configured" in issues[0]
+        assert "Cannot infer your email address" in issues[0]
     
     def test_validate_user_info_missing_both(self):
         """Test user info validation with missing name and email."""
@@ -508,7 +508,7 @@ verify_dir = sql/verify
         sqitch = Sqitch(config=config)
         
         with patch.object(sqitch, 'is_initialized', return_value=False):
-            with pytest.raises(SqlitchError, match="Not a sqitch project"):
+            with pytest.raises(SqlitchError, match="No project configuration found"):
                 sqitch.require_initialized()
     
     def test_repr(self):
