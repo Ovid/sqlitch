@@ -119,6 +119,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.status import status_command
+    cli.add_command(status_command, name='status')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

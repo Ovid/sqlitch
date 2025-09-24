@@ -86,7 +86,7 @@
   - Write tests for verification success and failure cases
   - _Requirements: 1.1, 5.1, 5.2, 5.3, 7.1, 7.5, 10.1_
 
-- [ ] 12. Implement status command
+- [x] 12. Implement status command
   - Create StatusCommand class in sqlitch/commands/status.py
   - Add current deployment state reporting
   - Implement change comparison and diff display
