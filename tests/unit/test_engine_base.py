@@ -6,7 +6,7 @@ registry management, connection handling, and the engine registry.
 """
 
 import pytest
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 
@@ -232,7 +232,7 @@ class TestEngineBase:
         change.note = "Test change"
         change.planner_name = "Test User"
         change.planner_email = "test@example.com"
-        change.timestamp = datetime.utcnow()
+        change.timestamp = datetime.now(timezone.utc)
         change.dependencies = []
         change.requires = []
         change.conflicts = []
@@ -264,7 +264,7 @@ class TestEngineBase:
         change.note = "Test change"
         change.planner_name = "Test User"
         change.planner_email = "test@example.com"
-        change.timestamp = datetime.utcnow()
+        change.timestamp = datetime.now(timezone.utc)
         change.dependencies = []
         change.requires = []
         change.conflicts = []

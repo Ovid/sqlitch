@@ -11,7 +11,7 @@ import logging
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import (
     Any, Dict, List, Optional, Tuple, Iterator, Protocol, 
@@ -316,7 +316,7 @@ class Engine(ABC):
         """
         project_name = self.plan.project_name
         project_uri = str(self.target.uri)
-        created_at = datetime.utcnow()
+        created_at = datetime.now(timezone.utc)
         creator_name = self.plan.creator_name or "Unknown"
         creator_email = self.plan.creator_email or "unknown@example.com"
         
@@ -504,7 +504,7 @@ class Engine(ABC):
             connection: Database connection
             change: Deployed change
         """
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         
         # Insert change record
         connection.execute(
@@ -577,7 +577,7 @@ class Engine(ABC):
             connection: Database connection
             change: Reverted change
         """
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         
         # Remove change record
         connection.execute(
