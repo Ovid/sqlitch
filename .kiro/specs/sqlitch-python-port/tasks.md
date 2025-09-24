@@ -94,7 +94,7 @@
   - Write tests for various deployment states
   - _Requirements: 1.1, 5.1, 5.2, 7.1, 7.5_
 
-- [ ] 13. Add template system support
+- [x] 13. Add template system support
   - Create template engine in sqlitch/utils/template.py using Jinja2
   - Implement template variable substitution for SQL scripts
   - Add support for custom template directories

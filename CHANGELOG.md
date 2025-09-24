@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - CLI integration with Click framework
   - Full test coverage including unit and integration tests
 
+- **Template System**: Complete template processing system with:
+  - Jinja2-based template engine with Template Toolkit syntax conversion
+  - Built-in templates for all supported database engines (PostgreSQL, MySQL, SQLite, Oracle, Snowflake, Vertica, Exasol, Firebird, CockroachDB)
+  - Support for custom template directories with precedence handling
+  - Template variable substitution for SQL scripts (project, change, engine, requires, conflicts)
+  - Template discovery and listing functionality
+  - Comprehensive error handling and validation
+  - Full test coverage with unit and integration tests
+
 - **Status Command**: Complete implementation of the `sqlitch status` command with:
   - Current deployment state reporting with project, change, and deployment details
   - Optional display of deployed changes list (`--show-changes`)
