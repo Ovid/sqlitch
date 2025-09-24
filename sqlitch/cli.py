@@ -113,6 +113,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.verify import verify_command
+    cli.add_command(verify_command, name='verify')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

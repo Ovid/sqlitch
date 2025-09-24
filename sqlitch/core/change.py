@@ -100,6 +100,13 @@ class Change:
         """Get verify script path."""
         return Path(target.top_dir) / target.verify_dir / f"{self.name}.sql"
     
+    def format_name_with_tags(self) -> str:
+        """Format change name with tags for display."""
+        if self.tags:
+            tags_str = ' '.join(f"@{tag}" for tag in self.tags)
+            return f"{self.name} {tags_str}"
+        return self.name
+    
     def __str__(self) -> str:
         """String representation for plan file format."""
         result = self.name

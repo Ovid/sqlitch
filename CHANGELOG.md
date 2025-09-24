@@ -28,9 +28,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive error handling and user feedback
   - CLI integration with Click framework
   - Full test coverage including unit and integration tests with 45 unit tests and 18 integration tests
+- **Verify Command**: Complete implementation of the `sqlitch verify` command with:
+  - Verification script execution and result reporting with detailed error messages
+  - Support for verifying specific change ranges (`--from-change`, `--to-change`)
+  - Parallel verification for improved performance with configurable worker count (`--max-workers`)
+  - Sequential verification mode for debugging (`--no-parallel`)
+  - Variable substitution support for verification scripts (`--set key=value`)
+  - Comprehensive error reporting including out-of-order changes and missing scripts
+  - Detection and reporting of undeployed changes in verification range
+  - Summary reporting with change counts and error details
+  - CLI integration with Click framework
+  - Full test coverage with 44 unit tests and 18 integration tests
 - Enhanced Plan class with additional properties and methods:
   - Added `project_name`, `creator_name`, `creator_email` properties
   - Added `get_deploy_file()`, `get_revert_file()`, `get_verify_file()` methods
+- Enhanced Change class with display formatting:
+  - Added `format_name_with_tags()` method for consistent change display across commands
 - Enhanced steering documentation with mandatory changelog and README.md update requirements
 - Task completion requirements now include documentation updates for all three steering files:
   - `project-guidelines.md`: Added step 7 requiring changelog and README updates

@@ -62,7 +62,12 @@ pip install -e .
    sqlitch deploy
    ```
 
-4. **Check deployment status:**
+4. **Verify your deployment:**
+   ```bash
+   sqlitch verify
+   ```
+
+5. **Check deployment status:**
    ```bash
    sqlitch status
    ```
@@ -94,8 +99,8 @@ Current implementation status:
 - ✅ Core plan file parsing
 - ✅ Configuration management
 - ✅ PostgreSQL engine (partial)
-- ✅ Command-line interface (init, deploy, revert commands)
-- ✅ Change deployment and revert logic
+- ✅ Command-line interface (init, deploy, revert, verify commands)
+- ✅ Change deployment, revert, and verification logic
 - ⏳ SQLite engine
 - ⏳ Additional database engines
 
