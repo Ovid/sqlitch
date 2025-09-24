@@ -104,6 +104,13 @@ class Plan:
                     plan._parse_pragma(line)
                 elif line.startswith('@'):
                     tag = plan._parse_tag(line)
+                    # Associate tag with the most recent change
+                    if plan.changes:
+                        tag.change = plan.changes[-1]
+                        # Also add tag name to the change's tags list
+                        if not hasattr(plan.changes[-1], 'tags'):
+                            plan.changes[-1].tags = []
+                        plan.changes[-1].tags.append(tag.name)
                     plan.tags.append(tag)
                 else:
                     change = plan._parse_change(line)

@@ -554,6 +554,21 @@ class Config:
         """Get list of configuration sources in priority order."""
         return self._sources.copy()
     
+    @property
+    def local_file(self) -> Optional[Path]:
+        """Get the local configuration file path."""
+        # Find the local configuration source
+        for source in self._sources:
+            if source.source_type == 'local' and source.path:
+                return source.path
+        
+        # If no local config found, check for sqitch.conf in current directory
+        local_config = Path('sqitch.conf')
+        if local_config.exists():
+            return local_config
+        
+        return None
+    
     def __repr__(self) -> str:
         """String representation for debugging."""
         sources = [s.source_type for s in self._sources]

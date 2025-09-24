@@ -143,6 +143,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.bundle import bundle_command
+    cli.add_command(bundle_command, name='bundle')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 
