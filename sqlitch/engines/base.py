@@ -520,6 +520,161 @@ class Engine(ABC):
                     engine_name=self.engine_type
                 ) from e
     
+    def search_events(self, 
+                     event: Optional[List[str]] = None,
+                     change: Optional[str] = None,
+                     project: Optional[str] = None,
+                     committer: Optional[str] = None,
+                     planner: Optional[str] = None,
+                     limit: Optional[int] = None,
+                     offset: Optional[int] = None,
+                     direction: str = 'DESC') -> Iterator[Dict[str, Any]]:
+        """
+        Search events in the registry.
+        
+        Args:
+            event: List of event types to filter by
+            change: Regular expression to match change names
+            project: Regular expression to match project names
+            committer: Regular expression to match committer names
+            planner: Regular expression to match planner names
+            limit: Maximum number of events to return
+            offset: Number of events to skip
+            direction: Sort direction ('ASC' or 'DESC')
+            
+        Yields:
+            Dictionary with event information
+            
+        Raises:
+            EngineError: If query fails
+        """
+        self.ensure_registry()
+        
+        # Validate direction
+        if direction.upper() not in ('ASC', 'DESC'):
+            raise EngineError(f"Search direction must be either 'ASC' or 'DESC', got '{direction}'")
+        
+        direction = direction.upper()
+        
+        # Build WHERE clause
+        where_conditions = []
+        params = []
+        
+        if event:
+            placeholders = ', '.join('?' for _ in event)
+            where_conditions.append(f"e.event IN ({placeholders})")
+            # Add event values to params list
+            params.extend(event)
+        
+        if change:
+            where_conditions.append(self._regex_condition('e.change', change))
+            params.append(change)
+        
+        if project:
+            where_conditions.append(self._regex_condition('e.project', project))
+            params.append(project)
+        
+        if committer:
+            where_conditions.append(self._regex_condition('e.committer_name', committer))
+            params.append(committer)
+        
+        if planner:
+            where_conditions.append(self._regex_condition('e.planner_name', planner))
+            params.append(planner)
+        
+        where_clause = ""
+        if where_conditions:
+            where_clause = "WHERE " + " AND ".join(where_conditions)
+        
+        # Build LIMIT/OFFSET clause
+        limit_clause = ""
+        if limit is not None:
+            limit_clause = f"LIMIT {limit}"
+            if offset is not None:
+                limit_clause += f" OFFSET {offset}"
+        elif offset is not None:
+            # Some databases don't support OFFSET without LIMIT
+            limit_clause = f"LIMIT 999999999 OFFSET {offset}"
+        
+        query = f"""
+            SELECT e.event, e.project, e.change_id, e.change, e.note,
+                   e.requires, e.conflicts, e.tags,
+                   e.committer_name, e.committer_email, e.committed_at,
+                   e.planner_name, e.planner_email, e.planned_at
+            FROM {self.registry_schema.EVENTS_TABLE} e
+            {where_clause}
+            ORDER BY e.committed_at {direction}
+            {limit_clause}
+        """
+        
+        with self.connection() as conn:
+            try:
+                if params:
+                    conn.execute(query, params)
+                else:
+                    conn.execute(query)
+                
+                while True:
+                    row = conn.fetchone()
+                    if not row:
+                        break
+                    
+                    # Parse array fields (stored as space-delimited strings)
+                    requires = self._parse_array_field(row.get('requires', ''))
+                    conflicts = self._parse_array_field(row.get('conflicts', ''))
+                    tags = self._parse_array_field(row.get('tags', ''))
+                    
+                    yield {
+                        'event': row['event'],
+                        'project': row['project'],
+                        'change_id': row['change_id'],
+                        'change': row['change'],
+                        'note': row['note'] or '',
+                        'requires': requires,
+                        'conflicts': conflicts,
+                        'tags': tags,
+                        'committer_name': row['committer_name'],
+                        'committer_email': row['committer_email'],
+                        'committed_at': row['committed_at'],
+                        'planner_name': row['planner_name'],
+                        'planner_email': row['planner_email'],
+                        'planned_at': row['planned_at']
+                    }
+                    
+            except Exception as e:
+                raise EngineError(
+                    f"Failed to search events: {e}",
+                    engine_name=self.engine_type
+                ) from e
+    
+    @abstractmethod
+    def _regex_condition(self, column: str, pattern: str) -> str:
+        """
+        Get database-specific regex condition.
+        
+        Args:
+            column: Column name
+            pattern: Regular expression pattern
+            
+        Returns:
+            SQL condition string
+        """
+        ...
+    
+    def _parse_array_field(self, value: str) -> List[str]:
+        """
+        Parse space-delimited array field.
+        
+        Args:
+            value: Space-delimited string
+            
+        Returns:
+            List of strings
+        """
+        if not value or not value.strip():
+            return []
+        return value.strip().split()
+    
     def get_current_tags(self, project: Optional[str] = None) -> Iterator[Dict[str, Any]]:
         """
         Get iterator over all deployed tags.

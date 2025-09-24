@@ -765,3 +765,16 @@ class PostgreSQLEngine(Engine):
             Formatted tag string
         """
         return ' '.join(tags) if tags else ''
+    
+    def _regex_condition(self, column: str, pattern: str) -> str:
+        """
+        Get PostgreSQL-specific regex condition.
+        
+        Args:
+            column: Column name
+            pattern: Regular expression pattern
+            
+        Returns:
+            SQL condition string
+        """
+        return f"{column} ~ ?"

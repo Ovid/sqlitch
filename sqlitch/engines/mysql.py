@@ -955,3 +955,16 @@ class MySQLEngine(Engine):
                     conn.execute("UNLOCK TABLES")
                 except Exception:
                     pass  # Ignore unlock errors
+    
+    def _regex_condition(self, column: str, pattern: str) -> str:
+        """
+        Get MySQL-specific regex condition.
+        
+        Args:
+            column: Column name
+            pattern: Regular expression pattern
+            
+        Returns:
+            SQL condition string
+        """
+        return f"{column} REGEXP ?"

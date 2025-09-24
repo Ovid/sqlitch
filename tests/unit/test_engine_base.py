@@ -79,6 +79,10 @@ class MockEngine(Engine):
     
     def _get_registry_version(self, connection):
         return "1.1"
+    
+    def _regex_condition(self, column: str, pattern: str) -> str:
+        """Mock regex condition for testing."""
+        return f"{column} ~ ?"
 
 
 @pytest.fixture
@@ -361,6 +365,10 @@ class TestEngineRegistry:
             
             def _get_registry_version(self, connection):
                 return "1.1"
+            
+            def _regex_condition(self, column: str, pattern: str) -> str:
+                """Mock regex condition for testing."""
+                return f"{column} ~ ?"
         
         # Create new target with pg engine type
         test_target = Target(

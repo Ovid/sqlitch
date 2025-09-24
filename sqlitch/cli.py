@@ -131,6 +131,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.log import log_command
+    cli.add_command(log_command, name='log')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 
