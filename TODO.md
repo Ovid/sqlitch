@@ -58,7 +58,8 @@ not AI tool has access to that lovely window.
 
 As a result of the above, anything you tell it to do at the start of a new
 task, it tends to do. Things you tell it to do at the end of a task tend to be
-forgotten.
+forgotten. It would be nice if Kiro recognized it was finishing a task and
+reread its steering files. (https://github.com/kirodotdev/Kiro/issues/3003)
 
 Read your tasks *carefully*. I found that at one point, after creating a bunch
 of excellent, independent tasks, that near the end of a long task list, it
