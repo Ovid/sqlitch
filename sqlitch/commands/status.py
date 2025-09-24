@@ -79,15 +79,8 @@ class StatusCommand(BaseCommand):
             
             return 0
             
-        except SqlitchError as e:
-            self.error(str(e))
-            return 1
         except Exception as e:
-            self.error(f"Unexpected error: {e}")
-            if self.sqitch.verbosity >= 2:
-                import traceback
-                self.debug(traceback.format_exc())
-            return 2
+            return self.handle_error(e, "status")
     
     def _parse_args(self, args: List[str]) -> Dict[str, Any]:
         """

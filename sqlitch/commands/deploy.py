@@ -37,11 +37,8 @@ class DeployCommand(BaseCommand):
             # Parse arguments
             options = self._parse_args(args)
             
-            # Ensure project is initialized
-            self.require_initialized()
-            
-            # Validate user info
-            self.validate_user_info()
+            # Validate preconditions
+            self.validate_preconditions("deploy", options.get('target'))
             
             # Load plan
             plan = self._load_plan(options.get('plan_file'))
@@ -70,15 +67,8 @@ class DeployCommand(BaseCommand):
             # Deploy changes
             return self._deploy_changes(engine, changes_to_deploy, options)
             
-        except SqlitchError as e:
-            self.error(str(e))
-            return 1
         except Exception as e:
-            self.error(f"Unexpected error: {e}")
-            if self.sqitch.verbosity >= 2:
-                import traceback
-                self.debug(traceback.format_exc())
-            return 2
+            return self.handle_error(e, "deploy")
     
     def _parse_args(self, args: List[str]) -> Dict[str, Any]:
         """
@@ -451,6 +441,83 @@ class DeployCommand(BaseCommand):
                     self.info(f"    Dependencies: {deps}")
         
         return 0
+    
+    def _deploy_changes_with_feedback(self, engine, changes: List[Change], 
+                                    options: Dict[str, Any], target) -> int:
+        """
+        Deploy changes with enhanced user feedback.
+        
+        Args:
+            engine: Database engine
+            changes: Changes to deploy
+            options: Command options
+            target: Target configuration
+            
+        Returns:
+            Exit code (0 for success)
+        """
+        if options.get('log_only'):
+            return self._log_deployment_plan(changes)
+        
+        from ..utils.feedback import operation_feedback, ChangeReporter
+        import time
+        
+        start_time = time.time()
+        change_names = [change.name for change in changes]
+        
+        try:
+            with operation_feedback(self.sqitch, "deploy", str(target.uri), len(changes)) as reporter:
+                deployed_count = 0
+                
+                for change in changes:
+                    change_reporter = ChangeReporter(self.sqitch, change.name, "deploy")
+                    
+                    try:
+                        change_reporter.start_change()
+                        reporter.step_progress(f"Deploying {change.name}")
+                        
+                        # Deploy the change
+                        engine.deploy_change(change)
+                        deployed_count += 1
+                        
+                        # Verify if requested
+                        if options.get('verify', True):
+                            reporter.step_progress(f"Verifying {change.name}")
+                            if not engine.verify_change(change):
+                                raise DeploymentError(
+                                    f"Verification failed for change {change.name}",
+                                    change_name=change.name,
+                                    operation="verify"
+                                )
+                        
+                        change_reporter.complete_change(success=True)
+                        
+                    except Exception as e:
+                        change_reporter.complete_change(success=False)
+                        raise DeploymentError(
+                            f"Failed to deploy {change.name}: {e}",
+                            change_name=change.name,
+                            operation="deploy"
+                        )
+                
+                # Show summary
+                duration = time.time() - start_time
+                from ..utils.feedback import show_operation_summary
+                show_operation_summary(self.sqitch, "deploy", change_names, duration, True)
+                
+                return 0
+                
+        except KeyboardInterrupt:
+            duration = time.time() - start_time
+            self.vent("Deploy cancelled by user")
+            if deployed_count > 0:
+                self.info(f"Successfully deployed {deployed_count} changes before cancellation")
+            return 130
+        except Exception as e:
+            duration = time.time() - start_time
+            from ..utils.feedback import show_operation_summary
+            show_operation_summary(self.sqitch, "deploy", change_names[:deployed_count], duration, False)
+            raise
     
     def _show_help(self) -> None:
         """Show command help."""
