@@ -2,28 +2,28 @@
 
 - [x] 1. Set up core project infrastructure and type system
   - Create Python package structure with proper __init__.py files
-  - Implement custom exception hierarchy in sqlitch_py/core/exceptions.py
-  - Define type system and validators in sqlitch_py/core/types.py
+  - Implement custom exception hierarchy in sqlitch/core/exceptions.py
+  - Define type system and validators in sqlitch/core/types.py
   - Set up logging configuration and utilities
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 5.1, 5.2, 5.3_
 
 - [x] 2. Implement configuration management system
-  - Create Config class in sqlitch_py/core/config.py with INI file parsing
+  - Create Config class in sqlitch/core/config.py with INI file parsing
   - Implement configuration hierarchy (system, global, local, command-line)
   - Add configuration validation and type coercion
   - Write unit tests for configuration loading and merging
   - _Requirements: 1.2, 8.1, 8.4_
 
 - [x] 3. Build plan file parsing and management
-  - Implement Plan class in sqlitch_py/core/plan.py with plan file parsing
-  - Create Change, Tag, and Dependency dataclasses in sqlitch_py/core/change.py
+  - Implement Plan class in sqlitch/core/plan.py with plan file parsing
+  - Create Change, Tag, and Dependency dataclasses in sqlitch/core/change.py
   - Add plan validation logic and error reporting
   - Implement change ID generation (SHA1 hashing)
   - Write comprehensive unit tests for plan parsing edge cases
   - _Requirements: 1.3, 5.5, 7.1, 7.4_
 
 - [x] 4. Create main Sqitch application class
-  - Implement Sqitch class in sqlitch_py/core/sqitch.py as main coordinator
+  - Implement Sqitch class in sqlitch/core/sqitch.py as main coordinator
   - Add user name and email detection logic
   - Implement verbosity and logging configuration
   - Create target resolution and engine factory methods
@@ -31,7 +31,7 @@
   - _Requirements: 1.1, 1.5, 3.1, 3.2, 5.1_
 
 - [x] 5. Build abstract database engine framework
-  - Create abstract Engine base class in sqlitch_py/engines/base.py
+  - Create abstract Engine base class in sqlitch/engines/base.py
   - Define engine interface methods (deploy, revert, verify, status)
   - Implement connection management with context managers
   - Add registry table schema definitions and SQL generation
@@ -39,7 +39,7 @@
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 10.3, 10.4_
 
 - [x] 6. Implement PostgreSQL database engine
-  - Create PostgreSQLEngine class in sqlitch_py/engines/pg.py
+  - Create PostgreSQLEngine class in sqlitch/engines/pg.py
   - Implement PostgreSQL-specific connection handling with psycopg2
   - Add registry table creation and management SQL
   - Implement change deployment, revert, and verification logic
@@ -47,23 +47,23 @@
   - _Requirements: 2.1, 7.2, 7.3, 10.1, 10.2_
 
 - [x] 7. Build CLI framework with Click
-  - Create main CLI entry point in sqlitch_py/cli.py using Click framework
+  - Create main CLI entry point in sqlitch/cli.py using Click framework
   - Implement global options (--config, --verbose, --quiet)
   - Add command discovery and registration system
-  - Create BaseCommand class in sqlitch_py/commands/base.py
+  - Create BaseCommand class in sqlitch/commands/base.py
   - Write CLI integration tests
   - _Requirements: 1.1, 1.4, 8.1, 8.2_
 
 - [x] 8. Implement init command
-  - Create InitCommand class in sqlitch_py/commands/init.py
+  - Create InitCommand class in sqlitch/commands/init.py
   - Add project initialization logic (directories, config, plan file)
   - Implement engine-specific initialization templates
   - Add VCS integration for project setup
   - Write unit and integration tests for init command
   - _Requirements: 4.1, 4.2, 6.1, 6.2, 6.3, 6.4_
 
-- [ ] 9. Implement deploy command
-  - Create DeployCommand class in sqlitch_py/commands/deploy.py
+- [x] 9. Implement deploy command
+  - Create DeployCommand class in sqlitch/commands/deploy.py
   - Add deployment planning and execution logic
   - Implement transaction management and rollback on failure
   - Add progress reporting and verbose logging
@@ -71,7 +71,7 @@
   - _Requirements: 1.1, 5.1, 5.2, 5.3, 7.1, 7.5, 10.1, 10.4_
 
 - [ ] 10. Implement revert command
-  - Create RevertCommand class in sqlitch_py/commands/revert.py
+  - Create RevertCommand class in sqlitch/commands/revert.py
   - Add revert planning and execution logic
   - Implement confirmation prompts and safety checks
   - Add support for reverting to specific changes or tags
@@ -79,7 +79,7 @@
   - _Requirements: 1.1, 5.1, 5.2, 5.3, 7.1, 7.5_
 
 - [ ] 11. Implement verify command
-  - Create VerifyCommand class in sqlitch_py/commands/verify.py
+  - Create VerifyCommand class in sqlitch/commands/verify.py
   - Add verification script execution and result reporting
   - Implement parallel verification for performance
   - Add detailed error reporting for failed verifications
@@ -87,7 +87,7 @@
   - _Requirements: 1.1, 5.1, 5.2, 5.3, 7.1, 7.5, 10.1_
 
 - [ ] 12. Implement status command
-  - Create StatusCommand class in sqlitch_py/commands/status.py
+  - Create StatusCommand class in sqlitch/commands/status.py
   - Add current deployment state reporting
   - Implement change comparison and diff display
   - Add tabular output formatting with proper alignment
@@ -95,7 +95,7 @@
   - _Requirements: 1.1, 5.1, 5.2, 7.1, 7.5_
 
 - [ ] 13. Add template system support
-  - Create template engine in sqlitch_py/utils/template.py using Jinja2
+  - Create template engine in sqlitch/utils/template.py using Jinja2
   - Implement template variable substitution for SQL scripts
   - Add support for custom template directories
   - Create default templates for each database engine
@@ -103,7 +103,7 @@
   - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
 - [ ] 14. Implement VCS integration utilities
-  - Create Git integration in sqlitch_py/utils/git.py using GitPython
+  - Create Git integration in sqlitch/utils/git.py using GitPython
   - Add repository detection and status checking
   - Implement change file naming based on VCS state
   - Add commit integration for change tracking
@@ -111,7 +111,7 @@
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
 - [ ] 15. Build MySQL database engine
-  - Create MySQLEngine class in sqlitch_py/engines/mysql.py
+  - Create MySQLEngine class in sqlitch/engines/mysql.py
   - Implement MySQL-specific connection handling with PyMySQL
   - Add MySQL registry table creation and management
   - Implement MySQL-specific SQL execution and error handling
@@ -119,7 +119,7 @@
   - _Requirements: 2.2, 7.2, 7.3, 10.1, 10.2_
 
 - [ ] 16. Build SQLite database engine
-  - Create SQLiteEngine class in sqlitch_py/engines/sqlite.py
+  - Create SQLiteEngine class in sqlitch/engines/sqlite.py
   - Implement SQLite-specific connection and file handling
   - Add SQLite registry table creation with proper constraints
   - Implement SQLite-specific transaction management
@@ -127,7 +127,7 @@
   - _Requirements: 2.3, 7.2, 7.3, 10.1, 10.2_
 
 - [ ] 17. Implement add command
-  - Create AddCommand class in sqlitch_py/commands/add.py
+  - Create AddCommand class in sqlitch/commands/add.py
   - Add change creation logic with template processing
   - Implement dependency resolution and validation
   - Add change file generation (deploy, revert, verify scripts)
@@ -135,7 +135,7 @@
   - _Requirements: 1.1, 4.2, 6.1, 6.2, 6.3, 6.4, 7.1, 7.5_
 
 - [ ] 18. Implement log command
-  - Create LogCommand class in sqlitch_py/commands/log.py
+  - Create LogCommand class in sqlitch/commands/log.py
   - Add change history display with formatting options
   - Implement filtering by date, author, and change patterns
   - Add support for different output formats (oneline, full, etc.)
@@ -151,7 +151,7 @@
   - _Requirements: 1.1, 1.4, 5.1, 5.2, 5.3, 5.4, 5.5_
 
 - [ ] 20. Build Oracle database engine
-  - Create OracleEngine class in sqlitch_py/engines/oracle.py
+  - Create OracleEngine class in sqlitch/engines/oracle.py
   - Implement Oracle-specific connection handling with cx_Oracle
   - Add Oracle registry table creation with proper schemas
   - Implement Oracle-specific SQL execution and PL/SQL support

@@ -107,6 +107,3 @@ class BaseCommand(ABC):
         """Log debug message."""
         self.logger.debug(message)
     
-    def verbose(self, message: str) -> None:
-        """Log verbose message."""
-        self.logger.verbose(message)

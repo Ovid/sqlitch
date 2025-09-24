@@ -106,7 +106,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 ### Development Setup
 
 ```bash
-git clone https://github.com/your-org/sqlitch.git
+git clone git@github.com:Ovid/sqlitch.git
 cd sqlitch
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate

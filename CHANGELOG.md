@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Deploy Command**: Complete implementation of the `sqlitch deploy` command with:
+  - Deployment planning and execution logic
+  - Transaction management with automatic rollback on failure
+  - Progress reporting and verbose logging
+  - Support for deploying up to specific changes or tags (`--to-change`, `--to-tag`)
+  - Log-only mode for previewing deployments (`--log-only`)
+  - Verification support with optional skip (`--verify`/`--no-verify`)
+  - Comprehensive dependency validation
+  - CLI integration with Click framework
+  - Full test coverage including unit and integration tests
+- Enhanced Plan class with additional properties and methods:
+  - Added `project_name`, `creator_name`, `creator_email` properties
+  - Added `get_deploy_file()`, `get_revert_file()`, `get_verify_file()` methods
 - Enhanced steering documentation with mandatory changelog and README.md update requirements
 - Task completion requirements now include documentation updates for all three steering files:
   - `project-guidelines.md`: Added step 7 requiring changelog and README updates
@@ -15,8 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `python-standards.md`: Enhanced zero tolerance policy to include documentation requirements
 
 ### Changed
+- Engine creation now uses `EngineRegistry.create_engine()` for proper plan integration
+- Base command class no longer includes non-existent `verbose()` method
+- Deploy command uses `info()` for verbose logging instead of undefined `verbose()` method
 - All steering documents now consistently require documentation updates as part of task completion
 - Task completion process now has zero tolerance for missing documentation updates alongside test failures and warnings
+
+### Fixed
+- Fixed dependency validation logic in deploy command to properly map change IDs to names
+- Fixed mock database connections in integration tests to support context manager protocol
+- Fixed CLI integration tests to avoid system configuration file conflicts
 
 ## [0.1.0] - Initial Development
 

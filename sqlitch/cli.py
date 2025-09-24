@@ -94,10 +94,16 @@ def cli(ctx: click.Context, config: Tuple[Path, ...], verbose: int, quiet: int) 
         click.echo(ctx.get_help())
 
 
-# Register the init command immediately
+# Register commands immediately
 try:
     from .commands.init import init_command
     cli.add_command(init_command, name='init')
+except ImportError:
+    pass  # Command not available
+
+try:
+    from .commands.deploy import deploy_command
+    cli.add_command(deploy_command, name='deploy')
 except ImportError:
     pass  # Command not available
 
