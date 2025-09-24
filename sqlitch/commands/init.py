@@ -15,7 +15,8 @@ import click
 
 from .base import BaseCommand
 from ..core.exceptions import SqlitchError, ConfigurationError
-from ..core.types import EngineType, validate_project_name, Target, URI
+from ..core.types import EngineType, validate_project_name, URI
+from ..core.target import Target
 from ..utils.git import GitRepository, detect_vcs
 from ..utils.template import create_template_engine
 

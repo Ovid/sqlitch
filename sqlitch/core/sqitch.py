@@ -14,7 +14,8 @@ from typing import Any, Dict, List, Optional, Type, TYPE_CHECKING
 
 from .config import Config
 from .exceptions import SqlitchError, ConfigurationError, EngineError
-from .types import EngineType, VerbosityLevel, Target
+from .types import EngineType, VerbosityLevel
+from .target import Target
 from ..utils.logging import SqlitchLogger, configure_logging, get_logger
 
 if TYPE_CHECKING:
@@ -184,7 +185,9 @@ class Sqitch:
             raise EngineError(f"Unsupported engine type: {engine_type}")
         
         try:
-            return engine_class(self, target)
+            # Get the plan for this target
+            plan = target.plan
+            return engine_class(target, plan)
         except Exception as e:
             raise EngineError(f"Failed to create {engine_type} engine: {e}")
     
@@ -465,6 +468,27 @@ class Sqitch:
             raise SqlitchError(
                 "Not a sqitch project. Run 'sqitch init' to initialize one."
             )
+    
+    @property
+    def editor(self) -> Optional[str]:
+        """
+        Get configured editor command.
+        
+        Returns:
+            Editor command or None if not configured
+        """
+        # Check configuration
+        editor = self.config.get('core.editor')
+        if editor:
+            return editor
+        
+        # Check environment variables
+        for env_var in ['SQITCH_EDITOR', 'VISUAL', 'EDITOR']:
+            editor = os.environ.get(env_var)
+            if editor:
+                return editor
+        
+        return None
     
     def __repr__(self) -> str:
         """String representation for debugging."""

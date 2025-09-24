@@ -17,7 +17,8 @@ from sqlitch.commands.deploy import DeployCommand
 from sqlitch.core.sqitch import create_sqitch
 from sqlitch.core.plan import Plan
 from sqlitch.core.change import Change, Dependency
-from sqlitch.core.types import Target, URI
+from sqlitch.core.types import URI
+from sqlitch.core.target import Target
 
 
 def create_mock_psycopg2_connection():

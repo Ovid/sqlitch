@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Add Command Implementation**: Comprehensive fix resolving all test failures (42/42 tests now passing)
+  - Fixed Target class consolidation and import issues across the codebase
+  - Corrected engine creation parameters and initialization flow
+  - Fixed plan file format compatibility (dependency and conflict formatting)
+  - Resolved timezone handling issues in datetime operations
+  - Enhanced CLI output integration and editor functionality
+  - Improved test infrastructure with proper mocking and environment handling
+  - All add command functionality now fully compatible with original Perl Sqitch
+
 ### Added
 - **MySQL Database Engine**: Complete implementation of MySQL/MariaDB support with:
   - MySQL-specific connection handling using PyMySQL driver

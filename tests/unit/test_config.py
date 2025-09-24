@@ -14,7 +14,8 @@ from typing import Dict, Any
 
 from sqlitch.core.config import Config, ConfigSource
 from sqlitch.core.exceptions import ConfigurationError
-from sqlitch.core.types import Target, URI
+from sqlitch.core.types import URI
+from sqlitch.core.target import Target
 
 
 class TestConfig:

@@ -11,7 +11,8 @@ from pathlib import Path
 from datetime import datetime, timezone
 from unittest.mock import Mock
 
-from sqlitch.core.types import Target, URI
+from sqlitch.core.types import URI
+from sqlitch.core.target import Target
 from sqlitch.core.change import Change, Dependency
 from sqlitch.core.plan import Plan
 from sqlitch.engines.mysql import MySQLEngine

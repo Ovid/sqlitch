@@ -135,7 +135,7 @@ class TestChange:
             dependencies=[dep]
         )
         
-        expected = "users [[initial_schema]] 2023-01-15T10:30:00Z John Doe <john@example.com> # Add users table"
+        expected = "users [initial_schema] 2023-01-15T10:30:00Z John Doe <john@example.com> # Add users table"
         assert str(change) == expected
 
 

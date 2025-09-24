@@ -20,9 +20,15 @@ class Dependency:
     
     def __str__(self) -> str:
         """String representation for plan file format."""
+        result = self.change
         if self.project:
-            return f"{self.change}@{self.project}"
-        return self.change
+            result = f"{result}@{self.project}"
+        
+        # Add conflict prefix
+        if self.type == 'conflict':
+            result = f"!{result}"
+            
+        return result
     
     @classmethod
     def from_string(cls, dep_str: str) -> 'Dependency':
@@ -113,7 +119,7 @@ class Change:
         
         # Add dependencies
         if self.dependencies:
-            deps = ' '.join(f"[{dep}]" for dep in self.dependencies)
+            deps = ' '.join(str(dep) for dep in self.dependencies)
             result += f" [{deps}]"
         
         # Add timestamp and planner info
@@ -122,6 +128,11 @@ class Change:
         
         # Add note
         if self.note:
-            result += f" # {self.note}"
+            # Convert multi-line notes to single line for plan file format
+            note_single_line = self.note.replace('\n\n', ' ').replace('\n', ' ').replace('\r', ' ')
+            # Collapse multiple spaces
+            import re
+            note_single_line = re.sub(r'\s+', ' ', note_single_line).strip()
+            result += f" # {note_single_line}"
             
         return result

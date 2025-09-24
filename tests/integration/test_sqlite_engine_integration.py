@@ -13,7 +13,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 from sqlitch.engines.sqlite import SQLiteEngine
-from sqlitch.core.types import Target
+from sqlitch.core.target import Target
 from sqlitch.core.plan import Plan
 from sqlitch.core.change import Change, Dependency
 from sqlitch.core.exceptions import DeploymentError, EngineError

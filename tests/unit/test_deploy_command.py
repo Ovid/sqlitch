@@ -17,7 +17,8 @@ from sqlitch.core.sqitch import Sqitch
 from sqlitch.core.config import Config
 from sqlitch.core.plan import Plan
 from sqlitch.core.change import Change, Dependency
-from sqlitch.core.types import Target, URI, ChangeStatus
+from sqlitch.core.types import URI, ChangeStatus
+from sqlitch.core.target import Target
 
 
 @pytest.fixture
