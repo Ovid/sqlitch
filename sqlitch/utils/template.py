@@ -134,15 +134,27 @@ ROLLBACK;
 -- conflicts: [% item %]
 [% END -%]
 
+BEGIN;
+
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'revert/sqlite.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
 
+BEGIN;
+
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'verify/sqlite.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
 
+BEGIN;
+
 -- XXX Add verifications here.
+
+ROLLBACK;
 ''',
             
             # Oracle templates
@@ -174,13 +186,19 @@ ROLLBACK;
 -- conflicts: [% item %]
 [% END -%]
 
+USE WAREHOUSE &warehouse;
+
 -- XXX Add DDLs here.
 ''',
             'revert/snowflake.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
 
+USE WAREHOUSE &warehouse;
+
 -- XXX Add DDLs here.
 ''',
             'verify/snowflake.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+USE WAREHOUSE &warehouse;
 
 -- XXX Add verifications here.
 ''',
@@ -215,14 +233,20 @@ ROLLBACK;
 [% END -%]
 
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'revert/exasol.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
 
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'verify/exasol.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
 
 -- XXX Add verifications here.
+
+ROLLBACK;
 ''',
             
             # Firebird templates
@@ -235,14 +259,20 @@ ROLLBACK;
 [% END -%]
 
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'revert/firebird.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
 
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'verify/firebird.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
 
 -- XXX Add verifications here.
+
+ROLLBACK;
 ''',
             
             # CockroachDB templates
@@ -254,27 +284,15 @@ ROLLBACK;
 -- conflicts: [% item %]
 [% END -%]
 
-BEGIN;
-
 -- XXX Add DDLs here.
-
-COMMIT;
 ''',
             'revert/cockroach.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
 
-BEGIN;
-
 -- XXX Add DDLs here.
-
-COMMIT;
 ''',
             'verify/cockroach.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
 
-BEGIN;
-
 -- XXX Add verifications here.
-
-ROLLBACK;
 ''',
         }
     

@@ -46,13 +46,19 @@ class TestTemplateSystemIntegration:
                     assert "-- conflicts: conf1" in result
                 
                 # Verify engine-specific content for transaction-based engines
-                if engine in ["pg", "mysql", "cockroach"]:
+                if engine in ["pg", "mysql", "sqlite"]:
                     if operation in ["deploy", "revert"]:
                         assert "BEGIN;" in result
                         assert "COMMIT;" in result
                     elif operation == "verify":
                         assert "BEGIN;" in result
                         assert "ROLLBACK;" in result
+                elif engine == "snowflake":
+                    assert "USE WAREHOUSE &warehouse;" in result
+                elif engine in ["exasol", "firebird"]:
+                    if operation in ["deploy", "revert"]:
+                        assert "COMMIT;" in result
+                        assert "BEGIN;" not in result
     
     def test_custom_template_directory_integration(self):
         """Test integration with custom template directories."""

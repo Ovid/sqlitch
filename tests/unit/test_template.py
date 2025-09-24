@@ -465,7 +465,7 @@ class TestTemplateFunctions:
         )
         
         assert "Deploy myproject:add_users to mysql" in result
-        # MySQL templates now use transactions
+        # MySQL templates use transactions
         assert "BEGIN;" in result
         assert "COMMIT;" in result
     
