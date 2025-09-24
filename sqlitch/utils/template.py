@@ -102,15 +102,27 @@ ROLLBACK;
 -- conflicts: [% item %]
 [% END -%]
 
+BEGIN;
+
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'revert/mysql.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
 
+BEGIN;
+
 -- XXX Add DDLs here.
+
+COMMIT;
 ''',
             'verify/mysql.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
 
+BEGIN;
+
 -- XXX Add verifications here.
+
+ROLLBACK;
 ''',
             
             # SQLite templates
@@ -131,6 +143,138 @@ ROLLBACK;
             'verify/sqlite.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
 
 -- XXX Add verifications here.
+''',
+            
+            # Oracle templates
+            'deploy/oracle.tmpl': '''-- Deploy [% project %]:[% change %] to [% engine %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+-- XXX Add DDLs here.
+''',
+            'revert/oracle.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
+
+-- XXX Add DDLs here.
+''',
+            'verify/oracle.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+-- XXX Add verifications here.
+''',
+            
+            # Snowflake templates
+            'deploy/snowflake.tmpl': '''-- Deploy [% project %]:[% change %] to [% engine %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+-- XXX Add DDLs here.
+''',
+            'revert/snowflake.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
+
+-- XXX Add DDLs here.
+''',
+            'verify/snowflake.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+-- XXX Add verifications here.
+''',
+            
+            # Vertica templates
+            'deploy/vertica.tmpl': '''-- Deploy [% project %]:[% change %] to [% engine %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+-- XXX Add DDLs here.
+''',
+            'revert/vertica.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
+
+-- XXX Add DDLs here.
+''',
+            'verify/vertica.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+-- XXX Add verifications here.
+''',
+            
+            # Exasol templates
+            'deploy/exasol.tmpl': '''-- Deploy [% project %]:[% change %] to [% engine %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+-- XXX Add DDLs here.
+''',
+            'revert/exasol.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
+
+-- XXX Add DDLs here.
+''',
+            'verify/exasol.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+-- XXX Add verifications here.
+''',
+            
+            # Firebird templates
+            'deploy/firebird.tmpl': '''-- Deploy [% project %]:[% change %] to [% engine %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+-- XXX Add DDLs here.
+''',
+            'revert/firebird.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
+
+-- XXX Add DDLs here.
+''',
+            'verify/firebird.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+-- XXX Add verifications here.
+''',
+            
+            # CockroachDB templates
+            'deploy/cockroach.tmpl': '''-- Deploy [% project %]:[% change %] to [% engine %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+-- XXX Add DDLs here.
+
+COMMIT;
+''',
+            'revert/cockroach.tmpl': '''-- Revert [% project %]:[% change %] from [% engine %]
+
+BEGIN;
+
+-- XXX Add DDLs here.
+
+COMMIT;
+''',
+            'verify/cockroach.tmpl': '''-- Verify [% project %]:[% change %] on [% engine %]
+
+BEGIN;
+
+-- XXX Add verifications here.
+
+ROLLBACK;
 ''',
         }
     
