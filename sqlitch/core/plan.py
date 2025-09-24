@@ -63,7 +63,14 @@ class Plan:
     def _build_indexes(self) -> None:
         """Build internal indexes for fast lookups."""
         self._change_index = {change.name: change for change in self.changes}
+        # Also index by ID for checkout command
+        for change in self.changes:
+            self._change_index[change.id] = change
         self._tag_index = {tag.name: tag for tag in self.tags}
+    
+    def get_change(self, identifier: str) -> Optional[Change]:
+        """Get change by name or ID."""
+        return self._change_index.get(identifier)
     
     @classmethod
     def from_file(cls, file_path: Path) -> 'Plan':
@@ -75,6 +82,14 @@ class Plan:
             content = file_path.read_text(encoding='utf-8')
         except UnicodeDecodeError as e:
             raise PlanError(f"Invalid encoding in plan file {file_path}: {e}")
+        
+        return cls._parse_content(file_path, content)
+    
+    @classmethod
+    def from_string(cls, content: str, file_path: Optional[Path] = None) -> 'Plan':
+        """Parse plan from string content."""
+        if file_path is None:
+            file_path = Path("sqitch.plan")
         
         return cls._parse_content(file_path, content)
     

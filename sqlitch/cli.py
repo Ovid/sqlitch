@@ -149,6 +149,12 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.checkout import checkout_command
+    cli.add_command(checkout_command, name='checkout')
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

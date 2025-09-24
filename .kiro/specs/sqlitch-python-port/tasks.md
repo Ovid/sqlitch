@@ -182,7 +182,7 @@
   - Write tests for bundle creation and extraction
   - _Requirements: 1.1, 4.4, 7.1, 7.5_
 
-- [ ] 24. Implement checkout command
+- [x] 24. Implement checkout command
   - Create CheckoutCommand class in sqlitch/commands/checkout.py
   - Add project checkout capabilities from bundles or VCS
   - Implement workspace switching and state management
