@@ -421,6 +421,10 @@ class TestRebaseCommandIntegration:
 [engine "pg"]
     target = db:pg://user@localhost/test
 
+[user]
+    name = Test User
+    email = test@example.com
+
 [rebase]
     verify = true
     mode = all

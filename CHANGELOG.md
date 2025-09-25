@@ -28,6 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed bare except clauses to specify Exception
   - Removed unused local variables and f-string placeholders
   - Cleaned up unused global variable declarations
+- **CI Test Failures**: Fixed failing tests in CI environment
+  - Fixed config test mocking issue for Path.home() in Unix systems
+  - Added user configuration to rebase command test to prevent user info validation errors
 - **Target Validation Logic**: Fixed validate_preconditions to pass None instead of "default" for proper target resolution
 - **Error Message Consistency**: Updated require_initialized to use proper error message matching test expectations
 
