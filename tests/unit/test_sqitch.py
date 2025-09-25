@@ -77,8 +77,8 @@ class TestSqitch:
         mock_run.side_effect = side_effect
 
         # Mock pwd module to simulate system user lookup failure (cross-platform)
-        with patch.dict('sys.modules', {'pwd': Mock()}):
-            with patch('sqlitch.core.sqitch.os.getuid', side_effect=OSError()):
+        with patch.dict("sys.modules", {"pwd": Mock()}):
+            with patch("sqlitch.core.sqitch.os.getuid", side_effect=OSError()):
                 # Use empty config files to avoid loading global config
                 config = Config(config_files=[])
                 sqitch = Sqitch(config=config)
@@ -147,8 +147,8 @@ class TestSqitch:
         mock_run.side_effect = subprocess.TimeoutExpired(["git"], 5)
 
         # Mock pwd module to simulate system user lookup failure (cross-platform)
-        with patch.dict('sys.modules', {'pwd': Mock()}):
-            with patch('sqlitch.core.sqitch.os.getuid', side_effect=OSError()):
+        with patch.dict("sys.modules", {"pwd": Mock()}):
+            with patch("sqlitch.core.sqitch.os.getuid", side_effect=OSError()):
                 # Use empty config files to avoid loading global config
                 config = Config(config_files=[])
                 sqitch = Sqitch(config=config)

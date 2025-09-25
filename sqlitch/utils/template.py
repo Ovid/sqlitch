@@ -424,7 +424,8 @@ class TemplateEngine:
             if template_dir.exists():
                 for template_file in template_dir.rglob("*.tmpl"):
                     rel_path = template_file.relative_to(template_dir)
-                    templates.append(str(rel_path))
+                    # Use POSIX-style paths for cross-platform consistency
+                    templates.append(rel_path.as_posix())
 
         return sorted(set(templates))
 

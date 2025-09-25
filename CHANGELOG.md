@@ -34,6 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Used `patch.dict` to mock sys.modules for Unix-only modules
   - Tests now pass on both Unix-like systems and Windows
   - Maintains proper test isolation while supporting all platforms
+- **Cross-Platform Template Path Normalization**: Fixed template listing on Windows
+  - Normalized template paths to use forward slashes for consistent output across platforms
+  - Used `Path.as_posix()` method in template listing functionality
+  - Resolved test failure where Windows backslashes in template paths caused assertion mismatches
+  - Ensures consistent template path display regardless of operating system
   - Resolved import cycles with TYPE_CHECKING blocks
   - Configured gradual typing adoption for CI/CD pipeline
 - **Test Infrastructure**: Strengthened testing framework and coverage
