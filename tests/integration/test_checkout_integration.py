@@ -22,8 +22,8 @@ def temp_git_repo():
     with tempfile.TemporaryDirectory() as temp_dir:
         repo_path = Path(temp_dir)
 
-        # Initialize git repo
-        subprocess.run(["git", "init"], cwd=repo_path, check=True, capture_output=True)
+        # Initialize git repo with main as default branch
+        subprocess.run(["git", "init", "-b", "main"], cwd=repo_path, check=True, capture_output=True)
         subprocess.run(
             ["git", "config", "user.name", "Test User"], cwd=repo_path, check=True
         )

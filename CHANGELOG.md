@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Test Failures**: Fixed failing tests in CI environment
   - Fixed config test mocking issue for Path.home() in Unix systems
   - Added user configuration to rebase command test to prevent user info validation errors
+  - Fixed Git integration tests by setting 'main' as default branch during git init
+    - Resolves CI failures where Git creates 'master' as default but tests expect 'main'
 - **Target Validation Logic**: Fixed validate_preconditions to pass None instead of "default" for proper target resolution
 - **Error Message Consistency**: Updated require_initialized to use proper error message matching test expectations
 
