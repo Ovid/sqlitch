@@ -13,7 +13,6 @@ from pathlib import Path
 from typing import (
     Any,
     Callable,
-    Dict,
     Generic,
     List,
     Literal,
@@ -27,7 +26,7 @@ from typing import (
 
 # Type aliases for common types
 ConfigValue = Union[str, int, float, bool, List[str]]
-ConfigDict = Dict[str, ConfigValue]
+
 ChangeId = NewType("ChangeId", str)
 TagName = NewType("TagName", str)
 ProjectName = NewType("ProjectName", str)

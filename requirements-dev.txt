@@ -13,6 +13,7 @@ black>=22.0.0
 flake8>=5.0.0
 isort>=5.0.0
 pre-commit>=3.0.0
+vulture>=2.7
 
 # Development tools
 tox>=4.0.0

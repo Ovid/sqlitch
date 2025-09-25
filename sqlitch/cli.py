@@ -37,29 +37,12 @@ class CliContext:
         return self.sqitch
 
 
-def validate_config_file(ctx, param, value):
-    """Validate config file paths."""
-    if not value:
-        return []
-
-    config_files = []
-    for path_str in value:
-        path = Path(path_str)
-        if not path.exists():
-            raise click.BadParameter(f"Configuration file does not exist: {path}")
-        if not path.is_file():
-            raise click.BadParameter(f"Configuration path is not a file: {path}")
-        config_files.append(path)
-
-    return config_files
-
-
 @click.group(invoke_without_command=True)
 @click.option(
     "--config",
     "-c",
     multiple=True,
-    callback=validate_config_file,
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True),
     help="Configuration file to read (can be used multiple times)",
 )
 @click.option(

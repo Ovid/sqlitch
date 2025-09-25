@@ -27,16 +27,12 @@ try:
         DatabaseError,
     )
     from snowflake.connector.errors import Error as SnowflakeError
-    from snowflake.connector.errors import (
-        IntegrityError,
-        ProgrammingError,
-    )
+
 except ImportError:
     snowflake = None
     SnowflakeError = Exception
     DatabaseError = Exception
-    ProgrammingError = Exception
-    IntegrityError = Exception
+
     DictCursor = None
 
 

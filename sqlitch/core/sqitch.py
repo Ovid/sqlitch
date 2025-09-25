@@ -714,4 +714,3 @@ def create_sqitch(
         return Sqitch(config=config, options=cli_options or {})
     except Exception as e:
         raise ConfigurationError(f"Failed to create sqitch instance: {e}")
-        raise ConfigurationError(f"Failed to create sqitch instance: {e}")

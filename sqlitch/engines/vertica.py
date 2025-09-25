@@ -22,23 +22,16 @@ from .base import Engine, RegistrySchema, register_engine
 # Try to import vertica-python
 try:
     import vertica_python
-    from vertica_python.errors import ConnectionError as VerticaConnectionError
     from vertica_python.errors import (
         DatabaseError,
     )
     from vertica_python.errors import Error as VerticaError
-    from vertica_python.errors import (
-        IntegrityError,
-        ProgrammingError,
-    )
     from vertica_python.vertica.cursor import Cursor as VerticaCursor
 except ImportError:
     vertica_python = None
     VerticaError = Exception
     DatabaseError = Exception
-    ProgrammingError = Exception
-    IntegrityError = Exception
-    VerticaConnectionError = Exception
+
     VerticaCursor = None
 
 
