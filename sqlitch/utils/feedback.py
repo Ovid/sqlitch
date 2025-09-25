@@ -247,10 +247,12 @@ class ChangeReporter:
             line_count: Number of lines in the file
         """
         if hasattr(self.sqitch, "verbosity") and self.sqitch.verbosity >= 2:
+            # Use POSIX-style paths for cross-platform consistency
+            normalized_path = sql_file.as_posix()
             if line_count > 0:
-                self.sqitch.debug(f"Executing {sql_file} ({line_count} lines)")
+                self.sqitch.debug(f"Executing {normalized_path} ({line_count} lines)")
             else:
-                self.sqitch.debug(f"Executing {sql_file}")
+                self.sqitch.debug(f"Executing {normalized_path}")
 
 
 def format_error_with_suggestions(  # noqa: C901

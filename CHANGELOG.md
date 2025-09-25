@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Resolved race condition where spinner characters were overwritten before test verification
   - Improved test reliability by monitoring write operations during animation
   - Test now properly captures spinner character output across all platforms
+- **Cross-Platform Path Compatibility**: Fixed SQL execution reporting on Windows
+  - Normalized path separators to use forward slashes for consistent output across platforms
+  - Used `Path.as_posix()` method for proper cross-platform path normalization
+  - Resolved test failure where Windows backslashes caused assertion mismatches
+  - Ensures consistent path display in debug messages regardless of operating system
   - Resolved import cycles with TYPE_CHECKING blocks
   - Configured gradual typing adoption for CI/CD pipeline
 - **Test Infrastructure**: Strengthened testing framework and coverage
