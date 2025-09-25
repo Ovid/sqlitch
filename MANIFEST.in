@@ -1,0 +1,56 @@
+# Include important project files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+include requirements.txt
+include requirements-dev.txt
+
+# Include configuration files
+include setup.cfg
+include pytest.ini
+include .gitignore
+
+# Include documentation
+recursive-include docs *
+recursive-include examples *
+
+# Include test files for development installs
+recursive-include tests *
+
+# Include steering documents
+recursive-include .kiro *
+
+# Include type information
+include sqlitch/py.typed
+
+# Exclude compiled Python files
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .pytest_cache
+
+# Exclude development files
+exclude .pre-commit-config.yaml
+exclude tox.ini
+exclude docker-compose.yml
+exclude Makefile
+
+# Exclude CI/CD files
+recursive-exclude .github *
+
+# Exclude build artifacts
+recursive-exclude build *
+recursive-exclude dist *
+recursive-exclude *.egg-info *
+
+# Exclude IDE files
+recursive-exclude .vscode *
+recursive-exclude .idea *
+recursive-exclude *.swp
+recursive-exclude *.swo
+
+# Exclude coverage reports
+exclude .coverage
+recursive-exclude htmlcov *
+exclude coverage.xml
