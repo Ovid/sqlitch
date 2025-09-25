@@ -135,7 +135,7 @@ The following compatibility test categories are available:
 - Help and version output format
 - Error message consistency
 
-### Plan File Compatibility Tests  
+### Plan File Compatibility Tests
 - Plan file format and structure
 - Change dependency syntax
 - Tag format and placement
