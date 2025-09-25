@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Target Configuration System**: Implemented Target.from_config class method for proper target resolution
+  - Added support for engine-based target configuration matching Perl sqitch behavior
+  - Implemented proper URI parsing and password handling for target names
+  - Added configuration value fetching with proper priority order (target -> engine -> core)
+  - Fixed target validation to use None instead of "default" for proper error handling
+
+### Fixed
+- **Missing Imports**: Added missing SqlitchError and PlanError imports in multiple command modules
+  - Added SqlitchError import to init, rebase, and revert commands
+  - Added PlanError import to rebase command
+- **Oracle Engine**: Fixed missing urlparse import in Oracle database engine
+  - Added urllib.parse.urlparse import to resolve NameError in Oracle connection handling
+- **Target Name Resolution**: Fixed test expectation for default target naming
+  - Corrected test to expect URI as target name when using engine.{engine}.target configuration
+  - Aligned behavior with Perl sqitch reference implementation
+- **Target Validation Logic**: Fixed validate_preconditions to pass None instead of "default" for proper target resolution
+- **Error Message Consistency**: Updated require_initialized to use proper error message matching test expectations
+
 - **Comprehensive Test Infrastructure and CI/CD Pipeline**: Complete testing and automation setup (COMPLETED)
   - Implemented pytest configuration with coverage reporting, quality gates, and test categorization
   - Created GitHub Actions workflows for continuous integration with multi-OS and multi-Python version testing

@@ -6,19 +6,16 @@ changes by running verification scripts, with support for parallel verification,
 detailed error reporting, and range-based verification.
 """
 
-import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 import click
 
 from ..core.change import Change
-from ..core.exceptions import DeploymentError, PlanError, SqlitchError
+from ..core.exceptions import PlanError, SqlitchError
 from ..core.plan import Plan
-from ..core.types import ChangeStatus
 from .base import BaseCommand
 
 

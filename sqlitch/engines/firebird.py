@@ -7,9 +7,6 @@ SQL execution with proper error handling and transaction management.
 """
 
 import logging
-import re
-from contextlib import contextmanager
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Union
 from urllib.parse import urlparse
@@ -19,7 +16,6 @@ try:
 except ImportError:
     fdb = None
 
-from ..core.change import Change
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan
 from ..core.target import Target

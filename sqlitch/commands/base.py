@@ -195,9 +195,7 @@ class BaseCommand(ABC):
         """
         from ..utils.feedback import validate_operation_preconditions
 
-        errors = validate_operation_preconditions(
-            self.sqitch, operation, target or "default"
-        )
+        errors = validate_operation_preconditions(self.sqitch, operation, target)
         if errors:
             raise SqlitchError("\n".join(errors))
 

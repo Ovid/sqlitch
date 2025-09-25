@@ -5,15 +5,13 @@ This module implements the 'tag' command which adds tags to changes in the sqlit
 or lists existing tags.
 """
 
-import re
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import click
 
 from ..core.change import Tag
-from ..core.exceptions import PlanError, SqlitchError
+from ..core.exceptions import SqlitchError
 from ..core.plan import Plan
 from ..core.types import validate_tag_name
 from .base import BaseCommand

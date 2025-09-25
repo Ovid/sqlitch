@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import click
 
-from ..core.exceptions import PlanError, SqlitchError
+from ..core.exceptions import SqlitchError
 from ..core.plan import Plan
 from ..core.target import Target
 from .base import BaseCommand

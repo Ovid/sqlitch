@@ -276,7 +276,7 @@ class TestSqitch:
 
             target = sqitch.get_target()
 
-            assert target.name == "default"
+            assert target.name == "db:pg://localhost/test"
             assert target.uri == "db:pg://localhost/test"
         finally:
             config_file.unlink()

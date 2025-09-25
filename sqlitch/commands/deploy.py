@@ -6,8 +6,6 @@ from the plan file to the target database, with transaction management,
 progress reporting, and rollback on failure.
 """
 
-import sys
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
@@ -16,7 +14,6 @@ import click
 from ..core.change import Change
 from ..core.exceptions import DeploymentError, PlanError, SqlitchError
 from ..core.plan import Plan
-from ..core.types import ChangeStatus
 from .base import BaseCommand
 
 

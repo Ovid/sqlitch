@@ -6,7 +6,6 @@ sqitch objects including changes, tags, and script contents.
 """
 
 import sys
-from pathlib import Path
 from typing import List, Optional
 
 import click

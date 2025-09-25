@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type
 
 from .. import i18n
-from ..utils.logging import SqlitchLogger, configure_logging, get_logger
+from ..utils.logging import SqlitchLogger, configure_logging
 from .config import Config
 from .exceptions import ConfigurationError, EngineError, SqlitchError
 from .target import Target
@@ -278,11 +278,13 @@ class Sqitch:
         Raises:
             SqlitchError: If not initialized
         """
-        plan_file = Path(self.config.get("core.plan_file", "sqitch.plan"))
-        if not plan_file.exists():
+        if not self.is_initialized():
             from .exceptions import hurl
 
-            hurl("init", "Not a sqitch project; run 'sqlitch init' to initialize one")
+            hurl(
+                "init",
+                'No project configuration found. Run the "init" command to initialize a project',
+            )
 
     def get_target(self, target_name: Optional[str] = None) -> "Target":
         """
@@ -312,18 +314,6 @@ class Sqitch:
             target_name = engine
 
         return Target.from_config(self.config, target_name)
-
-    def _setup_logging(self) -> SqlitchLogger:
-        """
-        Set up logging configuration.
-
-        Returns:
-            Configured logger instance
-        """
-        log_file = self.options.get("log_file")
-        log_file_path = Path(log_file) if log_file else None
-
-        return configure_logging(verbosity=self.verbosity, log_file=log_file_path)
 
     def engine_for_target(self, target: Target) -> "Engine":
         """
@@ -416,25 +406,6 @@ class Sqitch:
         except (ImportError, AttributeError) as e:
             self.logger.debug(f"Failed to import engine {engine_type}: {e}")
             return None
-
-    def get_target(self, target_name: Optional[str] = None) -> Target:
-        """
-        Get target configuration by name.
-
-        Args:
-            target_name: Target name (defaults to configured default)
-
-        Returns:
-            Target configuration
-
-        Raises:
-            ConfigurationError: If target not found or invalid
-        """
-        if not target_name:
-            # Use default target
-            target_name = self.config.get("core.target", "default")
-
-        return self.config.get_target(target_name)
 
     def run_command(self, command_name: str, args: List[str]) -> int:
         """
@@ -544,31 +515,6 @@ class Sqitch:
             self.logger.debug(f"Failed to import command {command_name}: {e}")
             return None
 
-    def validate_user_info(self) -> List[str]:
-        """
-        Validate user name and email configuration.
-
-        Returns:
-            List of validation issues
-        """
-        issues = []
-
-        if not self.user_name:
-            issues.append(
-                getattr(i18n, "__")(
-                    'Cannot find your name; run sqlitch config --user user.name "YOUR NAME"'
-                )
-            )
-
-        if not self.user_email:
-            issues.append(
-                getattr(i18n, "__")(
-                    "Cannot infer your email address; run sqlitch config --user user.email you@host.com"
-                )
-            )
-
-        return issues
-
     def get_plan_file(self, plan_file: Optional[Path] = None) -> Path:
         """
         Get plan file path.
@@ -650,20 +596,6 @@ class Sqitch:
         """
         plan_file = self.get_plan_file()
         return plan_file.exists()
-
-    def require_initialized(self) -> None:
-        """
-        Ensure current directory is a sqitch project.
-
-        Raises:
-            SqlitchError: If not initialized
-        """
-        if not self.is_initialized():
-            raise SqlitchError(
-                getattr(i18n, "__")(
-                    'No project configuration found. Run the "init" command to initialize a project'
-                )
-            )
 
     @property
     def editor(self) -> Optional[str]:

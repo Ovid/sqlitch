@@ -21,7 +21,6 @@ from typing import (
     Optional,
     Pattern,
     Protocol,
-    Tuple,
     TypeVar,
     Union,
 )

@@ -6,17 +6,15 @@ checks out a VCS branch, and redeploys changes from the new branch.
 """
 
 import sys
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import click
 
 from ..core.change import Change
-from ..core.exceptions import DeploymentError, PlanError, SqlitchError
+from ..core.exceptions import PlanError, SqlitchError
 from ..core.plan import Plan
-from ..core.types import ChangeStatus
-from ..utils.git import GitRepository, VCSError
+from ..utils.git import VCSError
 from .base import BaseCommand
 
 
@@ -311,7 +309,6 @@ class CheckoutCommand(BaseCommand):
 
     def _load_branch_plan(self, branch: str, target) -> Plan:
         """Load plan file from specified branch."""
-        import os
         import subprocess
 
         # Get plan file path - use just the filename, not absolute path

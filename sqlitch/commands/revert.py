@@ -6,17 +6,14 @@ from the target database, with confirmation prompts, safety checks, and
 support for reverting to specific changes or tags.
 """
 
-import sys
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import click
 
 from ..core.change import Change
-from ..core.exceptions import DeploymentError, PlanError, SqlitchError
+from ..core.exceptions import PlanError, SqlitchError
 from ..core.plan import Plan
-from ..core.types import ChangeStatus
 from .base import BaseCommand
 
 

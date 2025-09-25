@@ -6,7 +6,6 @@ deployment state of the target database, including deployed changes,
 tags, and comparison with the plan file.
 """
 
-import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional
@@ -16,7 +15,6 @@ import click
 from ..core.change import Change
 from ..core.exceptions import EngineError, PlanError, SqlitchError
 from ..core.plan import Plan
-from ..core.types import ChangeStatus
 from ..engines.base import EngineRegistry
 from .base import BaseCommand
 

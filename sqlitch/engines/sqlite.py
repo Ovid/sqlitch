@@ -8,13 +8,10 @@ SQL execution with proper error handling and transaction management.
 
 import logging
 import sqlite3
-from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Union
-from urllib.parse import urlparse
 
-from ..core.change import Change
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan
 from ..core.target import Target

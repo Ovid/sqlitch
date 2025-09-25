@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 from .change import Change, Dependency, Tag
 from .exceptions import PlanError

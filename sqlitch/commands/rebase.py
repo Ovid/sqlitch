@@ -6,17 +6,13 @@ and then redeploys up to another change, effectively rebasing the database state
 It supports interactive rebasing with user prompts and conflict resolution.
 """
 
-import sys
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import click
 
-from ..core.change import Change
-from ..core.exceptions import DeploymentError, PlanError, SqlitchError
+from ..core.exceptions import PlanError, SqlitchError
 from ..core.plan import Plan
-from ..core.types import ChangeStatus
 from .base import BaseCommand
 
 

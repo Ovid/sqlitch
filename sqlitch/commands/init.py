@@ -5,19 +5,16 @@ This module implements the 'init' command which initializes a new sqlitch projec
 creating the necessary configuration files, directories, and plan file.
 """
 
-import os
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from urllib.parse import urlparse
 
 import click
 
-from ..core.exceptions import ConfigurationError, SqlitchError
+from ..core.exceptions import SqlitchError
 from ..core.target import Target
 from ..core.types import URI, EngineType, validate_project_name
 from ..utils.git import GitRepository, detect_vcs
-from ..utils.template import create_template_engine
 from .base import BaseCommand
 
 

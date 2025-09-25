@@ -8,7 +8,7 @@ the Perl sqitch error format and behavior.
 
 import sys
 import traceback
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 
 class SqlitchError(Exception):

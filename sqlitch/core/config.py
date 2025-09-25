@@ -9,19 +9,15 @@ INI-style format as Perl sqitch with proper type coercion and validation.
 import configparser
 import os
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 from .exceptions import ConfigurationError
 from .target import Target
 from .types import (
-    URI,
-    ConfigDict,
-    ConfigValue,
     EngineType,
     coerce_config_value,
-    sanitize_connection_string,
     validate_config_key,
     validate_email,
     validate_uri,

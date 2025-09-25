@@ -7,8 +7,6 @@ SQL execution with proper error handling and transaction management.
 """
 
 import logging
-import re
-from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Union
 from urllib.parse import parse_qs, urlparse
