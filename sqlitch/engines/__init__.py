@@ -48,9 +48,4 @@ try:
 except ImportError:
     pass  # Firebird engine not available
 
-__all__ = [
-    'Engine',
-    'EngineRegistry', 
-    'RegistrySchema',
-    'register_engine'
-]
+__all__ = ["Engine", "EngineRegistry", "RegistrySchema", "register_engine"]

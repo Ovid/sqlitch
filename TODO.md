@@ -12,6 +12,10 @@ README references missing docs
 
 Does it follow them?
 
+## Tutorials
+
+Grab some tutorials from sqitch.org and run them to make sure they work.
+
 ## Gap Analysis
 
 When initial work is done, run a gap analysis across the Perl and Python
@@ -83,3 +87,13 @@ Obviously, I don't want `python *`, but I'm kinda OK with `python -m pytest *`
 Sometimes after a task is complete and I merge it, the window still says it's
 working on the task. I click to start a new task and the "completed" task is
 marked as "Task execution aborted".
+
+Also, having fun with Kiro just *stopping* because "Restarting the
+terminal because the connection to the shell process was lost... " I wound up
+restarting Kiro and it crashed. Restarted a second time and it worked, but
+still kept getting the terminal error. Finally rebooted my Mac and it worked
+:/
+
+Sometimes it will have a command that says "Waiting on your input" and you can
+click "run" to run it, but it doesn't run. You have to scroll up to the top of
+the command and click the "Run" icon there and it works.

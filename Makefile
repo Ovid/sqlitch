@@ -11,6 +11,7 @@ help:
 	@echo "  test-unit        Run unit tests only"
 	@echo "  test-integration Run integration tests only"
 	@echo "  test-compatibility Run compatibility tests against Perl sqitch"
+	@echo "  test-code-quality Run code quality tests (Black, isort, syntax)"
 	@echo "  lint             Run linting checks"
 	@echo "  format           Format code with black and isort"
 	@echo "  mypy             Run type checking"
@@ -43,6 +44,9 @@ test-compatibility:
 
 test-all:
 	pytest tests/ -v --cov=sqlitch --cov-report=html --cov-report=term-missing
+
+test-code-quality:
+	pytest tests/unit/test_code_quality.py -v --no-cov
 
 # Code quality targets
 lint:
