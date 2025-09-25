@@ -291,8 +291,6 @@ class Plan:
         except ValueError:
             return []
 
-
-
     def get_tag(self, name: str) -> Optional[Tag]:
         """Get tag by name."""
         return self._tag_index.get(name)

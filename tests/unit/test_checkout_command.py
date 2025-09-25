@@ -476,6 +476,3 @@ class TestCheckoutCommandIntegration:
             assert "SYNOPSIS" in help_text
             assert "DESCRIPTION" in help_text
             assert "OPTIONS" in help_text
-
-
-

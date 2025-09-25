@@ -219,8 +219,6 @@ class BaseCommand(ABC):
 
         return confirm_destructive_operation(self.sqitch, operation, target, changes)
 
-
-
     def confirm(self, message: str, default: Optional[bool] = None) -> bool:
         """
         Prompt user for confirmation.

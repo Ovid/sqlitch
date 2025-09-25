@@ -580,6 +580,3 @@ def format_database_error(operation: str, target: str, error: str) -> str:
         Formatted database error message
     """
     return f"Cannot {operation} {target}: {error}"
-
-
-
