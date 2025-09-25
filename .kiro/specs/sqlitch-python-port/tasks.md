@@ -214,7 +214,7 @@
   - Write unit tests with Snowflake test database
   - _Requirements: 2.5, 7.2, 7.3, 8.3, 10.1, 10.2_
 
-- [ ] 28. Build Vertica database engine
+- [x] 28. Build Vertica database engine
   - Create VerticaEngine class in sqlitch/engines/vertica.py
   - Implement Vertica-specific connection handling with vertica-python
   - Add Vertica registry table creation with proper projections
