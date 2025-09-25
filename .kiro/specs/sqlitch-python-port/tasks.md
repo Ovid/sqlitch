@@ -254,10 +254,3 @@
   - Test installation across different Python versions and platforms
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 33. Create migration utilities and compatibility tools
-  - Build project compatibility checker for Perl-to-Python migration
-  - Create database state verification tools
-  - Add side-by-side operation support during migration
-  - Implement change ID compatibility verification
-  - Write migration guide and troubleshooting documentation
-  - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
