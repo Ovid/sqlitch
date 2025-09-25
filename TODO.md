@@ -144,3 +144,9 @@ still kept getting the terminal error. Finally rebooted my Mac and it worked
 Sometimes it will have a command that says "Waiting on your input" and you can
 click "run" to run it, but it doesn't run. You have to scroll up to the top of
 the command and click the "Run" icon there and it works.
+
+Quite often Kiro will run something in the terminal which runs in a pager, or
+piped to less or something. When that happens, Kiro cheerfully blocks and you
+have to manually exit the pager to allow Kiro to continue. However, you don't
+want to hit 'escape' because that might terminate the pager *before* it emits
+the output that Kiro is looking for. Oops.
