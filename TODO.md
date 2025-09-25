@@ -4,6 +4,10 @@ None of this work should be done now, but things to consider.
 
 # Tasks
 
+## Vulture?
+
+Use vulture to find unused code?
+
 ## Docs
 
 README references missing docs

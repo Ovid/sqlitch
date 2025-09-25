@@ -29,6 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Used `Path.as_posix()` method for proper cross-platform path normalization
   - Resolved test failure where Windows backslashes caused assertion mismatches
   - Ensures consistent path display in debug messages regardless of operating system
+- **Cross-Platform User Detection Tests**: Fixed pwd module import issues on Windows
+  - Replaced direct `pwd.getpwuid` mocking with cross-platform compatible approach
+  - Used `patch.dict` to mock sys.modules for Unix-only modules
+  - Tests now pass on both Unix-like systems and Windows
+  - Maintains proper test isolation while supporting all platforms
   - Resolved import cycles with TYPE_CHECKING blocks
   - Configured gradual typing adoption for CI/CD pipeline
 - **Test Infrastructure**: Strengthened testing framework and coverage

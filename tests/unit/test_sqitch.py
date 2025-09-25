@@ -63,8 +63,7 @@ class TestSqitch:
         clear=False,
     )
     @patch("sqlitch.core.sqitch.subprocess.run")
-    @patch("pwd.getpwuid", side_effect=KeyError())  # Mock system user lookup failure
-    def test_user_name_detection_from_git(self, mock_pwd, mock_run):
+    def test_user_name_detection_from_git(self, mock_run):
         """Test user name detection from Git configuration."""
 
         # Mock different responses for name and email calls
@@ -77,11 +76,14 @@ class TestSqitch:
 
         mock_run.side_effect = side_effect
 
-        # Use empty config files to avoid loading global config
-        config = Config(config_files=[])
-        sqitch = Sqitch(config=config)
+        # Mock pwd module to simulate system user lookup failure (cross-platform)
+        with patch.dict('sys.modules', {'pwd': Mock()}):
+            with patch('sqlitch.core.sqitch.os.getuid', side_effect=OSError()):
+                # Use empty config files to avoid loading global config
+                config = Config(config_files=[])
+                sqitch = Sqitch(config=config)
 
-        assert sqitch.user_name == "John Doe"
+                assert sqitch.user_name == "John Doe"
 
     @patch("subprocess.run")
     def test_user_email_detection_from_git(self, mock_run):
@@ -140,18 +142,20 @@ class TestSqitch:
         clear=False,
     )
     @patch("sqlitch.core.sqitch.subprocess.run")
-    @patch("pwd.getpwuid", side_effect=KeyError())  # Mock system user lookup failure
-    def test_user_detection_git_timeout(self, mock_pwd, mock_run):
+    def test_user_detection_git_timeout(self, mock_run):
         """Test user detection when Git command times out."""
         mock_run.side_effect = subprocess.TimeoutExpired(["git"], 5)
 
-        # Use empty config files to avoid loading global config
-        config = Config(config_files=[])
-        sqitch = Sqitch(config=config)
+        # Mock pwd module to simulate system user lookup failure (cross-platform)
+        with patch.dict('sys.modules', {'pwd': Mock()}):
+            with patch('sqlitch.core.sqitch.os.getuid', side_effect=OSError()):
+                # Use empty config files to avoid loading global config
+                config = Config(config_files=[])
+                sqitch = Sqitch(config=config)
 
-        # Should not raise exception, just return None
-        assert sqitch.user_name is None
-        assert sqitch.user_email is None
+                # Should not raise exception, just return None
+                assert sqitch.user_name is None
+                assert sqitch.user_email is None
 
     def test_user_name_from_config(self):
         """Test user name from configuration takes precedence."""
