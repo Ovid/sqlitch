@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple, Union
 
 from .change import Change, Dependency, Tag
 from .exceptions import PlanError
@@ -424,7 +424,7 @@ class Plan:
         lines.append("")  # Empty line after pragmas
 
         # Add changes and tags in chronological order
-        all_items = []
+        all_items: List[Tuple[str, Union[Change, Tag]]] = []
         all_items.extend(("change", change) for change in self.changes)
         all_items.extend(("tag", tag) for tag in self.tags)
 

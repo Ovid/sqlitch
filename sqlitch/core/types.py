@@ -83,40 +83,6 @@ class Dependency:
         return self.change
 
 
-@dataclass(frozen=True)
-class Target:
-    """Represents a deployment target configuration."""
-
-    name: str
-    uri: URI
-    registry: Optional[str] = None
-    client: Optional[str] = None
-
-    @property
-    def engine_type(self) -> EngineType:
-        """Extract engine type from URI."""
-        if self.uri.startswith("db:pg:"):
-            return "pg"
-        elif self.uri.startswith("db:mysql:"):
-            return "mysql"
-        elif self.uri.startswith("db:sqlite:"):
-            return "sqlite"
-        elif self.uri.startswith("db:oracle:"):
-            return "oracle"
-        elif self.uri.startswith("db:snowflake:"):
-            return "snowflake"
-        elif self.uri.startswith("db:vertica:"):
-            return "vertica"
-        elif self.uri.startswith("db:exasol:"):
-            return "exasol"
-        elif self.uri.startswith("db:firebird:"):
-            return "firebird"
-        elif self.uri.startswith("db:cockroach:"):
-            return "cockroach"
-        else:
-            raise ValueError(f"Unknown engine type in URI: {self.uri}")
-
-
 # Validation patterns
 CHANGE_NAME_PATTERN: Pattern[str] = re.compile(r"^[a-zA-Z0-9_-]+$")
 TAG_NAME_PATTERN: Pattern[str] = re.compile(r"^[a-zA-Z0-9._-]+$")
@@ -337,8 +303,8 @@ class ValidatedType(Generic[T]):
     def __eq__(self, other: Any) -> bool:
         """Equality comparison."""
         if isinstance(other, ValidatedType):
-            return self._value == other._value
-        return self._value == other
+            return bool(self._value == other._value)
+        return bool(self._value == other)
 
     def __hash__(self) -> int:
         """Hash for use in sets and dicts."""

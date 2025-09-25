@@ -16,7 +16,7 @@ class LocaleAwareDateTimeFormatter:
     Formatter for date/time values that respects locale settings.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the formatter."""
         self._locale_set = False
         self._setup_locale()

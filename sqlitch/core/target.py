@@ -3,10 +3,11 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Union
 
 if TYPE_CHECKING:
     from .config import Config
+    from .plan import Plan
 
 
 @dataclass
@@ -18,11 +19,11 @@ class Target:
     engine: str = "pg"
     registry: Optional[str] = None
     client: Optional[str] = None
-    top_dir: Path = Path(".")
-    deploy_dir: Path = Path("deploy")
-    revert_dir: Path = Path("revert")
-    verify_dir: Path = Path("verify")
-    plan_file: Path = Path("sqitch.plan")
+    top_dir: Union[Path, str] = Path(".")
+    deploy_dir: Union[Path, str] = Path("deploy")
+    revert_dir: Union[Path, str] = Path("revert")
+    verify_dir: Union[Path, str] = Path("verify")
+    plan_file: Union[Path, str] = Path("sqitch.plan")
 
     def __post_init__(self) -> None:
         """Convert string paths to Path objects."""
@@ -72,11 +73,11 @@ class Target:
             return self.engine
 
     @property
-    def plan(self):
+    def plan(self) -> "Plan":
         """Get the plan for this target."""
         from .plan import Plan
 
-        return Plan.from_file(self.plan_file)
+        return Plan.from_file(Path(self.plan_file))
 
     @classmethod
     def from_config(  # noqa: C901
@@ -114,7 +115,9 @@ class Target:
                 # Look for core.engine and construct default URI
                 engine = config.get("core.engine")
                 if not engine:
-                    if config.initialized:
+                    # Check if we have any config files loaded to determine if project is initialized
+                    has_config = any(config.get_section("core"))
+                    if has_config:
                         hurl(
                             "target",
                             "No engine specified; specify via target or core.engine",
@@ -162,6 +165,9 @@ class Target:
                 f'No engine specified by URI {uri}; URI must start with "db:$engine:"',
             )
 
+        # At this point engine is guaranteed to be not None due to hurl() above
+        assert engine is not None
+
         # If name is None (URI case), set it to URI without password
         if name is None:
             name = uri
@@ -172,7 +178,7 @@ class Target:
 
                     parsed = urlparse(uri)
                     if parsed.password:
-                        netloc = parsed.username
+                        netloc = parsed.username or ""
                         if parsed.hostname:
                             netloc += f"@{parsed.hostname}"
                         if parsed.port:
@@ -270,13 +276,14 @@ class Target:
         if target_name:
             value = config.get(f"target.{target_name}.{key}")
             if value:
-                return value
+                return str(value) if value is not None else None
 
         # Try engine-specific config
         if engine:
             value = config.get(f"engine.{engine}.{key}")
             if value:
-                return value
+                return str(value) if value is not None else None
 
         # Try core config
-        return config.get(f"core.{key}")
+        value = config.get(f"core.{key}")
+        return str(value) if value is not None else None

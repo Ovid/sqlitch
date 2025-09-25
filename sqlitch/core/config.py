@@ -8,6 +8,7 @@ INI-style format as Perl sqitch with proper type coercion and validation.
 
 import configparser
 import os
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -212,7 +213,7 @@ class Config:
         # Pattern to match section headers with quoted subsections
         pattern = r'^\[([a-zA-Z][a-zA-Z0-9._]*)\s+"([^"]+)"\]'
 
-        def replace_section(match):
+        def replace_section(match: re.Match[str]) -> str:
             main_section = match.group(1)
             sub_section = match.group(2)
             return f'[{main_section} "{sub_section}"]'
@@ -224,7 +225,7 @@ class Config:
         # Sort sources by priority
         self._sources.sort(key=lambda s: s.priority)
 
-        merged = {}
+        merged: Dict[str, Any] = {}
 
         # Merge each source
         for source in self._sources:
@@ -555,14 +556,18 @@ class Config:
 
     def get_user_name(self) -> Optional[str]:
         """Get configured user name."""
-        return self.get("user.name")
+        value = self.get("user.name")
+        return str(value) if value is not None else None
 
     def get_user_email(self) -> Optional[str]:
         """Get configured user email."""
         email = self.get("user.email")
-        if email and not validate_email(email):
-            raise ConfigurationError(f"Invalid email address: {email}")
-        return email
+        if email is not None:
+            email_str = str(email)
+            if not validate_email(email_str):
+                raise ConfigurationError(f"Invalid email address: {email_str}")
+            return email_str
+        return None
 
     def get_core_config(self) -> Dict[str, Any]:
         """Get core configuration section."""

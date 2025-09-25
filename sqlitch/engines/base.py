@@ -24,11 +24,11 @@ from typing import (
 from ..core.change import Change
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan
+from ..core.target import Target
 from ..core.types import (
     ChangeId,
     ChangeStatus,
     EngineType,
-    Target,
     sanitize_connection_string,
 )
 
