@@ -84,7 +84,7 @@ class TestConfigCommand:
 
     def test_execute_unknown_action(self, config_command):
         """Test execute with unknown action."""
-        with patch.object(config_command, "error") as mock_error:
+        with patch.object(config_command, "error"):
             result = config_command.execute([])
 
         assert result == 0  # List is default action

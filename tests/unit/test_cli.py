@@ -282,9 +282,7 @@ class TestErrorHandlers:
         mock_sqitch = Mock()
         mock_sqitch.verbosity = 2
 
-        with patch(
-            "traceback.format_exc", return_value="Traceback..."
-        ) as mock_traceback:
+        with patch("traceback.format_exc", return_value="Traceback..."):
             result = handle_unexpected_error(error, mock_sqitch)
 
         assert result == 2
