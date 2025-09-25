@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Type Safety Improvements**: Enhanced type annotations and mypy compliance
   - Fixed 372+ type errors in core modules with strict mypy checking
   - Added proper return type annotations throughout codebase
+
+### Fixed
+- **Progress Indicator Tests**: Fixed spinner animation test timing issue on macOS
+  - Resolved race condition where spinner characters were overwritten before test verification
+  - Improved test reliability by monitoring write operations during animation
+  - Test now properly captures spinner character output across all platforms
   - Resolved import cycles with TYPE_CHECKING blocks
   - Configured gradual typing adoption for CI/CD pipeline
 - **Test Infrastructure**: Strengthened testing framework and coverage
