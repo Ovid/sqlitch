@@ -38,6 +38,11 @@ try:
 except ImportError:
     pass  # Vertica engine not available
 
+try:
+    from . import exasol
+except ImportError:
+    pass  # Exasol engine not available
+
 __all__ = [
     'Engine',
     'EngineRegistry', 
