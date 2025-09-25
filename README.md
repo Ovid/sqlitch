@@ -34,7 +34,8 @@ Sqlitch currently supports:
 * **SQLite** 3.8.6+
 * **Oracle** 10g+ (requires cx_Oracle driver)
 * **Snowflake** (requires snowflake-connector-python driver)
-* Additional database engines in development (Vertica, Exasol, Firebird)
+* **Vertica** (requires vertica-python driver)
+* Additional database engines in development (Exasol, Firebird)
 
 ## Installation
 
@@ -253,7 +254,7 @@ Current implementation status:
 - ✅ Comprehensive error handling and user feedback
 - ✅ Internationalization support (German, French, Italian)
 - ✅ Advanced commands (tag, bundle, checkout, rebase, show)
-- ⏳ Additional database engines (Snowflake, Vertica, Exasol, Firebird)
+- ⏳ Additional database engines (Exasol, Firebird)
 
 ## Contributing
 

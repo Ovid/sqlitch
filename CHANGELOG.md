@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Vertica Database Engine**: Complete Vertica database engine implementation (COMPLETED)
+  - Implemented VerticaEngine class with full compatibility to Perl sqitch Vertica engine
+  - Added Vertica-specific connection handling with vertica-python driver
+  - Implemented Vertica registry table creation with proper schemas, projections, and constraints
+  - Added Vertica-specific SQL execution with cluster management and session configuration
+  - Implemented proper host, port, user, password, and database detection from URIs and environment variables
+  - Added support for Vertica-specific features like search path configuration and timezone handling
+  - Created comprehensive unit tests covering all connection scenarios and SQL operations
+  - Added integration tests for full deployment cycle testing with real Vertica databases
+  - Implemented proper error handling and connection management for Vertica-specific exceptions
+  - Added support for variable substitution in SQL scripts with Vertica-specific registry variables
+  - Implemented Vertica-specific SQL formatting including timestamp functions and multi-value expressions
+  - Added exclusive table locking during transactions to ensure single-instance operation
 - **Snowflake Database Engine**: Complete Snowflake database engine implementation (COMPLETED)
   - Implemented SnowflakeEngine class with full compatibility to Perl sqitch Snowflake engine
   - Added Snowflake-specific connection handling with snowflake-connector-python driver

@@ -33,6 +33,11 @@ try:
 except ImportError:
     pass  # Snowflake engine not available
 
+try:
+    from . import vertica
+except ImportError:
+    pass  # Vertica engine not available
+
 __all__ = [
     'Engine',
     'EngineRegistry', 
