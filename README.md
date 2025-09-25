@@ -2,9 +2,9 @@
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Tests](https://github.com/sqlitch/sqlitch-python/workflows/CI/badge.svg)](https://github.com/sqlitch/sqlitch-python/actions)
-[![Coverage](https://codecov.io/gh/sqlitch/sqlitch-python/branch/main/graph/badge.svg)](https://codecov.io/gh/sqlitch/sqlitch-python)
-[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](https://github.com/sqlitch/sqlitch-python/actions)
+[![Tests](https://github.com/Ovid/sqlitch/workflows/CI/badge.svg)](https://github.com/Ovid/sqlitch/actions)
+[![Coverage](https://codecov.io/gh/Ovid/sqlitch/branch/main/graph/badge.svg)](https://codecov.io/gh/Ovid/sqlitch)
+[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](https://github.com/Ovid/sqlitch/actions)
 
 **Sqlitch**, pronounced "sklitch", is here to fix your SQL itch. It's a Python port of the popular [Sqitch] database change management application. It provides the same powerful, framework-agnostic approach to database schema management with the convenience and ecosystem of Python.
 
