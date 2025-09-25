@@ -138,12 +138,11 @@ engine = pg
     @pytest.mark.compatibility
     def test_get_global_config_path_unix(self):
         """Test global configuration path on Unix-like systems."""
-        config = Config()
-
         with (
             patch("sys.platform", "linux"),
-            patch("pathlib.Path.home", return_value=Path("/home/user")),
+            patch("sqlitch.core.config.Path.home", return_value=Path("/home/user")),
         ):
+            config = Config()
             path = config._get_global_config_path()
 
             expected_path = Path("/home/user/.config/sqlitch/sqitch.conf")
@@ -168,7 +167,7 @@ engine = pg
 
         with (
             patch("sys.platform", "win32"),
-            patch("pathlib.Path.home", return_value=Path("C:/Users/user")),
+            patch("sqlitch.core.config.Path.home", return_value=Path("C:/Users/user")),
         ):
             path = config._get_global_config_path()
 

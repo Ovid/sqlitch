@@ -169,9 +169,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e .[dev]
         
+    - name: Configure Git for tests
+      run: |
+        git config --global user.name "CI Test User"
+        git config --global user.email "ci-test@example.com"
+        
     - name: Run compatibility tests
       run: |
-        pytest -m compatibility -v --tb=short
+        pytest -m compatibility -v --tb=short --no-cov
 
   security:
     runs-on: ubuntu-latest
