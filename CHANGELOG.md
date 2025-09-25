@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Snowflake Database Engine**: Complete Snowflake database engine implementation (COMPLETED)
+  - Implemented SnowflakeEngine class with full compatibility to Perl sqitch Snowflake engine
+  - Added Snowflake-specific connection handling with snowflake-connector-python driver
+  - Implemented Snowflake registry table creation with proper schemas and constraints
+  - Added Snowflake-specific SQL execution with warehouse management and session configuration
+  - Implemented proper account, user, password, database, warehouse, and role detection from URIs and environment variables
+  - Added support for Snowflake-specific features like warehouse suspension/resumption and timezone handling
+  - Created comprehensive unit tests covering all connection scenarios and SQL operations
+  - Added integration tests for full deployment cycle testing with real Snowflake databases
+  - Implemented proper error handling and connection management for Snowflake-specific exceptions
+  - Added support for variable substitution in SQL scripts with Snowflake-specific registry and warehouse variables
 - **Show Command Implementation**: Complete show command functionality (COMPLETED)
   - Implemented ShowCommand class with full CLI compatibility to Perl sqitch
   - Added functionality to display change details and metadata with proper formatting
