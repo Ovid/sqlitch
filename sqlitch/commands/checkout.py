@@ -32,12 +32,12 @@ class CheckoutCommand(BaseCommand):
         if client:
             return client
 
-        # Default to git with .exe on Windows
-        import platform
-
-        if platform.system() == "Windows":
-            return "git.exe"
-        return "git"
+        # Use shutil.which to find the git executable (handles platform differences)
+        import shutil
+        git_exe = shutil.which("git")
+        if git_exe is None:
+            raise VCSError("Git command not found. Please install Git.")
+        return git_exe
 
     def execute(self, args: List[str]) -> int:
         """

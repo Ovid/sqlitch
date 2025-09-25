@@ -2,6 +2,7 @@
 Unit tests for checkout command.
 """
 
+import shutil
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -212,8 +213,9 @@ class TestCheckoutCommand:
             branch = checkout_command._get_current_branch()
             assert branch == "main"
 
+            git_exe = shutil.which("git")
             mock_run.assert_called_once_with(
-                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                [git_exe, "rev-parse", "--abbrev-ref", "HEAD"],
                 capture_output=True,
                 text=True,
                 check=True,
@@ -268,8 +270,9 @@ class TestCheckoutCommand:
             plan = checkout_command._load_branch_plan("feature", target)
 
             assert plan == mock_plan
+            git_exe = shutil.which("git")
             mock_run.assert_called_once_with(
-                ["git", "show", "feature:sqitch.plan"],
+                [git_exe, "show", "feature:sqitch.plan"],
                 capture_output=True,
                 text=True,
                 check=True,
@@ -368,7 +371,8 @@ class TestCheckoutCommand:
 
             checkout_command._checkout_branch("feature")
 
-            mock_run.assert_called_once_with(["git", "checkout", "feature"], check=True)
+            git_exe = shutil.which("git")
+            mock_run.assert_called_once_with([git_exe, "checkout", "feature"], check=True)
 
     def test_checkout_branch_error(self, checkout_command):
         """Test error checking out branch."""

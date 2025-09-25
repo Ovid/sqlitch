@@ -5,6 +5,7 @@ This module provides Git repository detection, status checking,
 and integration for change file naming and commit tracking.
 """
 
+import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -44,6 +45,14 @@ class GitRepository:
         """
         self.path = path or Path.cwd()
         self._git_dir = self._find_git_dir()
+        self._git_executable = self._find_git_executable()
+
+    def _find_git_executable(self) -> str:
+        """Find the git executable (handles git vs git.exe on Windows)."""
+        git_exe = shutil.which("git")
+        if git_exe is None:
+            raise VCSError("Git command not found. Please install Git.")
+        return git_exe
 
     def _find_git_dir(self) -> Optional[Path]:
         """Find .git directory by walking up the directory tree."""
@@ -87,7 +96,7 @@ class GitRepository:
         """
         try:
             result = subprocess.run(
-                ["git"] + args,
+                [self._git_executable] + args,
                 cwd=self.path,
                 capture_output=True,
                 text=True,
