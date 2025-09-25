@@ -1,0 +1,161 @@
+version: '3.8'
+
+services:
+  # Main sqlitch application
+  sqlitch:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/workspace
+      - sqlitch-cache:/home/sqlitch/.cache
+    working_dir: /workspace
+    environment:
+      - PYTHONPATH=/workspace
+    depends_on:
+      - postgres
+      - mysql
+    networks:
+      - sqlitch-network
+
+  # PostgreSQL for testing
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: sqlitch
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: sqlitch_test
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./tests/fixtures/postgresql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sqlitch"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sqlitch-network
+
+  # MySQL for testing
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_USER: sqlitch
+      MYSQL_PASSWORD: test
+      MYSQL_DATABASE: sqlitch_test
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./tests/fixtures/mysql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sqlitch-network
+
+  # Oracle for testing (optional)
+  oracle:
+    image: gvenzl/oracle-xe:21-slim
+    environment:
+      ORACLE_PASSWORD: test
+      ORACLE_DATABASE: sqlitch_test
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD-SHELL", "sqlplus -s system/test@localhost:1521/XE <<< 'SELECT 1 FROM DUAL;' | grep -q '1'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - sqlitch-network
+    profiles:
+      - oracle
+
+  # Test runner service
+  test:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/workspace
+      - sqlitch-cache:/home/sqlitch/.cache
+    working_dir: /workspace
+    environment:
+      - PYTHONPATH=/workspace
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=sqlitch
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=sqlitch_test
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=sqlitch
+      - MYSQL_PASSWORD=test
+      - MYSQL_DB=sqlitch_test
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    command: pytest tests/ -v
+    networks:
+      - sqlitch-network
+    profiles:
+      - test
+
+  # Linting service
+  lint:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: >
+      bash -c "
+        black --check sqlitch tests &&
+        isort --check-only sqlitch tests &&
+        flake8 sqlitch tests &&
+        mypy sqlitch
+      "
+    profiles:
+      - lint
+
+  # Documentation service
+  docs:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/workspace
+      - docs-build:/workspace/docs/_build
+    working_dir: /workspace
+    ports:
+      - "8000:8000"
+    command: >
+      bash -c "
+        pip install sphinx sphinx-rtd-theme myst-parser &&
+        sphinx-build -b html docs docs/_build/html &&
+        python -m http.server 8000 --directory docs/_build/html
+      "
+    profiles:
+      - docs
+
+volumes:
+  postgres-data:
+  mysql-data:
+  oracle-data:
+  sqlitch-cache:
+  docs-build:
+
+networks:
+  sqlitch-network:
+    driver: bridge
