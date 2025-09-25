@@ -43,6 +43,10 @@ def temp_project():
 [engine "pg"]
     target = db:pg://test@localhost/test_db
     registry = sqitch
+
+[user]
+    name = Test User
+    email = test@example.com
 """
         (temp_dir / "sqitch.conf").write_text(config_content)
 
