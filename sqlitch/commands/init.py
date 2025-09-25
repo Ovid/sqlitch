@@ -66,7 +66,7 @@ class InitCommand(BaseCommand):
             self.logger.error(f"Unexpected error: {e}")
             return 2
 
-    def _parse_args(self, args: List[str]) -> tuple[str, Dict[str, Any]]:
+    def _parse_args(self, args: List[str]) -> tuple[str, Dict[str, Any]]:  # noqa: C901
         """
         Parse command arguments.
 

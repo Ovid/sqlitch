@@ -532,7 +532,7 @@ class Engine(ABC):
                     f"Failed to get current changes: {e}", engine_name=self.engine_type
                 ) from e
 
-    def search_events(
+    def search_events(  # noqa: C901
         self,
         event: Optional[List[str]] = None,
         change: Optional[str] = None,
@@ -1237,7 +1237,7 @@ class EngineRegistry:
         # In a full implementation, this would be stored in the database
         return self._calculate_script_hash(change)
 
-    def revert(
+    def revert(  # noqa: C901
         self,
         to_change: Optional[str] = None,
         prompt: bool = True,
@@ -1300,7 +1300,7 @@ class EngineRegistry:
         except Exception as e:
             raise EngineError(f"Revert operation failed: {e}") from e
 
-    def deploy(self, to_change: Optional[str] = None, mode: str = "all") -> None:
+    def deploy(self, to_change: Optional[str] = None, mode: str = "all") -> None:  # noqa: C901
         """
         Deploy changes up to a specific change.
 

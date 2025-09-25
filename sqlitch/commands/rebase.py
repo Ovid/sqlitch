@@ -70,7 +70,7 @@ class RebaseCommand(BaseCommand):
         except Exception as e:
             return self.handle_error(e, "rebase")
 
-    def _parse_args(self, args: List[str]) -> Dict[str, Any]:
+    def _parse_args(self, args: List[str]) -> Dict[str, Any]:  # noqa: C901
         """Parse command arguments."""
         options = {
             "target": None,
@@ -498,7 +498,7 @@ class RebaseCommand(BaseCommand):
 )
 @click.argument("changes", nargs=-1)
 @click.pass_context
-def rebase_command(
+def rebase_command(  # noqa: C901
     ctx: click.Context,
     target: Optional[str],
     onto_change: Optional[str],

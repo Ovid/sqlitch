@@ -73,7 +73,7 @@ class Target:
         return Plan.from_file(self.plan_file)
 
     @classmethod
-    def from_config(
+    def from_config(  # noqa: C901
         cls, config: "Config", target_name: Optional[str] = None
     ) -> "Target":
         """

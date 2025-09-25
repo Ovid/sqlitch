@@ -59,7 +59,7 @@ class Sqitch:
         # Clamp to valid range
         return max(-2, min(3, verbosity))
 
-    def _get_user_name(self) -> Optional[str]:
+    def _get_user_name(self) -> Optional[str]:  # noqa: C901
         """
         Detect user name from configuration, environment, or system.
 

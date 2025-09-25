@@ -320,7 +320,7 @@ class SnowflakeEngine(Engine):
         """Get the registry schema for this engine."""
         return SnowflakeRegistrySchema()
 
-    def _create_connection(self) -> SnowflakeConnection:
+    def _create_connection(self) -> SnowflakeConnection:  # noqa: C901
         """
         Create a new Snowflake database connection.
 

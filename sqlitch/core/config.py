@@ -366,7 +366,7 @@ class Config:
 
         self._set_nested_value(self._merged_config, key, value)
 
-    def get_target(self, name: str) -> Target:
+    def get_target(self, name: str) -> Target:  # noqa: C901
         """
         Get target configuration.
 

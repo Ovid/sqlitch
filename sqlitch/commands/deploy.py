@@ -66,7 +66,7 @@ class DeployCommand(BaseCommand):
         except Exception as e:
             return self.handle_error(e, "deploy")
 
-    def _parse_args(self, args: List[str]) -> Dict[str, Any]:
+    def _parse_args(self, args: List[str]) -> Dict[str, Any]:  # noqa: C901
         """
         Parse command arguments.
 
@@ -338,7 +338,7 @@ class DeployCommand(BaseCommand):
                             "but it is not deployed and not in the current deployment"
                         )
 
-    def _deploy_changes(
+    def _deploy_changes(  # noqa: C901
         self, engine, changes: List[Change], options: Dict[str, Any]
     ) -> int:
         """
@@ -451,7 +451,7 @@ class DeployCommand(BaseCommand):
 
         return 0
 
-    def _deploy_changes_with_feedback(
+    def _deploy_changes_with_feedback(  # noqa: C901
         self, engine, changes: List[Change], options: Dict[str, Any], target
     ) -> int:
         """

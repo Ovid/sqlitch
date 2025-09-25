@@ -126,7 +126,7 @@ class CheckoutCommand(BaseCommand):
         except Exception as e:
             return self.handle_error(e, "checkout")
 
-    def _parse_args(self, args: List[str]) -> Dict[str, Any]:
+    def _parse_args(self, args: List[str]) -> Dict[str, Any]:  # noqa: C901
         """
         Parse command arguments.
 

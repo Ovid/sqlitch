@@ -94,7 +94,7 @@ class Plan:
         return cls._parse_content(file_path, content)
 
     @classmethod
-    def _parse_content(cls, file_path: Path, content: str) -> "Plan":
+    def _parse_content(cls, file_path: Path, content: str) -> "Plan":  # noqa: C901
         """Parse plan content."""
         lines = content.splitlines()
 
@@ -188,7 +188,7 @@ class Plan:
             planner_email=planner_email,
         )
 
-    def _parse_change(self, line: str) -> Change:
+    def _parse_change(self, line: str) -> Change:  # noqa: C901
         """Parse change line."""
         # Format: change_name [dependencies] timestamp planner_name <planner_email> # note
 

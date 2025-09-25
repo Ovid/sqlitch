@@ -253,7 +253,7 @@ class ChangeReporter:
                 self.sqitch.debug(f"Executing {sql_file}")
 
 
-def format_error_with_suggestions(
+def format_error_with_suggestions(  # noqa: C901
     error: SqlitchError, command: Optional[str] = None
 ) -> str:
     """

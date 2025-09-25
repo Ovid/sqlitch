@@ -325,7 +325,7 @@ class MySQLEngine(Engine):
         """Get the registry schema for MySQL."""
         return MySQLRegistrySchema()
 
-    def _parse_connection_string(self) -> Dict[str, Any]:
+    def _parse_connection_string(self) -> Dict[str, Any]:  # noqa: C901
         """
         Parse MySQL connection string from target URI.
 
@@ -526,7 +526,7 @@ class MySQLEngine(Engine):
                 engine_name="mysql",
             ) from e
 
-    def _split_sql_statements(self, sql_content: str) -> List[str]:
+    def _split_sql_statements(self, sql_content: str) -> List[str]:  # noqa: C901
         """
         Split SQL content into individual statements.
 

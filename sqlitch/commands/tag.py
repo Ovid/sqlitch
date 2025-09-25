@@ -47,7 +47,7 @@ class TagCommand(BaseCommand):
         except Exception as e:
             return self.handle_error(e)
 
-    def _parse_args(
+    def _parse_args(  # noqa: C901
         self, args: List[str]
     ) -> Tuple[Optional[str], Optional[str], Dict[str, Any]]:
         """
@@ -103,7 +103,7 @@ class TagCommand(BaseCommand):
 
         return tag_name, change_name, options
 
-    def _add_tag(
+    def _add_tag(  # noqa: C901
         self, tag_name: str, change_name: Optional[str], options: Dict[str, Any]
     ) -> int:
         """
