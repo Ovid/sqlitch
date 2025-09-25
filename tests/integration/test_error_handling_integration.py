@@ -107,6 +107,7 @@ class TestErrorHandlingIntegration:
         assert "Set user.name:" in formatted
         assert "Set user.email:" in formatted
 
+    @pytest.mark.compatibility
     def test_hurl_function_compatibility(self):
         """Test hurl function matches Perl sqitch behavior."""
         # Single argument (DEV error)

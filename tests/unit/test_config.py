@@ -104,6 +104,7 @@ engine = pg
 
         assert "Cannot read configuration file" in str(exc_info.value)
 
+    @pytest.mark.compatibility
     def test_get_system_config_paths_unix(self):
         """Test system configuration paths on Unix-like systems."""
         config = Config()
@@ -134,6 +135,7 @@ engine = pg
             assert "Sqlitch" in path_str
             assert "sqitch.conf" in path_str
 
+    @pytest.mark.compatibility
     def test_get_global_config_path_unix(self):
         """Test global configuration path on Unix-like systems."""
         config = Config()
@@ -370,6 +372,7 @@ client = psql
         assert target.registry == "sqitch_prod"
         assert target.client == "psql"
 
+    @pytest.mark.compatibility
     def test_get_target_default_from_engine(self, tmp_path):
         """Test getting default target from engine configuration."""
         config_file = tmp_path / "test.conf"

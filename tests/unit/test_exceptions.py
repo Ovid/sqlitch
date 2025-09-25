@@ -361,6 +361,7 @@ class TestErrorIntegration:
         assert error.config_key == "core.engine"
         assert error.context["additional_info"] == "extra context"
 
+    @pytest.mark.compatibility
     def test_error_message_consistency(self):
         """Test that error messages are consistent with Perl sqitch."""
         # Test various error types to ensure message format consistency

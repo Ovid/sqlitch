@@ -262,6 +262,7 @@ class TestSqitch:
             engine_class = sqitch._get_engine_class("pg")
             assert engine_class is None
 
+    @pytest.mark.compatibility
     def test_get_target_default(self):
         """Test getting default target."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".conf", delete=False) as f:

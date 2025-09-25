@@ -149,6 +149,7 @@ class TestChange:
 class TestPlan:
     """Test Plan class."""
 
+    @pytest.mark.compatibility
     def test_parse_minimal_plan(self, tmp_path):
         """Test parsing minimal valid plan."""
         plan_file = tmp_path / "sqitch.plan"
@@ -187,6 +188,7 @@ initial_schema 2023-01-15T10:30:00Z John Doe <john@example.com> # Initial schema
         plan = Plan.from_file(plan_file)
         assert plan.uri == "https://github.com/example/myproject"
 
+    @pytest.mark.compatibility
     def test_parse_plan_with_dependencies(self, tmp_path):
         """Test parsing plan with dependencies."""
         plan_file = tmp_path / "sqitch.plan"
@@ -207,6 +209,7 @@ users [initial_schema] 2023-01-16T14:20:00Z John Doe <john@example.com> # Add us
         assert users_change.dependencies[0].change == "initial_schema"
         assert users_change.dependencies[0].type == "require"
 
+    @pytest.mark.compatibility
     def test_parse_plan_with_tags(self, tmp_path):
         """Test parsing plan with tags."""
         plan_file = tmp_path / "sqitch.plan"
