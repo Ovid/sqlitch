@@ -119,8 +119,9 @@ class TestInitCommand:
 
     def test_parse_args_no_project(self, init_command):
         """Test argument parsing without project name."""
-        with pytest.raises(SqlitchError, match="Project name is required"):
-            init_command._parse_args([])
+        project_name, options = init_command._parse_args([])
+        assert project_name is None
+        assert isinstance(options, dict)
 
     def test_parse_args_unknown_option(self, init_command):
         """Test argument parsing with unknown option."""

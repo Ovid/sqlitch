@@ -493,7 +493,9 @@ class BundleCommand(BaseCommand):
         content = "\n".join(lines) + "\n"
         dest_file.write_text(content, encoding="utf-8")
 
-    def _find_change_index(self, plan: Plan, change_spec: str) -> Optional[int]:  # noqa: C901
+    def _find_change_index(
+        self, plan: Plan, change_spec: str
+    ) -> Optional[int]:  # noqa: C901
         """
         Find index of change in plan.
 

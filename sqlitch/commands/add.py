@@ -94,7 +94,9 @@ class AddCommand(BaseCommand):
             self.error(f"Failed to add change: {e}")
             return 1
 
-    def _parse_args(self, args: List[str]) -> Tuple[Optional[str], Dict[str, Any]]:  # noqa: C901
+    def _parse_args(
+        self, args: List[str]
+    ) -> Tuple[Optional[str], Dict[str, Any]]:  # noqa: C901
         """
         Parse command arguments.
 
@@ -452,7 +454,9 @@ class AddCommand(BaseCommand):
     "-e", "--edit", "--open-editor", is_flag=True, help="Open files in editor"
 )
 @click.pass_context
-def add_command(ctx: click.Context, change_name: Optional[str], **kwargs) -> None:  # noqa: C901
+def add_command(
+    ctx: click.Context, change_name: Optional[str], **kwargs
+) -> None:  # noqa: C901
     """Add a new change to sqlitch plans."""
     from ..cli import get_sqitch_from_context
 

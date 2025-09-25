@@ -1300,7 +1300,9 @@ class EngineRegistry:
         except Exception as e:
             raise EngineError(f"Revert operation failed: {e}") from e
 
-    def deploy(self, to_change: Optional[str] = None, mode: str = "all") -> None:  # noqa: C901
+    def deploy(
+        self, to_change: Optional[str] = None, mode: str = "all"
+    ) -> None:  # noqa: C901
         """
         Deploy changes up to a specific change.
 
