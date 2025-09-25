@@ -43,6 +43,11 @@ try:
 except ImportError:
     pass  # Exasol engine not available
 
+try:
+    from . import firebird
+except ImportError:
+    pass  # Firebird engine not available
+
 __all__ = [
     'Engine',
     'EngineRegistry', 

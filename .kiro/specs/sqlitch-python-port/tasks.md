@@ -230,7 +230,7 @@
   - Write unit tests with Exasol test database
   - _Requirements: 2.7, 7.2, 7.3, 8.3, 10.1, 10.2_
 
-- [ ] 30. Build Firebird database engine
+- [x] 30. Build Firebird database engine
   - Create FirebirdEngine class in sqlitch/engines/firebird.py
   - Implement Firebird-specific connection handling with fdb
   - Add Firebird registry table creation with proper generators
