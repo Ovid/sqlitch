@@ -33,7 +33,8 @@ Sqlitch currently supports:
 * **MySQL** 5.1.0+ and **MariaDB** 5.3.0+
 * **SQLite** 3.8.6+
 * **Oracle** 10g+ (requires cx_Oracle driver)
-* Additional database engines in development (Snowflake, Vertica, Exasol, Firebird)
+* **Snowflake** (requires snowflake-connector-python driver)
+* Additional database engines in development (Vertica, Exasol, Firebird)
 
 ## Installation
 

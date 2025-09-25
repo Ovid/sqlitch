@@ -206,7 +206,7 @@
   - Write tests for show command output formatting
   - _Requirements: 1.1, 7.1, 7.5_
 
-- [ ] 27. Build Snowflake database engine
+- [x] 27. Build Snowflake database engine
   - Create SnowflakeEngine class in sqlitch/engines/snowflake.py
   - Implement Snowflake-specific connection handling with snowflake-connector-python
   - Add Snowflake registry table creation with proper schemas

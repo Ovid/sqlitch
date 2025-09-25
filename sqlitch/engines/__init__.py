@@ -28,6 +28,11 @@ try:
 except ImportError:
     pass  # Oracle engine not available
 
+try:
+    from . import snowflake
+except ImportError:
+    pass  # Snowflake engine not available
+
 __all__ = [
     'Engine',
     'EngineRegistry', 
