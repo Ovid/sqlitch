@@ -1,0 +1,225 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlitch"
+version = "1.0.0"
+description = "Python port of sqitch database change management tool"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Sqlitch Contributors", email = "contributors@sqlitch.org"}
+]
+maintainers = [
+    {name = "Sqlitch Contributors", email = "contributors@sqlitch.org"}
+]
+keywords = ["database", "migration", "sqitch", "sql", "deployment"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database",
+    "Topic :: Software Development :: Version Control",
+    "Typing :: Typed",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.0.0",
+    "psycopg2-binary>=2.9.0",
+    "PyMySQL>=1.0.0",
+    "GitPython>=3.1.0",
+    "Jinja2>=3.0.0",
+    "configparser>=5.0.0",
+]
+
+[project.optional-dependencies]
+oracle = ["cx_Oracle>=8.0.0"]
+snowflake = ["snowflake-connector-python>=2.7.0"]
+vertica = ["vertica-python>=1.0.0"]
+exasol = ["pyexasol>=0.25.0"]
+firebird = ["fdb>=2.0.0"]
+all = [
+    "cx_Oracle>=8.0.0",
+    "snowflake-connector-python>=2.7.0",
+    "vertica-python>=1.0.0",
+    "pyexasol>=0.25.0",
+    "fdb>=2.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0",
+    "pytest-mock>=3.10.0",
+    "mypy>=1.0.0",
+    "black>=22.0.0",
+    "flake8>=5.0.0",
+    "isort>=5.0.0",
+    "pre-commit>=3.0.0",
+    "tox>=4.0.0",
+    "docker>=6.0.0",
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.2.0",
+    "myst-parser>=0.18.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sqlitch/sqlitch-python"
+Documentation = "https://sqlitch.readthedocs.io"
+Repository = "https://github.com/sqlitch/sqlitch-python"
+"Bug Tracker" = "https://github.com/sqlitch/sqlitch-python/issues"
+Changelog = "https://github.com/sqlitch/sqlitch-python/blob/main/CHANGELOG.md"
+
+[project.scripts]
+sqlitch = "sqlitch.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["sqlitch*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+sqlitch = ["py.typed"]
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=sqlitch",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml:coverage.xml",
+    "--cov-fail-under=80",
+    "--durations=10",
+    "--maxfail=5",
+    "-ra",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "compatibility: Compatibility tests against Perl sqitch",
+    "slow: Slow running tests",
+    "database: Tests requiring database connections",
+    "postgresql: PostgreSQL specific tests",
+    "mysql: MySQL specific tests",
+    "sqlite: SQLite specific tests",
+    "oracle: Oracle specific tests",
+    "snowflake: Snowflake specific tests",
+    "vertica: Vertica specific tests",
+    "exasol: Exasol specific tests",
+    "firebird: Firebird specific tests",
+]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning:pkg_resources",
+    "ignore::PendingDeprecationWarning",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["sqlitch"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "setup.py",
+    "*/venv/*",
+    "*/.venv/*",
+]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+skip_covered = false
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["sqlitch"]
+known_third_party = ["click", "psycopg2", "pymysql", "git", "jinja2"]
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "psycopg2.*",
+    "pymysql.*",
+    "git.*",
+    "jinja2.*",
+    "cx_Oracle.*",
+    "snowflake.*",
+    "vertica_python.*",
+    "pyexasol.*",
+    "fdb.*",
+]
+ignore_missing_imports = true
+
+# Flake8 configuration (in setup.cfg since flake8 doesn't support pyproject.toml)
