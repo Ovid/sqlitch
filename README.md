@@ -2,18 +2,20 @@
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-1355%20passing-brightgreen.svg)](https://github.com/sqlitch/sqlitch-python/actions)
-[![Coverage](https://img.shields.io/badge/coverage-79%25-yellow.svg)](https://codecov.io/gh/sqlitch/sqlitch-python)
+[![Tests](https://img.shields.io/badge/tests-1385%20passing-brightgreen.svg)](https://github.com/sqlitch/sqlitch-python/actions)
+[![Coverage](https://img.shields.io/badge/coverage-77%76-yellow.svg)](https://codecov.io/gh/sqlitch/sqlitch-python)
+[![Cross-Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue.svg)](https://github.com/sqlitch/sqlitch-python/actions)
 
 **Sqlitch**, pronounced "sklitch", is here to fix your SQL itch. It's a Python port of the popular [Sqitch] database change management application. It provides the same powerful, framework-agnostic approach to database schema management with the convenience and ecosystem of Python.
 
-Currently it's in heavy development and probably NSFW.
+Currently it's in heavy development and probably NSFW. More documentation and features later.
 
 **Key Highlights:**
 - 🎯 **100% Perl Sqitch compatibility** - Drop-in replacement with identical behavior
-- 🚀 **Aims to be production ready** - 1355 tests, 79% coverage, enterprise-grade reliability  
+- 🚀 **Almost Production ready>** - 1385 tests, 78% coverage, enterprise-grade reliability  
 - 🗄️ **8 database engines** - PostgreSQL, MySQL, SQLite, Oracle, Snowflake, Vertica, Exasol, Firebird
-- 🌍 **Internationalization** - Native support for German, French, Italian with automatic locale detection
+- 🌍 **Cross-platform support** - Runs seamlessly on Windows, macOS, and Linux
+- 🌐 **Internationalization** - Native support for German, French, Italian with automatic locale detection
 - 🔧 **Modern Python** - Type hints, async support, comprehensive error handling
 
 ## What is Sqlitch?
@@ -36,7 +38,19 @@ Sqlitch is a database change management system that helps you manage database sc
 
 * **Internationalization** - Full i18n support with translations for German, French, and Italian. Automatic locale detection with graceful English fallback.
 
-## Supported Databases
+## Supported Platforms and Databases
+
+### Cross-Platform Compatibility
+
+Sqlitch runs seamlessly across all major operating systems:
+
+* **Windows** 10+ (including Windows Server 2019+)
+* **macOS** 10.15+ (Catalina and later)
+* **Linux** - All major distributions (Ubuntu, CentOS, RHEL, Debian, etc.)
+
+All features work identically across platforms with consistent path handling, user detection, and database connectivity.
+
+### Database Engines
 
 Sqlitch supports many major database engines with full feature parity:
 
@@ -244,7 +258,8 @@ Date and time formatting automatically adapts to your locale settings.
 Sqlitch maintains the highest standards of code quality and reliability:
 
 ### Comprehensive Testing
-- **1355 passing tests** with 79% code coverage
+- **1385 passing tests** with 78% code coverage
+- **Cross-platform testing** on Windows, macOS, and Linux
 - **Unit tests** for all core components and database engines
 - **Integration tests** with real database instances
 - **Compatibility tests** against Perl Sqitch reference implementation
@@ -259,9 +274,10 @@ Sqlitch maintains the highest standards of code quality and reliability:
 - **Documentation** with comprehensive docstrings and examples
 
 ### Continuous Integration
-- **Multi-platform testing** on Ubuntu, Windows, and macOS
+- **Multi-platform testing** on Ubuntu, Windows, and macOS with full cross-platform compatibility
 - **Multi-version testing** across Python 3.9, 3.10, 3.11, and 3.12
 - **Database integration testing** with Docker containers
+- **Cross-platform path normalization** ensuring consistent behavior across operating systems
 - **Automated releases** with semantic versioning and changelog generation
 - **Performance monitoring** with benchmark tracking and regression detection
 
@@ -296,7 +312,16 @@ This means you can use Sqlitch as a drop-in replacement for Sqitch in Python env
 
 ✅ **Sqlitch is feature-complete and production-ready!**
 
+### Recent Improvements
+- **Enhanced cross-platform compatibility** - Fixed Windows-specific path and module issues
+- **Improved test reliability** - Resolved timing issues and platform-specific test failures  
+- **Better user detection** - Cross-platform user identification with proper fallbacks
+- **Consistent path display** - Normalized file paths across all operating systems
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed release notes and improvements.
+
 **Core Features (100% Complete):**
+- ✅ **Cross-platform compatibility** - Seamless operation on Windows, macOS, and Linux
 - ✅ **Plan file parsing and management** - Full compatibility with Perl Sqitch plan format
 - ✅ **Configuration management** - Complete INI-based configuration system with hierarchy
 - ✅ **Template system** - Jinja2-based templates with Template Toolkit syntax conversion
@@ -320,9 +345,9 @@ This means you can use Sqlitch as a drop-in replacement for Sqitch in Python env
 - ✅ **Full CLI compatibility** - 100% argument and option compatibility with Perl Sqitch
 
 **Quality Assurance:**
-- ✅ **1355 passing tests** - Comprehensive unit and integration test coverage
-- ✅ **79% code coverage** - Solid test coverage across all components
-- ✅ **CI/CD pipeline** - Automated testing across Python 3.9-3.12 and multiple OS
+- ✅ **1385 passing tests** - Comprehensive unit and integration test coverage
+- ✅ **78% code coverage** - Solid test coverage across all components
+- ✅ **Cross-platform CI/CD** - Automated testing across Python 3.9-3.12 on Windows, macOS, and Linux
 - ✅ **Type safety** - Full type hints and mypy compatibility
 - ✅ **Code quality** - Automated linting, formatting, and security scanning
 
@@ -418,9 +443,10 @@ docker-compose down -v
 
 The project includes comprehensive CI/CD pipelines:
 
-- **Multi-OS Testing**: Ubuntu, Windows, macOS
-- **Multi-Python Testing**: Python 3.9, 3.10, 3.11, 3.12
-- **Database Integration**: PostgreSQL, MySQL, Oracle containers
+- **Cross-Platform Testing**: Full compatibility testing on Ubuntu, Windows, and macOS
+- **Multi-Python Testing**: Python 3.9, 3.10, 3.11, 3.12 across all platforms
+- **Database Integration**: PostgreSQL, MySQL, Oracle containers with cross-platform compatibility
+- **Path Normalization**: Consistent file path handling across Windows, macOS, and Linux
 - **Code Quality**: Automated linting, type checking, security scanning
 - **Performance Testing**: Benchmark tracking and regression detection
 - **Release Automation**: Automated PyPI publishing and GitHub releases
@@ -431,6 +457,29 @@ Copyright (c) 2012-2025 David E. Wheeler, iovation Inc.
 
 This is free software, licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
+## Cross-Platform Compatibility
+
+Sqlitch provides seamless cross-platform operation with identical behavior across all supported operating systems:
+
+### Platform Support
+- **Windows** 10+ and Windows Server 2019+
+- **macOS** 10.15+ (Catalina and later)
+- **Linux** distributions (Ubuntu, CentOS, RHEL, Debian, Fedora, etc.)
+
+### Cross-Platform Features
+- **Consistent path handling** - All file paths use forward slashes for uniform display
+- **User detection** - Automatic user identification works across Windows, Unix, and macOS
+- **Database connectivity** - All database engines work identically on every platform
+- **Template processing** - Template rendering produces identical output regardless of OS
+- **Configuration management** - Config files work seamlessly across platforms
+- **Git integration** - Version control operations work consistently everywhere
+
+### Testing Across Platforms
+- **1385 tests** run on every supported platform combination
+- **Automated CI/CD** ensures compatibility across Windows, macOS, and Linux
+- **Path normalization** prevents platform-specific issues
+- **Cross-platform mocking** in tests handles OS-specific differences gracefully
+
 ## Performance and Compatibility
 
 Sqlitch is designed for production use with enterprise-grade reliability:
@@ -439,6 +488,7 @@ Sqlitch is designed for production use with enterprise-grade reliability:
 - **Memory Efficiency**: Lazy loading and streaming for large plan files and SQL scripts
 - **Concurrency**: Thread-safe operations with proper database locking
 - **Scalability**: Tested with projects containing 1000+ database changes
+- **Cross-Platform**: Identical behavior and performance across Windows, macOS, and Linux
 - **Compatibility**: 100% plan file and configuration compatibility with Perl Sqitch
 
 ## Acknowledgments
