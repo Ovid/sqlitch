@@ -50,8 +50,12 @@ class TestPlanFileCompatibility:
         cmd = ["sqitch"] + args
         # Set environment to prevent editor from blocking
         env = dict(os.environ)
-        env["EDITOR"] = "true"  # Use 'true' command which does nothing and exits immediately
-        return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=30, env=env)
+        env["EDITOR"] = (
+            "true"  # Use 'true' command which does nothing and exits immediately
+        )
+        return subprocess.run(
+            cmd, cwd=cwd, capture_output=True, text=True, timeout=30, env=env
+        )
 
     def is_sqitch_available(self) -> bool:
         """Check if Perl sqitch is available."""
@@ -63,7 +67,9 @@ class TestPlanFileCompatibility:
         except (subprocess.TimeoutExpired, FileNotFoundError):
             return False
 
-    def setup_projects_with_editor_disabled(self, engine: str = "pg", project_name: str = "testproject"):
+    def setup_projects_with_editor_disabled(
+        self, engine: str = "pg", project_name: str = "testproject"
+    ):
         """Set up two projects (sqlitch and sqitch) with editor disabled to prevent hanging."""
         sqlitch_dir = self.create_temp_project()
         sqitch_dir = self.create_temp_project()
@@ -71,6 +77,12 @@ class TestPlanFileCompatibility:
         # Initialize both projects
         self.run_sqlitch(["init", "--engine", engine, project_name], cwd=sqlitch_dir)
         self.run_sqitch(["init", "--engine", engine, project_name], cwd=sqitch_dir)
+
+        # Set up user configuration for both projects
+        self.run_sqlitch(["config", "user.name", "Test User"], cwd=sqlitch_dir)
+        self.run_sqlitch(["config", "user.email", "test@example.com"], cwd=sqlitch_dir)
+        self.run_sqitch(["config", "user.name", "Test User"], cwd=sqitch_dir)
+        self.run_sqitch(["config", "user.email", "test@example.com"], cwd=sqitch_dir)
 
         # Disable editor for both projects to prevent hanging
         self.run_sqlitch(["config", "add.open_editor", "false"], cwd=sqlitch_dir)
@@ -128,7 +140,9 @@ class TestPlanFileCompatibility:
 
         # Add a change to both
         self.run_sqlitch(["add", "first_change", "-n", "First change"], cwd=sqlitch_dir)
-        self.run_sqitch(["add", "first_change", "-n", "First change", "--no-edit"], cwd=sqitch_dir)
+        self.run_sqitch(
+            ["add", "first_change", "-n", "First change", "--no-edit"], cwd=sqitch_dir
+        )
 
         # Read both plan files
         sqlitch_plan = (sqlitch_dir / "sqitch.plan").read_text()
@@ -208,7 +222,7 @@ invalid_line_without_proper_format
         result = self.run_sqlitch(["add", "base_change"], cwd=sqlitch_dir)
         if result.returncode != 0:
             print(f"sqlitch add base_change failed: {result.stderr}")
-            
+
         print("Adding base_change to sqitch...")
         result = self.run_sqitch(["add", "base_change", "--no-edit"], cwd=sqitch_dir)
         if result.returncode != 0:
@@ -220,10 +234,11 @@ invalid_line_without_proper_format
         )
         if result.returncode != 0:
             print(f"sqlitch add dependent_change failed: {result.stderr}")
-            
+
         print("Adding dependent_change to sqitch...")
         result = self.run_sqitch(
-            ["add", "dependent_change", "--requires", "base_change", "--no-edit"], cwd=sqitch_dir
+            ["add", "dependent_change", "--requires", "base_change", "--no-edit"],
+            cwd=sqitch_dir,
         )
         if result.returncode != 0:
             print(f"sqitch add dependent_change failed: {result.stderr}")

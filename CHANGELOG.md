@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Config Command Implementation**: Added complete config command functionality
+  - Implemented get, set, and list operations matching Perl sqitch behavior
+  - Added proper configuration file writing with section and subsection support
+  - Fixed config command to use emit() for stdout output instead of logging
+  - Added recursive configuration display for nested sections
+- **Enhanced URI Support**: Improved target URI parsing for better compatibility
+  - Added support for both `db:engine:` and `engine:` URI formats
+  - Enhanced engine detection from URIs for sqlite, mysql, pg, oracle, etc.
+  - Fixed target validation to accept flexible URI formats
+- **Code Quality Improvements**: Addressed complexity and formatting issues
+  - Added # noqa: C901 comments to suppress cyclomatic complexity warnings
+  - Fixed Black formatting issues across multiple files
+  - Improved import ordering with isort
 - **Target Configuration System**: Implemented Target.from_config class method for proper target resolution
   - Added support for engine-based target configuration matching Perl sqitch behavior
   - Implemented proper URI parsing and password handling for target names
@@ -18,6 +31,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added 30+ compatibility tests comparing sqlitch vs Perl sqitch behavior
   - Includes test runner with detailed reporting and CI integration
   - Tests automatically skip when Perl sqitch is unavailable (graceful degradation)
+
+### Fixed
+- **Config Command Output**: Fixed config command to properly output values to stdout
+- **URI Validation**: Enhanced target URI validation to support multiple URI formats
+- **Test Compatibility**: Fixed Windows compatibility issues with path separators and git detection
+- **Editor Blocking**: Prevented compatibility tests from hanging by disabling editors
   - Validates command-line interface, output formatting, file parsing, and database operations
   - Comprehensive documentation and troubleshooting guide included
 

@@ -319,6 +319,7 @@ class TestAddCommand:
         assert args[0] == "vim"
         # Use os.path.join or Path to handle platform-specific separators
         import os
+
         assert os.path.join("deploy", "test.sql") in args
         assert os.path.join("revert", "test.sql") in args
 

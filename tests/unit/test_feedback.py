@@ -271,6 +271,7 @@ class TestChangeReporter:
         call_args = self.sqitch.debug.call_args[0][0]
         # Use os.path.join to handle platform-specific separators
         import os
+
         expected_path = os.path.join("deploy", "add_users.sql")
         assert f"Executing {expected_path}" in call_args
 

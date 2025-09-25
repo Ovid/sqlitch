@@ -350,13 +350,14 @@ class Config:
 
         return current
 
-    def set(self, key: str, value: Any) -> None:
+    def set(self, key: str, value: Any, filename: Optional[Path] = None) -> None:
         """
         Set configuration value.
 
         Args:
             key: Configuration key in dot notation
             value: Value to set
+            filename: Optional file to write to (defaults to local config)
 
         Raises:
             ConfigurationError: If key is invalid
@@ -364,7 +365,68 @@ class Config:
         if not validate_config_key(key):
             raise ConfigurationError(f"Invalid configuration key: {key}")
 
+        # Update in-memory config
         self._set_nested_value(self._merged_config, key, value)
+
+        # Write to file
+        if filename is None:
+            filename = self._get_local_config_path()
+
+        self._write_config_to_file(key, value, filename)
+
+    def _get_local_config_path(self) -> Path:
+        """Get the local configuration file path."""
+        return Path.cwd() / "sqitch.conf"
+
+    def _write_config_to_file(self, key: str, value: Any, filename: Path) -> None:
+        """Write a configuration value to a file."""
+        # Ensure directory exists
+        filename.parent.mkdir(parents=True, exist_ok=True)
+
+        # Load existing config or create new one
+        parser = configparser.ConfigParser(
+            interpolation=configparser.ExtendedInterpolation(),
+            allow_no_value=True,
+            delimiters=("=",),
+            comment_prefixes=("#", ";"),
+            strict=False,
+        )
+
+        if filename.exists():
+            try:
+                with open(filename, "r", encoding="utf-8") as f:
+                    parser.read_file(f)
+            except (OSError, IOError, configparser.Error):
+                # If we can't read the existing file, start fresh
+                pass
+
+        # Parse the key to get section and option
+        parts = key.split(".")
+        if len(parts) < 2:
+            raise ConfigurationError(f"Invalid configuration key format: {key}")
+
+        section_name = parts[0]
+        if len(parts) == 2:
+            # Simple section.key format
+            option_name = parts[1]
+        else:
+            # Handle subsections like engine.pg.target
+            section_name = f'{parts[0]} "{parts[1]}"'
+            option_name = ".".join(parts[2:])
+
+        # Ensure section exists
+        if not parser.has_section(section_name):
+            parser.add_section(section_name)
+
+        # Set the value
+        parser.set(section_name, option_name, str(value))
+
+        # Write back to file
+        try:
+            with open(filename, "w", encoding="utf-8") as f:
+                parser.write(f, space_around_delimiters=True)
+        except (OSError, IOError) as e:
+            raise ConfigurationError(f"Cannot write configuration file: {e}")
 
     def get_target(self, name: str) -> Target:  # noqa: C901
         """

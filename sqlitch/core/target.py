@@ -44,20 +44,26 @@ class Target:
     @property
     def engine_type(self) -> str:
         """Extract engine type from URI or use configured engine."""
-        if self.uri.startswith("db:pg:"):
+        if (
+            self.uri.startswith("db:pg:")
+            or self.uri.startswith("pg:")
+            or self.uri.startswith("postgresql:")
+        ):
             return "pg"
-        elif self.uri.startswith("db:mysql:"):
+        elif self.uri.startswith("db:mysql:") or self.uri.startswith("mysql:"):
             return "mysql"
-        elif self.uri.startswith("db:sqlite:"):
+        elif self.uri.startswith("db:sqlite:") or self.uri.startswith("sqlite:"):
             return "sqlite"
-        elif self.uri.startswith("db:oracle:"):
+        elif self.uri.startswith("db:oracle:") or self.uri.startswith("oracle:"):
             return "oracle"
-        elif self.uri.startswith("db:snowflake:"):
+        elif self.uri.startswith("db:snowflake:") or self.uri.startswith("snowflake:"):
             return "snowflake"
-        elif self.uri.startswith("db:vertica:"):
+        elif self.uri.startswith("db:vertica:") or self.uri.startswith("vertica:"):
             return "vertica"
-        elif self.uri.startswith("db:exasol:"):
+        elif self.uri.startswith("db:exasol:") or self.uri.startswith("exasol:"):
             return "exasol"
+        elif self.uri.startswith("db:firebird:") or self.uri.startswith("firebird:"):
+            return "firebird"
         elif self.uri.startswith("db:"):
             # URI has db: scheme but unsupported engine type
             raise ValueError(f"Unsupported engine type in URI: {self.uri}")
@@ -233,6 +239,21 @@ class Target:
             parts = uri.split(":", 2)
             if len(parts) >= 2:
                 return parts[1]
+        else:
+            # Check for direct engine URIs like sqlite:, mysql:, etc.
+            for engine in [
+                "sqlite",
+                "mysql",
+                "pg",
+                "postgresql",
+                "oracle",
+                "snowflake",
+                "vertica",
+                "exasol",
+                "firebird",
+            ]:
+                if uri.startswith(f"{engine}:"):
+                    return "pg" if engine == "postgresql" else engine
         return None
 
     @staticmethod

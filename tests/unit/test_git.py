@@ -3,6 +3,7 @@ Tests for Git integration utilities.
 """
 
 import os
+import shutil
 import subprocess
 from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
@@ -77,8 +78,15 @@ class TestGitRepository:
 
         assert result.returncode == 0
         assert result.stdout == "output"
+        import shutil
+
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "status"], cwd=tmp_path, capture_output=True, text=True, timeout=30
+            [git_exe, "status"],
+            cwd=tmp_path,
+            capture_output=True,
+            text=True,
+            timeout=30,
         )
 
     @patch("subprocess.run")
@@ -218,8 +226,9 @@ class TestGitRepository:
         name = repo.get_user_name()
 
         assert name == "John Doe"
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "config", "--get", "user.name"],
+            [git_exe, "config", "--get", "user.name"],
             cwd=tmp_path,
             capture_output=True,
             text=True,
@@ -255,8 +264,9 @@ class TestGitRepository:
         email = repo.get_user_email()
 
         assert email == "john@example.com"
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "config", "--get", "user.email"],
+            [git_exe, "config", "--get", "user.email"],
             cwd=tmp_path,
             capture_output=True,
             text=True,
@@ -281,8 +291,9 @@ class TestGitRepository:
         repo = GitRepository(tmp_path)
         repo.init_repository()
 
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "init"], cwd=tmp_path, capture_output=True, text=True, timeout=30
+            [git_exe, "init"], cwd=tmp_path, capture_output=True, text=True, timeout=30
         )
         assert repo._git_dir == tmp_path / ".git"
 
@@ -309,8 +320,9 @@ class TestGitRepository:
         files = [Path("file1.txt"), Path("file2.txt")]
         repo.add_files(files)
 
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "add", "file1.txt", "file2.txt"],
+            [git_exe, "add", "file1.txt", "file2.txt"],
             cwd=tmp_path,
             capture_output=True,
             text=True,
@@ -396,8 +408,9 @@ class TestGitRepository:
         assert history[1]["hash"] == "def456"
         assert history[1]["message"] == "Second commit"
 
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "log", "--oneline", "-5", "--", "test.txt"],
+            [git_exe, "log", "--oneline", "-5", "--", "test.txt"],
             cwd=tmp_path,
             capture_output=True,
             text=True,
@@ -436,8 +449,9 @@ class TestGitRepository:
         is_tracked = repo.is_file_tracked(Path("test.txt"))
 
         assert is_tracked
+        git_exe = shutil.which("git")
         mock_run.assert_called_once_with(
-            ["git", "ls-files", "--error-unmatch", "test.txt"],
+            [git_exe, "ls-files", "--error-unmatch", "test.txt"],
             cwd=tmp_path,
             capture_output=True,
             text=True,

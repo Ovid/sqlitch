@@ -72,17 +72,23 @@ class TestCheckoutCommand:
         """Test default git client detection."""
         checkout_command.config.get.return_value = None
 
-        with patch("platform.system", return_value="Linux"):
-            client = checkout_command._get_git_client()
-            assert client == "git"
+        client = checkout_command._get_git_client()
+        # Should return the actual git executable path
+        import shutil
+
+        expected_git = shutil.which("git")
+        assert client == expected_git
 
     def test_get_git_client_windows(self, checkout_command):
         """Test git client detection on Windows."""
         checkout_command.config.get.return_value = None
 
-        with patch("platform.system", return_value="Windows"):
-            client = checkout_command._get_git_client()
-            assert client == "git.exe"
+        # The method now uses shutil.which() regardless of platform
+        client = checkout_command._get_git_client()
+        import shutil
+
+        expected_git = shutil.which("git")
+        assert client == expected_git
 
     def test_get_git_client_configured(self, checkout_command):
         """Test configured git client."""
@@ -372,7 +378,9 @@ class TestCheckoutCommand:
             checkout_command._checkout_branch("feature")
 
             git_exe = shutil.which("git")
-            mock_run.assert_called_once_with([git_exe, "checkout", "feature"], check=True)
+            mock_run.assert_called_once_with(
+                [git_exe, "checkout", "feature"], check=True
+            )
 
     def test_checkout_branch_error(self, checkout_command):
         """Test error checking out branch."""

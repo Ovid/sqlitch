@@ -45,14 +45,16 @@ class GitRepository:
         """
         self.path = path or Path.cwd()
         self._git_dir = self._find_git_dir()
-        self._git_executable = self._find_git_executable()
+        self._git_executable = None  # Lazy initialization
 
     def _find_git_executable(self) -> str:
         """Find the git executable (handles git vs git.exe on Windows)."""
-        git_exe = shutil.which("git")
-        if git_exe is None:
-            raise VCSError("Git command not found. Please install Git.")
-        return git_exe
+        if self._git_executable is None:
+            git_exe = shutil.which("git")
+            if git_exe is None:
+                raise VCSError("Git command not found. Please install Git.")
+            self._git_executable = git_exe
+        return self._git_executable
 
     def _find_git_dir(self) -> Optional[Path]:
         """Find .git directory by walking up the directory tree."""
@@ -95,8 +97,9 @@ class GitRepository:
             VCSError: If command fails and check=True
         """
         try:
+            git_exe = self._find_git_executable()
             result = subprocess.run(
-                [self._git_executable] + args,
+                [git_exe] + args,
                 cwd=self.path,
                 capture_output=True,
                 text=True,

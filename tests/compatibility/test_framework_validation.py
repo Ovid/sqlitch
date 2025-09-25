@@ -123,12 +123,15 @@ class TestCompatibilityFramework:
     def test_compatibility_test_runner_import(self):
         """Test that compatibility test runner can be imported and handles both scenarios."""
         from unittest.mock import patch
+
         from tests.compatibility.test_runner import CompatibilityTestRunner
 
         # Test when sqitch is NOT available
-        with patch.object(CompatibilityTestRunner, '_check_sqitch_availability', return_value=False):
+        with patch.object(
+            CompatibilityTestRunner, "_check_sqitch_availability", return_value=False
+        ):
             runner = CompatibilityTestRunner()
-            
+
             # Should detect that sqitch is not available
             assert not runner.sqitch_available
 

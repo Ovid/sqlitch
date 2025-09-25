@@ -34,6 +34,7 @@ class CheckoutCommand(BaseCommand):
 
         # Use shutil.which to find the git executable (handles platform differences)
         import shutil
+
         git_exe = shutil.which("git")
         if git_exe is None:
             raise VCSError("Git command not found. Please install Git.")

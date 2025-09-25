@@ -99,16 +99,7 @@ class ConfigCommand(BaseCommand):
 
             # Format and display config
             if config_data:
-                for section_name, section_data in config_data.items():
-                    if isinstance(section_data, dict):
-                        for key, value in section_data.items():
-                            if isinstance(value, list):
-                                for v in value:
-                                    self.info(f"{section_name}.{key}={v}")
-                            else:
-                                self.info(f"{section_name}.{key}={value}")
-                    else:
-                        self.info(f"{section_name}={section_data}")
+                self._emit_config_section(config_data, "")
 
             return 0
 
@@ -129,9 +120,9 @@ class ConfigCommand(BaseCommand):
             if value is not None:
                 if isinstance(value, list):
                     for v in value:
-                        self.info(str(v))
+                        self.emit(str(v))
                 else:
-                    self.info(str(value))
+                    self.emit(str(value))
                 return 0
             else:
                 # Exit with code 1 if key not found (matches Perl sqitch)
@@ -155,6 +146,21 @@ class ConfigCommand(BaseCommand):
         except Exception as e:
             self.error(f"Failed to set configuration value: {e}")
             return 1
+
+    def _emit_config_section(self, data: Any, prefix: str) -> None:
+        """Recursively emit configuration values."""
+        if isinstance(data, dict):
+            for key, value in data.items():
+                full_key = f"{prefix}.{key}" if prefix else key
+                if isinstance(value, dict):
+                    self._emit_config_section(value, full_key)
+                elif isinstance(value, list):
+                    for v in value:
+                        self.emit(f"{full_key}={v}")
+                else:
+                    self.emit(f"{full_key}={value}")
+        else:
+            self.emit(f"{prefix}={data}")
 
 
 # Click command for CLI integration
