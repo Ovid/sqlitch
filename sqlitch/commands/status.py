@@ -182,7 +182,7 @@ class StatusCommand(BaseCommand):
             return engine.get_current_state(project)
         except Exception as e:
             if not engine._registry_exists_in_db(engine._create_connection()):
-                raise SqlitchError(f"Database has not been initialized for Sqitch")
+                raise SqlitchError("Database has not been initialized for Sqitch")
             raise EngineError(f"Failed to get current state: {e}")
 
     def _emit_state(self, state: Dict[str, Any], options: Dict[str, Any]) -> None:

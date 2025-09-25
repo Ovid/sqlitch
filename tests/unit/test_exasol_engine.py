@@ -260,7 +260,7 @@ class TestExasolEngine:
         sql_content = """
         -- Comment line
         CREATE TABLE test (id INT);
-        
+
         INSERT INTO test VALUES (1);
         INSERT INTO test VALUES (2);
         """
@@ -446,10 +446,10 @@ class TestExasolEngine:
         sql_content = """
         -- This is a comment
         CREATE TABLE test (id INT);
-        
+
         INSERT INTO test VALUES (1);
         INSERT INTO test VALUES (2);
-        
+
         -- Another comment
         SELECT * FROM test;
         """

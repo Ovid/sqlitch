@@ -264,7 +264,7 @@ class TestSnowflakeEngine:
         sql_content = """
         -- Test comment
         CREATE TABLE test (id INT);
-        
+
         INSERT INTO test VALUES (1);
         """
 
@@ -299,10 +299,10 @@ class TestSnowflakeEngine:
         sql_content = """
         -- Comment line
         CREATE TABLE test (id INT);
-        
+
         INSERT INTO test VALUES (1);
         INSERT INTO test VALUES (2);
-        
+
         -- Another comment
         DROP TABLE test;
         """

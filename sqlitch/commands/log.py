@@ -9,6 +9,8 @@ import re
 import sys
 from typing import Any, Dict, List, Optional
 
+import click
+
 from ..core.exceptions import EngineError, SqlitchError
 from ..utils.formatter import FORMATS, ItemFormatter
 from .base import BaseCommand
@@ -342,7 +344,6 @@ class LogCommand(BaseCommand):
 
 
 # Click command wrapper for CLI integration
-import click
 
 
 @click.command("log")

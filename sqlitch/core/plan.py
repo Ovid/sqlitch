@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from .change import Change, Dependency, Tag
 from .exceptions import PlanError
@@ -291,9 +291,7 @@ class Plan:
         except ValueError:
             return []
 
-    def get_change(self, name: str) -> Optional[Change]:
-        """Get change by name."""
-        return self._change_index.get(name)
+
 
     def get_tag(self, name: str) -> Optional[Tag]:
         """Get tag by name."""

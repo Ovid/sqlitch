@@ -52,15 +52,15 @@ class TestRebaseIntegration:
         config_content = """[core]
     engine = pg
     plan_file = sqitch.plan
-    
+
 [engine "pg"]
     target = db:pg://test@localhost/test_rebase
     registry = sqitch
-    
+
 [user]
     name = Test User
     email = test@example.com
-    
+
 [rebase]
     verify = true
     no_prompt = false
@@ -479,11 +479,11 @@ class TestRebaseCliIntegration:
         config_content = """[core]
     engine = pg
     plan_file = sqitch.plan
-    
+
 [engine "pg"]
     target = db:pg://test@localhost/test_cli
     registry = sqitch
-    
+
 [user]
     name = Test User
     email = test@example.com

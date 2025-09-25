@@ -219,8 +219,8 @@ CREATE INDEX idx_{{ change }}_name ON {{ change }} (name);
 CREATE INDEX idx_{{ change }}_email ON {{ change }} (email);
 
 -- Add constraints
-ALTER TABLE {{ change }} 
-ADD CONSTRAINT chk_{{ change }}_email_format 
+ALTER TABLE {{ change }}
+ADD CONSTRAINT chk_{{ change }}_email_format
 CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$');
 
 COMMIT;
@@ -255,17 +255,17 @@ COMMIT;
 BEGIN;
 
 -- Verify table exists
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_name = '{{ change }}' AND table_schema = 'public';
 
 -- Verify required columns exist
-SELECT 1/COUNT(*) FROM information_schema.columns 
-WHERE table_name = '{{ change }}' 
+SELECT 1/COUNT(*) FROM information_schema.columns
+WHERE table_name = '{{ change }}'
   AND column_name IN ('id', 'name', 'email', 'created_at', 'updated_at');
 
 -- Verify indexes exist
-SELECT 1/COUNT(*) FROM pg_indexes 
-WHERE tablename = '{{ change }}' 
+SELECT 1/COUNT(*) FROM pg_indexes
+WHERE tablename = '{{ change }}'
   AND indexname IN ('idx_{{ change }}_name', 'idx_{{ change }}_email');
 
 ROLLBACK;

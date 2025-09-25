@@ -35,12 +35,12 @@ def temp_project():
     engine = pg
     top_dir = .
     plan_file = sqitch.plan
-    
+
 [engine "pg"]
     target = db:pg://localhost/test
     registry = sqitch
     client = psql
-    
+
 [user]
     name = Test User
     email = test@example.com

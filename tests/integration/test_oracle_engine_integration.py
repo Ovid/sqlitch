@@ -163,7 +163,7 @@ class TestOracleEngineIntegration:
                         conn.execute(
                             f"DROP TABLE {oracle_engine._registry_schema}.{table} CASCADE CONSTRAINTS"
                         )
-                    except:
+                    except Exception:
                         pass  # Table might not exist
 
                 # Drop type if it exists
@@ -171,7 +171,7 @@ class TestOracleEngineIntegration:
                     conn.execute(
                         f"DROP TYPE {oracle_engine._registry_schema}.sqitch_array"
                     )
-                except:
+                except Exception:
                     pass  # Type might not exist
 
             except Exception:
@@ -185,7 +185,7 @@ class TestOracleEngineIntegration:
             # Check that all required tables exist
             conn.execute(
                 """
-                SELECT table_name FROM all_tables 
+                SELECT table_name FROM all_tables
                 WHERE owner = ? AND table_name IN ('RELEASES', 'PROJECTS', 'CHANGES', 'TAGS', 'DEPENDENCIES', 'EVENTS')
             """,
                 {"owner": oracle_engine._registry_schema},
@@ -414,8 +414,8 @@ class TestOracleEngineIntegration:
         with oracle_engine.connection() as conn:
             conn.execute(
                 """
-                SELECT column_name, data_type, data_length 
-                FROM all_tab_columns 
+                SELECT column_name, data_type, data_length
+                FROM all_tab_columns
                 WHERE owner = ? AND table_name = 'TEST_VARIABLES_TABLE'
                 ORDER BY column_id
             """,

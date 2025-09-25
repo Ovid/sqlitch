@@ -107,7 +107,7 @@ def temp_project_dir():
     # Create config file
     config_content = """[core]
     engine = pg
-    
+
 [engine "pg"]
     target = db:pg://localhost/test
 """
@@ -383,7 +383,6 @@ class TestBundleCommand:
         mock_get_targets.return_value = [mock_target]
 
         options = {"dest_dir": Path("bundle"), "from": None, "to": None}
-        targets = []
         changes = []
 
         result = bundle_command._bundle_project([mock_target], changes, options)

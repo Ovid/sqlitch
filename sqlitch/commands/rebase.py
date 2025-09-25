@@ -9,7 +9,7 @@ It supports interactive rebasing with user prompts and conflict resolution.
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
 import click
 

@@ -215,7 +215,7 @@ class TestTranslationIntegration:
         mock_translation.return_value = mock_trans
 
         setup_i18n(self.locale_dir)
-        result = getattr(i18n, "__")("Test message")
+        getattr(i18n, "__")("Test message")
 
         # Should have attempted to load translation
         mock_translation.assert_called_once()

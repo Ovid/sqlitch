@@ -584,7 +584,7 @@ class TestVerticaEngine:
         sql_content = """
         -- Comment line
         SELECT 1;
-        
+
         INSERT INTO table VALUES (1, 2);
         -- Another comment
         UPDATE table SET col = 'value';

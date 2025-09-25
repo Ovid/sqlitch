@@ -282,7 +282,7 @@ class Sqitch:
         if not plan_file.exists():
             from .exceptions import hurl
 
-            hurl("init", f"Not a sqitch project; run 'sqlitch init' to initialize one")
+            hurl("init", "Not a sqitch project; run 'sqlitch init' to initialize one")
 
     def get_target(self, target_name: Optional[str] = None) -> "Target":
         """
@@ -340,7 +340,7 @@ class Sqitch:
         """
         try:
             engine_type = target.engine_type
-        except ValueError as e:
+        except ValueError:
             raise EngineError(
                 getattr(i18n, "__x")(
                     "Unsupported engine type in URI: {uri}", uri=target.uri
@@ -710,7 +710,7 @@ class Sqitch:
         with tempfile.NamedTemporaryFile(mode="w+", suffix=".txt", delete=False) as f:
             temp_file = Path(f.name)
             f.write(f"\n# Please enter the note for the {object_type}.\n")
-            f.write(f"# Lines starting with '#' will be ignored.\n")
+            f.write("# Lines starting with '#' will be ignored.\n")
 
         try:
             # Open editor

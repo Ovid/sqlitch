@@ -223,7 +223,7 @@ class TestFirebirdEngine:
         )
 
         engine = FirebirdEngine(target, self.plan)
-        connection = engine._create_connection()
+        engine._create_connection()
 
         mock_fdb.connect.assert_called_once_with(
             dsn="path/to/test.fdb", user="SYSDBA", password="masterkey", charset="UTF8"
@@ -300,10 +300,10 @@ class TestFirebirdEngine:
         sql_content = """
         -- Comment
         CREATE TABLE test (id INTEGER);
-        
+
         INSERT INTO test VALUES (1); -- Inline comment
         INSERT INTO test VALUES (2);
-        
+
         -- Another comment
         """
 

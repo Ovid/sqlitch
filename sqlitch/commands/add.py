@@ -5,18 +5,17 @@ This module implements the 'add' command which adds a new change to the sqlitch 
 creating the necessary deploy, revert, and verify script files from templates.
 """
 
-import os
 import re
 import shlex
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import click
 
 from ..core.change import Change, Dependency
-from ..core.exceptions import PlanError, SqlitchError
+from ..core.exceptions import SqlitchError
 from ..core.plan import Plan
 from ..core.types import validate_change_name
 from ..utils.template import TemplateContext, create_template_engine

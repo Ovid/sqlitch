@@ -122,7 +122,7 @@ DROP TABLE IF EXISTS app.users;
         """
 -- Verify users
 
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_schema = 'app' AND table_name = 'users';
 """
     )
@@ -154,7 +154,7 @@ DROP TABLE IF EXISTS app.posts;
         """
 -- Verify posts
 
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_schema = 'app' AND table_name = 'posts';
 """
     )

@@ -340,7 +340,7 @@ class InitCommand(BaseCommand):
         # Check existing configuration
         try:
             return self.config.get("core.engine")
-        except:
+        except Exception:
             pass
 
         return None
@@ -366,7 +366,7 @@ class InitCommand(BaseCommand):
             try:
                 target = self.config.get_target(target_name)
                 return target.uri
-            except:
+            except Exception:
                 pass
 
         # Check engine configuration
@@ -375,7 +375,7 @@ class InitCommand(BaseCommand):
             target_uri = engine_config.get("target")
             if target_uri:
                 return target_uri
-        except:
+        except Exception:
             pass
 
         # Return default URI for engine

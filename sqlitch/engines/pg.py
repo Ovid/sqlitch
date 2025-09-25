@@ -547,7 +547,7 @@ class PostgreSQLEngine(Engine):
         if not connection.fetchone():
             connection.execute(
                 f"""
-                INSERT INTO {self._registry_schema_name}.{self.registry_schema.PROJECTS_TABLE} 
+                INSERT INTO {self._registry_schema_name}.{self.registry_schema.PROJECTS_TABLE}
                 (project, uri, creator_name, creator_email)
                 VALUES (%s, %s, %s, %s)
                 """,

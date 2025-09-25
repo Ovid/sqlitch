@@ -16,6 +16,7 @@ from sqlitch.core.change import Change
 from sqlitch.core.exceptions import ConnectionError, EngineError
 from sqlitch.core.plan import Plan
 from sqlitch.core.target import Target
+from sqlitch.core.types import ValidatedURI
 from sqlitch.engines.vertica import VerticaEngine, VerticaRegistrySchema
 
 # Skip all tests if vertica-python is not available
@@ -183,9 +184,9 @@ class TestVerticaEngineIntegration:
             # Check projects table
             conn.execute(
                 f"""
-                SELECT COUNT(*) as count 
-                FROM v_catalog.tables 
-                WHERE schema_name = '{vertica_engine._registry_schema_name}' 
+                SELECT COUNT(*) as count
+                FROM v_catalog.tables
+                WHERE schema_name = '{vertica_engine._registry_schema_name}'
                 AND table_name = 'projects'
             """
             )
@@ -195,9 +196,9 @@ class TestVerticaEngineIntegration:
             # Check changes table
             conn.execute(
                 f"""
-                SELECT COUNT(*) as count 
-                FROM v_catalog.tables 
-                WHERE schema_name = '{vertica_engine._registry_schema_name}' 
+                SELECT COUNT(*) as count
+                FROM v_catalog.tables
+                WHERE schema_name = '{vertica_engine._registry_schema_name}'
                 AND table_name = 'changes'
             """
             )
@@ -207,9 +208,9 @@ class TestVerticaEngineIntegration:
             # Check tags table
             conn.execute(
                 f"""
-                SELECT COUNT(*) as count 
-                FROM v_catalog.tables 
-                WHERE schema_name = '{vertica_engine._registry_schema_name}' 
+                SELECT COUNT(*) as count
+                FROM v_catalog.tables
+                WHERE schema_name = '{vertica_engine._registry_schema_name}'
                 AND table_name = 'tags'
             """
             )
@@ -236,7 +237,7 @@ class TestVerticaEngineIntegration:
                 id INTEGER,
                 name VARCHAR(100)
             );
-            
+
             INSERT INTO {vertica_engine._registry_schema_name}.test_table VALUES (1, 'test');
         """
         )
@@ -276,10 +277,10 @@ class TestVerticaEngineIntegration:
             # Verify table was created with substituted values
             conn.execute(
                 f"""
-                SELECT column_default 
-                FROM v_catalog.columns 
-                WHERE schema_name = '{vertica_engine._registry_schema_name}' 
-                AND table_name = 'test_vars' 
+                SELECT column_default
+                FROM v_catalog.columns
+                WHERE schema_name = '{vertica_engine._registry_schema_name}'
+                AND table_name = 'test_vars'
                 AND column_name = 'value'
             """
             )

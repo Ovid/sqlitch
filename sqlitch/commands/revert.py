@@ -9,7 +9,7 @@ support for reverting to specific changes or tags.
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
 import click
 

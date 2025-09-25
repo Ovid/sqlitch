@@ -325,7 +325,7 @@ def create_command_wrapper(command_class):
                 sys.exit(handle_sqlitch_error(e, sqitch))
             except KeyboardInterrupt:
                 sys.exit(handle_keyboard_interrupt(sqitch))
-            except click.ClickException as e:
+            except click.ClickException:
                 # Let Click handle its own exceptions
                 raise
             except Exception as e:

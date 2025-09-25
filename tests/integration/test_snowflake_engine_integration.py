@@ -74,8 +74,6 @@ class TestSnowflakeEngineIntegration:
         if query_params:
             uri_parts.append(f"?{'&'.join(query_params)}")
 
-        uri = "".join(uri_parts)
-
         target = Mock(spec=Target)
         target.uri = Mock()
         target.uri.hostname = f"{snowflake_config['account']}.snowflakecomputing.com"
@@ -163,9 +161,9 @@ class TestSnowflakeEngineIntegration:
                 # Check projects table
                 conn.execute(
                     """
-                    SELECT table_name 
-                    FROM information_schema.tables 
-                    WHERE table_schema = 'SQITCH_TEST' 
+                    SELECT table_name
+                    FROM information_schema.tables
+                    WHERE table_schema = 'SQITCH_TEST'
                     AND table_name = 'PROJECTS'
                 """
                 )
@@ -175,9 +173,9 @@ class TestSnowflakeEngineIntegration:
                 # Check releases table
                 conn.execute(
                     """
-                    SELECT table_name 
-                    FROM information_schema.tables 
-                    WHERE table_schema = 'SQITCH_TEST' 
+                    SELECT table_name
+                    FROM information_schema.tables
+                    WHERE table_schema = 'SQITCH_TEST'
                     AND table_name = 'RELEASES'
                 """
                 )
@@ -214,7 +212,7 @@ class TestSnowflakeEngineIntegration:
                 id INTEGER,
                 name VARCHAR(100)
             );
-            
+
             INSERT INTO test_execution VALUES (1, 'test');
             """
             sql_file.write_text(sql_content)
@@ -245,7 +243,7 @@ class TestSnowflakeEngineIntegration:
             CREATE OR REPLACE TABLE &registry.test_vars (
                 id INTEGER
             );
-            
+
             USE WAREHOUSE &warehouse;
             """
             sql_file.write_text(sql_content)
@@ -258,9 +256,9 @@ class TestSnowflakeEngineIntegration:
                 # Verify table was created in correct schema
                 conn.execute(
                     """
-                    SELECT table_name 
-                    FROM information_schema.tables 
-                    WHERE table_schema = 'SQITCH_TEST' 
+                    SELECT table_name
+                    FROM information_schema.tables
+                    WHERE table_schema = 'SQITCH_TEST'
                     AND table_name = 'TEST_VARS'
                 """
                 )
@@ -320,8 +318,8 @@ class TestSnowflakeEngineIntegration:
             verify_file.parent.mkdir(exist_ok=True)
             verify_file.write_text(
                 """
-            SELECT table_name 
-            FROM information_schema.tables 
+            SELECT table_name
+            FROM information_schema.tables
             WHERE table_name = 'TEST_DEPLOYMENT';
             """
             )
@@ -341,8 +339,8 @@ class TestSnowflakeEngineIntegration:
             with engine.connection() as conn:
                 conn.execute(
                     """
-                    SELECT table_name 
-                    FROM information_schema.tables 
+                    SELECT table_name
+                    FROM information_schema.tables
                     WHERE table_name = 'TEST_DEPLOYMENT'
                 """
                 )
@@ -356,8 +354,8 @@ class TestSnowflakeEngineIntegration:
             with engine.connection() as conn:
                 conn.execute(
                     """
-                    SELECT table_name 
-                    FROM information_schema.tables 
+                    SELECT table_name
+                    FROM information_schema.tables
                     WHERE table_name = 'TEST_DEPLOYMENT'
                 """
                 )

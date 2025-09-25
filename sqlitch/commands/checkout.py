@@ -8,7 +8,7 @@ checks out a VCS branch, and redeploys changes from the new branch.
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
 import click
 
@@ -451,13 +451,13 @@ OPTIONS
 
     --mode <mode>
         Specify the reversion mode to use in case of failure. Possible values are:
-        
+
         all     In the event of failure, revert all deployed changes, back to the
                 point at which deployment started. This is the default.
-        
+
         tag     In the event of failure, revert all deployed changes to the last
                 successfully-applied tag.
-        
+
         change  In the event of failure, no changes will be reverted.
 
     --verify

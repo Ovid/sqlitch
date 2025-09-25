@@ -417,10 +417,10 @@ class TestRebaseCommandIntegration:
         config_content = """[core]
     engine = pg
     plan_file = sqitch.plan
-    
+
 [engine "pg"]
     target = db:pg://user@localhost/test
-    
+
 [rebase]
     verify = true
     mode = all

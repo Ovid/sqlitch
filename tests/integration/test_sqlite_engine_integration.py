@@ -179,7 +179,7 @@ class TestSQLiteEngineIntegration:
             # Check that all tables were created
             conn.execute(
                 """
-                SELECT name FROM sqlite_master 
+                SELECT name FROM sqlite_master
                 WHERE type='table' AND name IN ('releases', 'projects', 'changes', 'tags', 'dependencies', 'events')
                 ORDER BY name
             """
@@ -251,7 +251,7 @@ class TestSQLiteEngineIntegration:
             posts_change = engine.plan.changes[1]
             conn.execute(
                 """
-                SELECT type, dependency FROM dependencies 
+                SELECT type, dependency FROM dependencies
                 WHERE change_id = ? AND type = 'require'
             """,
                 {"change_id": posts_change.id},
@@ -514,7 +514,7 @@ class TestSQLiteEngineIntegration:
                 id INTEGER PRIMARY KEY,
                 name TEXT NOT NULL
             );
-            
+
             INSERT INTO test_direct (name) VALUES ('test1'), ('test2');
         """
         )
@@ -541,11 +541,11 @@ class TestSQLiteEngineIntegration:
         verify_file.write_text(
             """
             -- Verify users table exists and has correct structure
-            SELECT 
+            SELECT
                 COUNT(*) as table_count
-            FROM sqlite_master 
+            FROM sqlite_master
             WHERE type='table' AND name='users';
-            
+
             -- Verify columns exist
             PRAGMA table_info(users);
         """

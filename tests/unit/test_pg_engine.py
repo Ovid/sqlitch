@@ -353,7 +353,7 @@ class TestPostgreSQLEngine:
         sql_content = """
         -- Comment
         CREATE TABLE test (id INTEGER);
-        
+
         INSERT INTO test VALUES (1);
         """
 
@@ -404,10 +404,10 @@ class TestPostgreSQLEngine:
         sql_content = """
         -- This is a comment
         CREATE TABLE test (id INTEGER);
-        
+
         INSERT INTO test VALUES (1);
         INSERT INTO test VALUES (2);
-        
+
         -- Another comment
         SELECT * FROM test;
         """
@@ -674,7 +674,7 @@ class TestPostgreSQLEngineIntegration:
             name VARCHAR(100) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL
         );
-        
+
         CREATE INDEX idx_users_email ON users(email);
         """
 

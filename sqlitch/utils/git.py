@@ -5,7 +5,6 @@ This module provides Git repository detection, status checking,
 and integration for change file naming and commit tracking.
 """
 
-import os
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path

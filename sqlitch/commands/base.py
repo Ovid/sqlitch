@@ -6,7 +6,7 @@ commands inherit from, providing common functionality and interface.
 """
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, List, Optional
 
 from ..core.exceptions import SqlitchError
 
@@ -108,10 +108,16 @@ class BaseCommand(ABC):
     def error(self, message: str) -> None:
         """Log error message."""
         self.sqitch.vent(message)
+        # Also call logger for backward compatibility with tests
+        if hasattr(self, "logger") and hasattr(self.logger, "error"):
+            self.logger.error(message)
 
     def debug(self, message: str) -> None:
         """Log debug message."""
         self.sqitch.debug(message)
+        # Also call logger for backward compatibility with tests
+        if hasattr(self, "logger") and hasattr(self.logger, "debug"):
+            self.logger.debug(message)
 
     def trace(self, message: str) -> None:
         """Log trace message."""
@@ -140,7 +146,7 @@ class BaseCommand(ABC):
         Returns:
             Exit code
         """
-        from ..core.exceptions import SqlitchError, handle_exception
+        from ..core.exceptions import SqlitchError
         from ..utils.feedback import format_error_with_suggestions
 
         if isinstance(error, SqlitchError):
@@ -213,29 +219,7 @@ class BaseCommand(ABC):
 
         return confirm_destructive_operation(self.sqitch, operation, target, changes)
 
-    def error(self, message: str) -> None:
-        """Log error message."""
-        self.sqitch.vent(message)
 
-    def debug(self, message: str) -> None:
-        """Log debug message."""
-        self.sqitch.debug(message)
-
-    def trace(self, message: str) -> None:
-        """Log trace message."""
-        self.sqitch.trace(message)
-
-    def comment(self, message: str) -> None:
-        """Log comment message."""
-        self.sqitch.comment(message)
-
-    def emit(self, message: str) -> None:
-        """Emit message to stdout."""
-        self.sqitch.emit(message)
-
-    def vent(self, message: str) -> None:
-        """Vent message to stderr."""
-        self.sqitch.vent(message)
 
     def confirm(self, message: str, default: Optional[bool] = None) -> bool:
         """
@@ -262,11 +246,3 @@ class BaseCommand(ABC):
             User input
         """
         return self.sqitch.prompt(message, default)
-
-    def error(self, message: str) -> None:
-        """Log error message."""
-        self.logger.error(message)
-
-    def debug(self, message: str) -> None:
-        """Log debug message."""
-        self.logger.debug(message)

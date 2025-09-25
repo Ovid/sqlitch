@@ -1,11 +1,10 @@
 """Shared test fixtures and configuration for sqlitch tests."""
 
 import os
-import shutil
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, Generator, Optional
-from unittest.mock import Mock, patch
+from typing import Dict, Generator
+from unittest.mock import Mock
 
 import pytest
 

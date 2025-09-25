@@ -35,7 +35,7 @@ class TestI18nIntegration:
             """
 [core]
     engine = pg
-    
+
 [user]
     name = Test User
     email = test@example.com

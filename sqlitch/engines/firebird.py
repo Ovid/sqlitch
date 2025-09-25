@@ -142,7 +142,7 @@ class FirebirdRegistrySchema(RegistrySchema):
             """,
             # Insert initial release record
             f"""
-            INSERT INTO {cls.RELEASES_TABLE} 
+            INSERT INTO {cls.RELEASES_TABLE}
             (version, installer_name, installer_email)
             VALUES (1.1, 'sqlitch', 'sqlitch@example.com')
             """,

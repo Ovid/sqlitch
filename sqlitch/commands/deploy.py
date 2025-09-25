@@ -534,7 +534,7 @@ class DeployCommand(BaseCommand):
                     f"Successfully deployed {deployed_count} changes before cancellation"
                 )
             return 130
-        except Exception as e:
+        except Exception:
             duration = time.time() - start_time
             from ..utils.feedback import show_operation_summary
 

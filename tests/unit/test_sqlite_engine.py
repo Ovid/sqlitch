@@ -512,7 +512,7 @@ class TestSQLiteEngineIntegration:
         with real_engine.connection() as conn:
             conn.execute(
                 """
-                SELECT name FROM sqlite_master 
+                SELECT name FROM sqlite_master
                 WHERE type='table' AND name IN ('releases', 'projects', 'changes', 'tags', 'dependencies', 'events')
                 ORDER BY name
             """

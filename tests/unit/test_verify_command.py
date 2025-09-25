@@ -387,7 +387,7 @@ class TestVerifyCommand:
         mock_engine = Mock()
 
         with patch.object(verify_command, "_verify_single_change") as mock_verify:
-            with patch.object(verify_command, "_emit_verification_result") as mock_emit:
+            with patch.object(verify_command, "_emit_verification_result"):
                 # Mock verification results
                 results = [
                     VerificationResult(changes[0], True),

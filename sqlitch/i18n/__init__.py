@@ -37,7 +37,8 @@ def setup_i18n(locale_dir: Optional[Path] = None, domain: str = "sqlitch") -> No
         _ = translation.gettext
     except Exception:
         # Fallback to identity function
-        _ = lambda x: x
+        def _(x):
+            return x
 
 
 def __(message: str) -> str:

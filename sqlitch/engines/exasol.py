@@ -7,15 +7,9 @@ SQL execution with proper error handling and transaction management.
 """
 
 import logging
-import os
-import re
-import tempfile
-from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Union
+from typing import Any, Dict, List, Optional
 from urllib.parse import parse_qs, urlparse
-
-from ..core.change import Change
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan
 from ..core.target import Target
@@ -160,7 +154,7 @@ class ExasolConnection:
             else:
                 result = self._conn.execute(sql)
             return result
-        except Exception as e:
+        except Exception:
             logger.error(f"SQL execution failed: {sql}")
             raise
 

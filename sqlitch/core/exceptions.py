@@ -58,8 +58,6 @@ class SqlitchError(Exception):
         # Add stack trace for DEV errors or when verbosity is high
         if self.ident == "DEV":
             # Get current stack trace
-            import traceback
-
             stack_trace = "".join(
                 traceback.format_stack()[:-1]
             )  # Exclude current frame
@@ -81,8 +79,6 @@ class SqlitchError(Exception):
             parts.append(str(self.previous_exception))
 
         if self.ident == "DEV":
-            import traceback
-
             stack_trace = "".join(
                 traceback.format_stack()[:-1]
             )  # Exclude current frame
@@ -586,5 +582,4 @@ def format_database_error(operation: str, target: str, error: str) -> str:
     return f"Cannot {operation} {target}: {error}"
 
 
-# Import sys for stderr usage in handle_exception
-import sys
+

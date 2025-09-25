@@ -316,10 +316,10 @@ class TestFirebirdEngineIntegration:
         CREATE TABLE test (
             id INTEGER PRIMARY KEY
         );
-        
+
         INSERT INTO test VALUES (1); -- Inline comment
         INSERT INTO test VALUES (2);
-        
+
         -- Another comment
         SELECT * FROM test;
         """
@@ -417,8 +417,8 @@ class TestFirebirdEngineIntegration:
 
             conn.execute(
                 """
-                INSERT INTO CHANGES 
-                (change_id, change, project, note, committed_at, committer_name, 
+                INSERT INTO CHANGES
+                (change_id, change, project, note, committed_at, committer_name,
                  committer_email, planned_at, planner_name, planner_email)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,

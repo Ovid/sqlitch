@@ -87,7 +87,7 @@ DROP SCHEMA IF EXISTS app;
             """
 -- Verify initial_schema
 
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_schema = 'app' AND table_name = 'metadata';
 """
         )
@@ -118,7 +118,7 @@ DROP TABLE IF EXISTS app.users;
             """
 -- Verify users_table
 
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_schema = 'app' AND table_name = 'users';
 """
         )
@@ -150,7 +150,7 @@ DROP TABLE IF EXISTS app.posts;
             """
 -- Verify posts_table
 
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_schema = 'app' AND table_name = 'posts';
 """
         )

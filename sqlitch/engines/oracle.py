@@ -557,7 +557,7 @@ class OracleEngine(Engine):
 
             connection.execute(
                 """
-                SELECT 1 FROM all_tables 
+                SELECT 1 FROM all_tables
                 WHERE owner = UPPER(?) AND table_name = 'CHANGES'
                 """,
                 {"owner": schema_name},

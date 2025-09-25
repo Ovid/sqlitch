@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
+import subprocess
 
 from sqlitch.commands.checkout import CheckoutCommand
 from sqlitch.core.change import Change
@@ -477,5 +478,4 @@ class TestCheckoutCommandIntegration:
             assert "OPTIONS" in help_text
 
 
-# Import subprocess for mocking
-import subprocess
+

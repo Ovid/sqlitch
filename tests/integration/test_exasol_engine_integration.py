@@ -216,7 +216,7 @@ class TestExasolEngineIntegration:
             id INTEGER,
             name VARCHAR(100)
         );
-        
+
         INSERT INTO {test_engine._registry_schema_name}.test_table VALUES (1, 'test1');
         INSERT INTO {test_engine._registry_schema_name}.test_table VALUES (2, 'test2');
         """
@@ -260,7 +260,7 @@ class TestExasolEngineIntegration:
             id INTEGER,
             value VARCHAR(&max_length)
         );
-        
+
         INSERT INTO &registry.&table_name VALUES (1, '&test_value');
         """
 
@@ -306,7 +306,7 @@ class TestExasolEngineIntegration:
             conn.execute(
                 f"""
                 INSERT INTO {test_engine._registry_schema_name}.changes
-                (change_id, script_hash, change, project, note, committed_at, 
+                (change_id, script_hash, change, project, note, committed_at,
                  committer_name, committer_email, planned_at, planner_name, planner_email)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
@@ -339,7 +339,7 @@ class TestExasolEngineIntegration:
             conn.execute(
                 f"""
                 INSERT INTO {test_engine._registry_schema_name}.changes
-                (change_id, script_hash, change, project, note, committed_at, 
+                (change_id, script_hash, change, project, note, committed_at,
                  committer_name, committer_email, planned_at, planner_name, planner_email)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
@@ -361,7 +361,7 @@ class TestExasolEngineIntegration:
             # Test regex condition
             regex_condition = test_engine._regex_condition("change", "users")
             query = f"""
-                SELECT change FROM {test_engine._registry_schema_name}.changes 
+                SELECT change FROM {test_engine._registry_schema_name}.changes
                 WHERE {regex_condition}
             """
 

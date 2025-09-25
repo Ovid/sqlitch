@@ -21,7 +21,6 @@ from typing import (
     List,
     Optional,
     Protocol,
-    Set,
     Tuple,
     Union,
 )
@@ -342,7 +341,7 @@ class Engine(ABC):
 
         connection.execute(
             f"""
-            INSERT INTO {self.registry_schema.PROJECTS_TABLE} 
+            INSERT INTO {self.registry_schema.PROJECTS_TABLE}
             (project, uri, created_at, creator_name, creator_email)
             VALUES (?, ?, ?, ?, ?)
             """,
@@ -1158,7 +1157,7 @@ class EngineRegistry:
             with self.connection() as conn:
                 # Get deployed changes in order
                 sql = f"""
-                    SELECT change_id, change, note, committed_at, 
+                    SELECT change_id, change, note, committed_at,
                            committer_name, committer_email,
                            planned_at, planner_name, planner_email
                     FROM {self.registry_schema.CHANGES_TABLE}
@@ -1289,16 +1288,6 @@ class EngineRegistry:
 
             # Prompt for confirmation if needed
             if prompt and changes_to_revert:
-                change_names = [
-                    (
-                        self.plan.get_change_by_id(cid).name
-                        if self.plan.get_change_by_id(cid)
-                        else cid
-                    )
-                    for cid in changes_to_revert
-                ]
-                message = f"Revert {len(changes_to_revert)} change(s) ({', '.join(change_names[:3])}{'...' if len(change_names) > 3 else ''})?"
-
                 # This would need to be implemented to actually prompt the user
                 # For now, assume confirmation based on prompt_accept
                 if not prompt_accept:
