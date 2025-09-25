@@ -8,7 +8,7 @@ SQL execution with proper error handling and transaction management.
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Union
+from typing import Any, Dict, Iterator, List, Optional
 from urllib.parse import urlparse
 
 try:
@@ -181,7 +181,7 @@ class FirebirdConnection:
                 self._cursor.execute(sql)
 
             return self._cursor
-        except Exception as e:
+        except Exception:
             logger.error(f"SQL execution failed: {sql[:100]}...")
             logger.error(f"Parameters: {params}")
             raise
@@ -463,7 +463,7 @@ class FirebirdEngine(Engine):
         """
         # Firebird uses SIMILAR TO which is different from standard regex
         # Convert common regex patterns to SIMILAR TO patterns
-        similar_pattern = self._convert_regex_to_similar(pattern)
+        self._convert_regex_to_similar(pattern)
         return f"{column} SIMILAR TO ?"
 
     def _convert_regex_to_similar(self, regex_pattern: str) -> str:

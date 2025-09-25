@@ -13,7 +13,7 @@ import click
 
 from ..core.exceptions import SqlitchError
 from ..core.target import Target
-from ..core.types import URI, EngineType, validate_project_name
+from ..core.types import URI
 from ..utils.git import GitRepository, detect_vcs
 from .base import BaseCommand
 

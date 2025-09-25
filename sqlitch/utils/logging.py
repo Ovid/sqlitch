@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 from enum import IntEnum
 from pathlib import Path
-from typing import Any, Dict, Optional, TextIO
+from typing import Any, Dict, Optional
 
 from sqlitch.core.types import VerbosityLevel
 

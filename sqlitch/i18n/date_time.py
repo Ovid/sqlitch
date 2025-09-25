@@ -8,9 +8,7 @@ settings, similar to the original Perl sqitch implementation.
 import locale
 import platform
 from datetime import datetime
-from typing import Any, Dict, Optional
-
-from sqlitch.i18n import __
+from typing import Optional
 
 
 class LocaleAwareDateTimeFormatter:

@@ -5,7 +5,7 @@ This module provides the LogCommand class that displays the change history
 from the database event log with various formatting and filtering options.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import click
 

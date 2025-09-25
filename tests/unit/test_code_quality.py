@@ -84,13 +84,13 @@ class TestCodeQuality:
                     compile(f.read(), str(py_file), "exec")
             except SyntaxError as e:
                 syntax_errors.append(f"{py_file}: {e}")
-            except Exception as e:
+            except Exception:
                 # Skip files that can't be read (e.g., binary files misnamed as .py)
                 continue
 
         if syntax_errors:
             pytest.fail(
-                f"Syntax errors found in Python files:\n" + "\n".join(syntax_errors)
+                "Syntax errors found in Python files:\n" + "\n".join(syntax_errors)
             )
 
     @pytest.mark.slow

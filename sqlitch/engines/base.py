@@ -14,26 +14,21 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import (
     Any,
-    ContextManager,
     Dict,
     Iterator,
     List,
     Optional,
     Protocol,
-    Tuple,
-    Union,
 )
 
 from ..core.change import Change
-from ..core.exceptions import ConnectionError, DeploymentError, EngineError, LockError
+from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan
 from ..core.types import (
     ChangeId,
     ChangeStatus,
     EngineType,
-    OperationType,
     Target,
-    ValidatedURI,
     sanitize_connection_string,
 )
 

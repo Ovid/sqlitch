@@ -8,7 +8,7 @@ tags, and comparison with the plan file.
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional
+from typing import Any, Dict, List, Optional
 
 import click
 

@@ -6,13 +6,12 @@ including built-in templates for different database engines and
 support for custom template directories.
 """
 
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 try:
-    from jinja2 import BaseLoader, Environment, FileSystemLoader, Template
+    from jinja2 import BaseLoader, Environment, FileSystemLoader
 
     JINJA2_AVAILABLE = True
 except ImportError:
@@ -404,7 +403,7 @@ class TemplateEngine:
         try:
             self.env.get_template(template_name)
             return True
-        except:
+        except Exception:
             return False
 
     def list_templates(self) -> List[str]:

@@ -245,7 +245,7 @@ add_users 2023-01-16T14:20:00Z Test User <test@example.com> # Add users table
         assert result == 0
 
         captured = capsys.readouterr()
-        output = captured.out
+        captured.out
 
         # Should contain matching changes
         # Note: SQLite uses GLOB, so this might not work exactly like regex

@@ -50,7 +50,6 @@ class TestI18nIntegration:
 
     def test_sqitch_with_i18n_messages(self):
         """Test that Sqitch uses i18n messages."""
-        config = Config([self.config_file])
         sqitch = create_sqitch([self.config_file])
 
         # Test user validation with i18n messages
@@ -67,7 +66,6 @@ class TestI18nIntegration:
 
     def test_error_messages_with_i18n(self):
         """Test that error messages use i18n."""
-        config = Config([self.config_file])
         sqitch = create_sqitch([self.config_file])
 
         # Test with invalid command

@@ -432,7 +432,7 @@ class TestPreconditionValidation:
 
     def test_validate_preconditions_non_database_operation(self):
         """Test precondition validation for non-database operations."""
-        errors = validate_operation_preconditions(self.sqitch, "init", "test_db")
+        validate_operation_preconditions(self.sqitch, "init", "test_db")
 
         # Should not try to validate target for init operation
         self.sqitch.get_target.assert_not_called()
@@ -534,7 +534,7 @@ class TestFeedbackIntegration:
 
         # Should have some output to stderr (progress indicators)
         # Exact output depends on terminal capabilities
-        output = mock_stderr.getvalue()
+        mock_stderr.getvalue()
         # Just verify that some output was produced
         # (progress indicators write to stderr)
 

@@ -7,7 +7,6 @@ mechanisms for long-running operations, matching the behavior of Perl sqitch.
 
 import sys
 import threading
-import time
 from contextlib import contextmanager
 from typing import Any, Iterator, Optional, TextIO
 
@@ -310,7 +309,7 @@ def show_progress(
                 yield item
     else:
         # For single items or when bar is disabled, just use spinner
-        with progress_indicator(message, "spinner") as spinner:
+        with progress_indicator(message, "spinner"):
             for item in items:
                 yield item
 

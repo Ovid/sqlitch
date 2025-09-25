@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Target Name Resolution**: Fixed test expectation for default target naming
   - Corrected test to expect URI as target name when using engine.{engine}.target configuration
   - Aligned behavior with Perl sqitch reference implementation
+- **Code Quality**: Fixed flake8 issues (E722, F401, F541, F824, F841)
+  - Removed unused imports across multiple modules
+  - Fixed bare except clauses to specify Exception
+  - Removed unused local variables and f-string placeholders
+  - Cleaned up unused global variable declarations
 - **Target Validation Logic**: Fixed validate_preconditions to pass None instead of "default" for proper target resolution
 - **Error Message Consistency**: Updated require_initialized to use proper error message matching test expectations
 

@@ -51,7 +51,6 @@ def __(message: str) -> str:
     Returns:
         Translated message or original if no translation available
     """
-    global _
     if _ is None:
         setup_i18n()
     return _(message)
@@ -89,7 +88,6 @@ def __n(singular: str, plural: str, count: int, **kwargs: Any) -> str:
     Returns:
         Translated message in appropriate plural form
     """
-    global _
     if _ is None:
         setup_i18n()
 

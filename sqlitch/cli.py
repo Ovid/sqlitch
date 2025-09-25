@@ -292,7 +292,7 @@ def get_sqitch_from_context(ctx: click.Context) -> Sqitch:
     return cli_ctx.create_sqitch()
 
 
-def create_command_wrapper(command_class):
+def create_command_wrapper(command_class):  # noqa: C901
     """
     Create a Click command wrapper for a BaseCommand subclass.
 
@@ -334,6 +334,3 @@ def create_command_wrapper(command_class):
         return command_func(**kwargs)
 
     return wrapper
-
-
-# Placeholder commands removed - using dynamic registration

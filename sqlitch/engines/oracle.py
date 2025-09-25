@@ -9,7 +9,7 @@ SQL execution with proper error handling and transaction management.
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Union
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError

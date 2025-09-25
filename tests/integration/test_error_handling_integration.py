@@ -448,7 +448,7 @@ class TestProgressIntegration:
                 reporter.step_progress("Step 3")
 
             # Should have progress output
-            output = mock_stderr.getvalue()
+            mock_stderr.getvalue()
             # Progress bar or spinner should produce some output
             # (exact output depends on terminal capabilities)
 

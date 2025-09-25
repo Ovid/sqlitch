@@ -10,7 +10,7 @@ import logging
 import sqlite3
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan

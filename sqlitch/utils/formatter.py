@@ -7,9 +7,7 @@ log entries with various format templates, matching the Perl sqitch behavior.
 
 import re
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-
-from ..core.exceptions import SqlitchError
+from typing import Any, Dict
 
 
 class ItemFormatter:

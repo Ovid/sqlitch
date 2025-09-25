@@ -10,8 +10,8 @@ import logging
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Union
-from urllib.parse import parse_qs, urlparse
+from typing import Any, Dict, List, Optional
+from urllib.parse import parse_qs
 
 from ..core.exceptions import ConnectionError, DeploymentError, EngineError
 from ..core.plan import Plan

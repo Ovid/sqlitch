@@ -8,11 +8,10 @@ __(), __x(), and __n() functions and generates/updates POT and PO files.
 
 import ast
 import os
-import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import List, Optional, Set, Tuple
 
 
 class MessageExtractor(ast.NodeVisitor):

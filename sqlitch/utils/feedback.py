@@ -10,10 +10,10 @@ import sys
 import time
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterator, List, Optional
+from typing import Iterator, List, Optional
 
 from ..core.exceptions import SqlitchError
-from .progress import ProgressBar, ProgressIndicator, Spinner, StatusReporter
+from .progress import ProgressBar, ProgressIndicator, Spinner
 
 
 class OperationReporter:
@@ -396,7 +396,7 @@ def validate_operation_preconditions(sqitch, operation: str, target: str) -> Lis
     if operation in ["deploy", "revert", "verify"]:
         # Check if target is accessible
         try:
-            target_obj = sqitch.get_target(target)
+            sqitch.get_target(target)
             # Basic validation - more detailed checks happen in engine
         except SqlitchError as e:
             errors.append(f"Target validation failed: {e}")
