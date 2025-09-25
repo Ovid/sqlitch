@@ -1,16 +1,17 @@
 """Shared test fixtures and configuration for sqlitch tests."""
 
 import os
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
-from typing import Dict, Any, Generator, Optional
+from typing import Any, Dict, Generator, Optional
 from unittest.mock import Mock, patch
+
 import pytest
 
 from sqlitch.core.config import Config
+from sqlitch.core.plan import Change, Plan, Tag
 from sqlitch.core.sqitch import Sqitch
-from sqlitch.core.plan import Plan, Change, Tag
 from sqlitch.core.target import Target
 from sqlitch.core.types import URI
 
@@ -33,12 +34,12 @@ def temp_project_dir(temp_dir: Path) -> Path:
     """Create a temporary project directory with basic structure."""
     project_dir = temp_dir / "test_project"
     project_dir.mkdir()
-    
+
     # Create basic directory structure
     (project_dir / "deploy").mkdir()
     (project_dir / "revert").mkdir()
     (project_dir / "verify").mkdir()
-    
+
     return project_dir
 
 
@@ -97,9 +98,7 @@ def mock_config() -> Config:
     config = Mock(spec=Config)
     config.get.return_value = None
     config.get_target.return_value = Target(
-        name="test",
-        uri=URI("db:pg://user@localhost/test_db"),
-        registry="sqitch"
+        name="test", uri=URI("db:pg://user@localhost/test_db"), registry="sqitch"
     )
     return config
 
@@ -119,6 +118,7 @@ def mock_sqitch(mock_config: Config) -> Sqitch:
 def sample_change() -> Change:
     """Create a sample change object."""
     from datetime import datetime
+
     return Change(
         name="test_change",
         note="Test change",
@@ -127,7 +127,7 @@ def sample_change() -> Change:
         conflicts=[],
         timestamp=datetime(2023, 1, 15, 10, 30, 0),
         planner_name="Test User",
-        planner_email="test@example.com"
+        planner_email="test@example.com",
     )
 
 
@@ -135,13 +135,14 @@ def sample_change() -> Change:
 def sample_tag() -> Tag:
     """Create a sample tag object."""
     from datetime import datetime
+
     return Tag(
         name="v1.0",
         note="Release v1.0",
         change="test_change",
         timestamp=datetime(2023, 1, 20, 9, 0, 0),
         planner_name="Test User",
-        planner_email="test@example.com"
+        planner_email="test@example.com",
     )
 
 
@@ -155,6 +156,7 @@ def sample_plan(temp_project_dir: Path, plan_file: Path) -> Plan:
 def mock_engine():
     """Create a mock database engine."""
     from sqlitch.engines.base import Engine
+
     engine = Mock(spec=Engine)
     engine.initialize_registry.return_value = None
     engine.deploy_change.return_value = None
@@ -183,24 +185,34 @@ def clean_environment():
     """Clean environment variables before each test."""
     # Store original environment
     original_env = dict(os.environ)
-    
+
     # Clean sqlitch-related environment variables
     env_vars_to_clean = [
-        'SQITCH_CONFIG',
-        'SQITCH_USER_NAME',
-        'SQITCH_USER_EMAIL',
-        'SQITCH_TARGET',
-        'SQITCH_ENGINE',
-        'PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGDATABASE',
-        'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_HOST', 'MYSQL_PORT',
-        'ORACLE_USER', 'ORACLE_PASSWORD', 'ORACLE_HOST', 'ORACLE_PORT',
+        "SQITCH_CONFIG",
+        "SQITCH_USER_NAME",
+        "SQITCH_USER_EMAIL",
+        "SQITCH_TARGET",
+        "SQITCH_ENGINE",
+        "PGUSER",
+        "PGPASSWORD",
+        "PGHOST",
+        "PGPORT",
+        "PGDATABASE",
+        "MYSQL_USER",
+        "MYSQL_PASSWORD",
+        "MYSQL_HOST",
+        "MYSQL_PORT",
+        "ORACLE_USER",
+        "ORACLE_PASSWORD",
+        "ORACLE_HOST",
+        "ORACLE_PORT",
     ]
-    
+
     for var in env_vars_to_clean:
         os.environ.pop(var, None)
-    
+
     yield
-    
+
     # Restore original environment
     os.environ.clear()
     os.environ.update(original_env)
@@ -222,14 +234,16 @@ def mock_git_repo(temp_project_dir: Path):
     """Create a mock git repository."""
     git_dir = temp_project_dir / ".git"
     git_dir.mkdir()
-    
+
     # Create basic git config
     config_file = git_dir / "config"
-    config_file.write_text("""[user]
+    config_file.write_text(
+        """[user]
     name = Test User
     email = test@example.com
-""")
-    
+"""
+    )
+
     return git_dir
 
 
@@ -238,11 +252,8 @@ def docker_available() -> bool:
     """Check if Docker is available for integration tests."""
     try:
         import subprocess
-        result = subprocess.run(
-            ["docker", "--version"], 
-            capture_output=True, 
-            timeout=5
-        )
+
+        result = subprocess.run(["docker", "--version"], capture_output=True, timeout=5)
         return result.returncode == 0
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return False
@@ -261,67 +272,68 @@ def postgresql_container(docker_available: bool):
     """Start PostgreSQL container for integration tests."""
     if not docker_available:
         pytest.skip("Docker not available")
-    
+
     try:
         import docker
+
         client = docker.from_env()
-        
+
         # Start PostgreSQL container
         container = client.containers.run(
             "postgres:13",
-            environment={
-                "POSTGRES_PASSWORD": "test",
-                "POSTGRES_DB": "sqlitch_test"
-            },
+            environment={"POSTGRES_PASSWORD": "test", "POSTGRES_DB": "sqlitch_test"},
             ports={"5432/tcp": None},
             detach=True,
-            remove=True
+            remove=True,
         )
-        
+
         # Wait for container to be ready
         import time
+
         time.sleep(5)
-        
+
         yield container
-        
+
         # Cleanup
         container.stop()
-        
+
     except ImportError:
         pytest.skip("Docker Python library not available")
     except Exception as e:
         pytest.skip(f"Could not start PostgreSQL container: {e}")
 
 
-@pytest.fixture(scope="session") 
+@pytest.fixture(scope="session")
 def mysql_container(docker_available: bool):
     """Start MySQL container for integration tests."""
     if not docker_available:
         pytest.skip("Docker not available")
-    
+
     try:
         import docker
+
         client = docker.from_env()
-        
+
         container = client.containers.run(
             "mysql:8.0",
             environment={
                 "MYSQL_ROOT_PASSWORD": "test",
-                "MYSQL_DATABASE": "sqlitch_test"
+                "MYSQL_DATABASE": "sqlitch_test",
             },
             ports={"3306/tcp": None},
             detach=True,
-            remove=True
+            remove=True,
         )
-        
+
         # Wait for MySQL to be ready
         import time
+
         time.sleep(10)
-        
+
         yield container
-        
+
         container.stop()
-        
+
     except ImportError:
         pytest.skip("Docker Python library not available")
     except Exception as e:
@@ -333,24 +345,24 @@ def mysql_container(docker_available: bool):
 def performance_timer():
     """Timer fixture for performance tests."""
     import time
-    
+
     class Timer:
         def __init__(self):
             self.start_time = None
             self.end_time = None
-        
+
         def start(self):
             self.start_time = time.perf_counter()
-        
+
         def stop(self):
             self.end_time = time.perf_counter()
-        
+
         @property
         def elapsed(self) -> float:
             if self.start_time is None or self.end_time is None:
                 return 0.0
             return self.end_time - self.start_time
-    
+
     return Timer()
 
 
@@ -360,11 +372,8 @@ def perl_sqitch_available() -> bool:
     """Check if Perl sqitch is available for compatibility tests."""
     try:
         import subprocess
-        result = subprocess.run(
-            ["sqitch", "--version"], 
-            capture_output=True, 
-            timeout=5
-        )
+
+        result = subprocess.run(["sqitch", "--version"], capture_output=True, timeout=5)
         return result.returncode == 0
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return False
@@ -382,10 +391,11 @@ def skip_if_no_perl_sqitch(perl_sqitch_available: bool):
 def sample_sql_files(temp_project_dir: Path) -> Dict[str, Path]:
     """Create sample SQL files for testing."""
     files = {}
-    
+
     # Deploy script
     deploy_file = temp_project_dir / "deploy" / "test_change.sql"
-    deploy_file.write_text("""-- Deploy test_change
+    deploy_file.write_text(
+        """-- Deploy test_change
 
 BEGIN;
 
@@ -396,29 +406,34 @@ CREATE TABLE users (
 );
 
 COMMIT;
-""")
+"""
+    )
     files["deploy"] = deploy_file
-    
+
     # Revert script
     revert_file = temp_project_dir / "revert" / "test_change.sql"
-    revert_file.write_text("""-- Revert test_change
+    revert_file.write_text(
+        """-- Revert test_change
 
 BEGIN;
 
 DROP TABLE users;
 
 COMMIT;
-""")
+"""
+    )
     files["revert"] = revert_file
-    
+
     # Verify script
     verify_file = temp_project_dir / "verify" / "test_change.sql"
-    verify_file.write_text("""-- Verify test_change
+    verify_file.write_text(
+        """-- Verify test_change
 
 SELECT id, name, email FROM users WHERE FALSE;
-""")
+"""
+    )
     files["verify"] = verify_file
-    
+
     return files
 
 
@@ -428,11 +443,11 @@ def capture_logs():
     """Capture log output for testing."""
     import logging
     from io import StringIO
-    
+
     log_capture = StringIO()
     handler = logging.StreamHandler(log_capture)
     handler.setLevel(logging.DEBUG)
-    
+
     # Add handler to sqlitch loggers
     loggers = [
         logging.getLogger("sqlitch"),
@@ -440,13 +455,13 @@ def capture_logs():
         logging.getLogger("sqlitch.engines"),
         logging.getLogger("sqlitch.commands"),
     ]
-    
+
     for logger in loggers:
         logger.addHandler(handler)
         logger.setLevel(logging.DEBUG)
-    
+
     yield log_capture
-    
+
     # Cleanup
     for logger in loggers:
         logger.removeHandler(handler)
@@ -457,6 +472,7 @@ def capture_logs():
 def cli_runner():
     """Click CLI test runner."""
     from click.testing import CliRunner
+
     return CliRunner()
 
 
@@ -464,10 +480,10 @@ def cli_runner():
 def mock_cli_context():
     """Mock CLI context for testing commands."""
     import click
-    
+
     ctx = Mock(spec=click.Context)
     ctx.obj = {
-        'verbosity': 0,
-        'config_files': None,
+        "verbosity": 0,
+        "config_files": None,
     }
     return ctx

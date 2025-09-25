@@ -6,18 +6,18 @@ including configuration management, plan parsing, and change representation.
 """
 
 from sqlitch.core.exceptions import (
-    SqlitchError,
     ConfigurationError,
-    PlanError,
-    EngineError,
-    DeploymentError,
     ConnectionError,
+    DeploymentError,
+    EngineError,
+    PlanError,
+    SqlitchError,
 )
 
 __all__ = [
     "SqlitchError",
     "ConfigurationError",
-    "PlanError", 
+    "PlanError",
     "EngineError",
     "DeploymentError",
     "ConnectionError",

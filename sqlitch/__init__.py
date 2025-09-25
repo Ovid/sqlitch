@@ -10,12 +10,12 @@ __author__ = "Sqlitch Python Port Team"
 __email__ = "sqlitch-py@example.com"
 
 from sqlitch.core.exceptions import (
-    SqlitchError,
     ConfigurationError,
-    PlanError,
-    EngineError,
-    DeploymentError,
     ConnectionError,
+    DeploymentError,
+    EngineError,
+    PlanError,
+    SqlitchError,
 )
 
 __all__ = [
@@ -23,7 +23,7 @@ __all__ = [
     "__author__",
     "__email__",
     "SqlitchError",
-    "ConfigurationError", 
+    "ConfigurationError",
     "PlanError",
     "EngineError",
     "DeploymentError",
