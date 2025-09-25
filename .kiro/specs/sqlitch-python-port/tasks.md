@@ -238,17 +238,80 @@
   - Write unit tests with Firebird test database
   - _Requirements: 2.8, 7.2, 7.3, 8.3, 10.1, 10.2_
 
-- [ ] 31. Create comprehensive test suite and CI/CD
+- [ ] 31. Set up comprehensive test infrastructure and CI/CD
   - Set up pytest configuration with coverage reporting
-  - Create Docker-based test environments for all databases
-  - Implement compatibility tests against Perl sqitch
   - Add integration tests for full workflow scenarios
   - Set up continuous integration with automated testing
-  - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
+  - Configure test reporting and quality gates
+  - _Requirements: 7.1, 7.4, 7.5_
 
-- [ ] 32. Build packaging and distribution system
+- [ ] 32. Implement compatibility tests against Perl sqitch
+  - Create test framework to compare sqlitch vs sqitch command outputs
+  - Implement side-by-side execution and result comparison
+  - Test CLI argument parsing and option compatibility
+  - Verify identical behavior for all supported commands
+  - Test configuration file parsing compatibility
+  - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 7.3_
+
+- [ ] 33. Create Docker-based PostgreSQL integration tests
+  - Set up PostgreSQL Docker container for testing
+  - Implement full deployment cycle tests with real PostgreSQL database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify PostgreSQL-specific features and SQL syntax
+  - _Requirements: 2.1, 7.2, 7.3_
+
+- [ ] 34. Create Docker-based MySQL integration tests
+  - Set up MySQL Docker container for testing
+  - Implement full deployment cycle tests with real MySQL database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify MySQL-specific features and SQL syntax
+  - _Requirements: 2.2, 7.2, 7.3_
+
+- [ ] 35. Create Docker-based SQLite integration tests
+  - Set up SQLite database testing environment
+  - Implement full deployment cycle tests with real SQLite database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify SQLite-specific features and file handling
+  - _Requirements: 2.3, 7.2, 7.3_
+
+- [ ] 36. Create Docker-based Oracle integration tests
+  - Set up Oracle Docker container for testing
+  - Implement full deployment cycle tests with real Oracle database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify Oracle-specific features and PL/SQL support
+  - _Requirements: 2.4, 7.2, 7.3_
+
+- [ ] 37. Create Docker-based Snowflake integration tests
+  - Set up Snowflake testing environment with test account
+  - Implement full deployment cycle tests with real Snowflake database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify Snowflake-specific features and warehouse management
+  - _Requirements: 2.5, 7.2, 7.3_
+
+- [ ] 38. Create Docker-based Vertica integration tests
+  - Set up Vertica Docker container for testing
+  - Implement full deployment cycle tests with real Vertica database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify Vertica-specific features and columnar database operations
+  - _Requirements: 2.6, 7.2, 7.3_
+
+- [ ] 39. Create Docker-based Exasol integration tests
+  - Set up Exasol Docker container for testing
+  - Implement full deployment cycle tests with real Exasol database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify Exasol-specific features and analytics database operations
+  - _Requirements: 2.7, 7.2, 7.3_
+
+- [ ] 40. Create Docker-based Firebird integration tests
+  - Set up Firebird Docker container for testing
+  - Implement full deployment cycle tests with real Firebird database
+  - Test registry creation, change deployment, revert, and verification
+  - Verify Firebird-specific features and generator support
+  - _Requirements: 2.8, 7.2, 7.3_
+
+- [ ] 41. Build packaging and distribution system
   - Create setup.py and pyproject.toml for pip distribution
-  - Add entry point configuration for sqitch command
+  - Add entry point configuration for sqlitch command
   - Create installation documentation and requirements
   - Implement optional dependency handling for database drivers
   - Test installation across different Python versions and platforms
