@@ -39,6 +39,50 @@
 - Mock external dependencies (databases, file system) in unit tests
 - Write integration tests for end-to-end workflows
 
+### Test Isolation and Cleanup Requirements
+**CRITICAL**: All tests must be completely isolated and clean up after themselves:
+
+1. **File System Cleanup**:
+   - **Never create files in the project root** during tests
+   - Use `tmp_path` or `tempfile` fixtures for all file operations
+   - Explicitly specify file paths to avoid writing to current directory
+   - Clean up any files, directories, or resources created during tests
+
+2. **Configuration Isolation**:
+   - Use `Config(config_files=[])` to avoid loading global configs in unit tests
+   - Pass explicit `filename` parameters to avoid writing to default locations
+   - Mock file operations when testing config behavior without actual I/O
+
+3. **Directory Changes**:
+   - Always restore original working directory after `os.chdir()`
+   - Use try/finally blocks or context managers for directory changes
+   - Prefer `runner.isolated_filesystem()` for CLI tests
+
+4. **Database and External Resources**:
+   - Use temporary databases or mock connections
+   - Clean up database connections, temporary tables, test data
+   - Ensure external services are properly torn down
+
+5. **Environment Variables**:
+   - Restore original environment after modifying `os.environ`
+   - Use `patch.dict(os.environ, {...}, clear=False)` for safe modifications
+   - Clean up any environment changes in test teardown
+
+**Example of proper test isolation:**
+```python
+def test_config_operations(tmp_path):
+    """Test config operations with proper isolation."""
+    config_file = tmp_path / "test.conf"  # Use temp directory
+    config = Config(config_files=[])      # Avoid global config
+    
+    # Specify explicit filename to avoid writing to cwd
+    config.set("key", "value", filename=config_file)
+    
+    # Verify file was created in temp location
+    assert config_file.exists()
+    # No cleanup needed - tmp_path is automatically cleaned up
+```
+
 ### Test Execution Standards
 **MANDATORY before task completion:**
 
