@@ -388,11 +388,7 @@ class InitCommand(BaseCommand):
         Returns:
             Target URI
         """
-        # Check explicit URI
-        if options.get("uri"):
-            return options["uri"]
-
-        # Check target name
+        # Check explicit target option (not URI - that's for project URI)
         target_name = options.get("target")
         if target_name:
             try:
@@ -410,7 +406,7 @@ class InitCommand(BaseCommand):
         except Exception:
             pass
 
-        # Return default URI for engine
+        # Return default URI for engine (empty target)
         return f"db:{engine}:"
 
     def _write_plan(self, project_name: str, options: Dict[str, Any]) -> None:

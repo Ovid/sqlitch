@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Type Safety Improvements**: Enhanced type annotations and mypy compliance
   - Fixed 372+ type errors in core modules with strict mypy checking
   - Added proper return type annotations throughout codebase
+
+### Fixed
+- **Init Command URI Bug**: Fixed critical bug where `--uri` parameter was incorrectly used as database target URI
+  - The `--uri` parameter is now correctly used only for project URI (goes in plan file)
+  - Database target URI is now properly determined from `--target` option or engine configuration
+  - This fixes the error "No engine specified by URI" when running `sqlitch add` after `sqlitch init --uri`
+  - Updated tests to reflect correct behavior matching Perl sqitch reference implementation
 - **Code Quality Tools**: Integrated vulture for dead code detection
   - Added vulture configuration and Makefile targets
   - Integrated vulture into pre-commit hooks for automated dead code detection

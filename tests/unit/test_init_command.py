@@ -147,11 +147,20 @@ class TestInitCommand:
         engine = init_command._determine_engine(options)
         assert engine == "sqlite"
 
-    def test_determine_target_uri_from_option(self, init_command):
-        """Test target URI determination from option."""
-        options = {"uri": "db:pg://localhost/test"}
-        uri = init_command._determine_target_uri("pg", options)
-        assert uri == "db:pg://localhost/test"
+    def test_determine_target_uri_from_target_option(self, init_command):
+        """Test target URI determination from target option."""
+        # The --uri option is for project URI, not target URI
+        # Target URI should come from --target option or config
+        options = {"target": "test_target"}
+
+        # Mock the config to return a target
+        with patch.object(init_command.config, "get_target") as mock_get_target:
+            mock_target = Mock()
+            mock_target.uri = "db:pg://localhost/test"
+            mock_get_target.return_value = mock_target
+
+            uri = init_command._determine_target_uri("pg", options)
+            assert uri == "db:pg://localhost/test"
 
     def test_determine_target_uri_default(self, init_command):
         """Test default target URI determination."""

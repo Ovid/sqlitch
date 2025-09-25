@@ -81,25 +81,28 @@ class TestInitIntegration:
         assert "target = db:pg:" in config_content
 
     def test_init_with_uri(self, temp_dir):
-        """Test initializing project with database URI."""
+        """Test initializing project with project URI."""
         sqitch = create_sqitch()
         command = InitCommand(sqitch)
 
-        uri = "db:pg://user@localhost/testdb"
+        # Use a project URI (not a database URI)
+        project_uri = "https://github.com/example/myproject"
 
         with patch.object(command, "_init_vcs"):
-            exit_code = command.execute(["--uri", uri, "myproject"])
+            exit_code = command.execute(
+                ["--engine", "pg", "--uri", project_uri, "myproject"]
+            )
 
         assert exit_code == 0
 
-        # Check plan includes URI
+        # Check plan includes project URI
         plan_content = (temp_dir / "sqitch.plan").read_text()
-        assert f"%uri={uri}" in plan_content
+        assert f"%uri={project_uri}" in plan_content
 
-        # Check configuration
+        # Check configuration - target should be default, not the project URI
         config_content = (temp_dir / "sqitch.conf").read_text()
         assert "engine = pg" in config_content
-        assert f"target = {uri}" in config_content
+        assert "target = db:pg:" in config_content  # Default target, not project URI
 
     def test_init_custom_directories(self, temp_dir):
         """Test initializing project with custom directories."""
