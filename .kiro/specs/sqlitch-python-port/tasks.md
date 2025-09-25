@@ -238,15 +238,7 @@
   - Write unit tests with Firebird test database
   - _Requirements: 2.8, 7.2, 7.3, 8.3, 10.1, 10.2_
 
-- [ ] 31. Add performance optimizations and monitoring
-  - Implement connection pooling for database operations
-  - Add lazy loading for plan files and configuration
-  - Create batch operation support for multiple changes
-  - Add performance monitoring and profiling capabilities
-  - Write performance tests and benchmarks against Perl sqitch
-  - _Requirements: 10.1, 10.2, 10.3, 10.4_
-
-- [ ] 32. Create comprehensive test suite and CI/CD
+- [ ] 31. Create comprehensive test suite and CI/CD
   - Set up pytest configuration with coverage reporting
   - Create Docker-based test environments for all databases
   - Implement compatibility tests against Perl sqitch
@@ -254,7 +246,7 @@
   - Set up continuous integration with automated testing
   - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-- [ ] 33. Build packaging and distribution system
+- [ ] 32. Build packaging and distribution system
   - Create setup.py and pyproject.toml for pip distribution
   - Add entry point configuration for sqitch command
   - Create installation documentation and requirements
@@ -262,7 +254,7 @@
   - Test installation across different Python versions and platforms
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-- [ ] 34. Create migration utilities and compatibility tools
+- [ ] 33. Create migration utilities and compatibility tools
   - Build project compatibility checker for Perl-to-Python migration
   - Create database state verification tools
   - Add side-by-side operation support during migration
