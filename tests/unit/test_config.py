@@ -343,7 +343,7 @@ verbosity = not_a_number
 
         assert config.get("core.engine") == "mysql"
         assert config.get("user.name") == "Test User"
-        
+
         # Verify file was written correctly
         assert config_file.exists()
         content = config_file.read_text()
