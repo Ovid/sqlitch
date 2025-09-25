@@ -35,6 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed bare except clauses to specify Exception
   - Removed unused local variables and f-string placeholders
   - Cleaned up unused global variable declarations
+- **CI Security**: Updated deprecated GitHub Actions to latest versions
+  - Updated actions/upload-artifact from v3 to v4
+  - Updated actions/download-artifact from v3 to v4
+  - Replaced deprecated actions/create-release@v1 with softprops/action-gh-release@v2
+  - Resolves CI security warnings about deprecated action versions
 - **CI Test Failures**: Fixed failing tests in CI environment
   - Fixed config test mocking issue for Path.home() in Unix systems
   - Added user configuration to rebase command test to prevent user info validation errors

@@ -93,3 +93,7 @@ terminal because the connection to the shell process was lost... " I wound up
 restarting Kiro and it crashed. Restarted a second time and it worked, but
 still kept getting the terminal error. Finally rebooted my Mac and it worked
 :/
+
+Sometimes it will have a command that says "Waiting on your input" and you can
+click "run" to run it, but it doesn't run. You have to scroll up to the top of
+the command and click the "Run" icon there and it works.

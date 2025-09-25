@@ -4,36 +4,37 @@ Compatibility test runner and utilities.
 This module provides utilities for running comprehensive compatibility
 tests between sqlitch and Perl sqitch implementations.
 """
-import pytest
+
+import json
 import subprocess
 import sys
-from pathlib import Path
-from typing import List, Dict, Any, Optional
-import json
 import time
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import pytest
 
 
 class CompatibilityTestRunner:
     """Runner for comprehensive compatibility tests."""
-    
+
     def __init__(self):
         self.results = []
         self.sqitch_available = self._check_sqitch_availability()
-    
+
     def _check_sqitch_availability(self) -> bool:
         """Check if Perl sqitch is available for testing."""
         try:
             result = subprocess.run(
-                ["sqitch", "--version"],
-                capture_output=True,
-                text=True,
-                timeout=10
+                ["sqitch", "--version"], capture_output=True, text=True, timeout=10
             )
             return result.returncode == 0
         except (subprocess.TimeoutExpired, FileNotFoundError):
             return False
-    
-    def run_compatibility_tests(self, test_patterns: Optional[List[str]] = None) -> Dict[str, Any]:
+
+    def run_compatibility_tests(
+        self, test_patterns: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
         """Run compatibility tests and return results."""
         if not self.sqitch_available:
             return {
@@ -41,61 +42,63 @@ class CompatibilityTestRunner:
                 "reason": "Perl sqitch not available",
                 "tests_run": 0,
                 "tests_passed": 0,
-                "tests_failed": 0
+                "tests_failed": 0,
             }
-        
+
         # Build pytest command
         cmd = ["python", "-m", "pytest", "-m", "compatibility", "-v", "--tb=short"]
-        
+
         if test_patterns:
             for pattern in test_patterns:
                 cmd.extend(["-k", pattern])
-        
+
         # Add compatibility test directory
         cmd.append("tests/compatibility/")
-        
+
         # Run tests
         start_time = time.time()
         result = subprocess.run(cmd, capture_output=True, text=True)
         end_time = time.time()
-        
+
         # Parse results
         return self._parse_test_results(result, end_time - start_time)
-    
-    def _parse_test_results(self, result: subprocess.CompletedProcess, duration: float) -> Dict[str, Any]:
+
+    def _parse_test_results(
+        self, result: subprocess.CompletedProcess, duration: float
+    ) -> Dict[str, Any]:
         """Parse pytest output to extract test results."""
         output = result.stdout + result.stderr
-        
+
         # Extract test counts from pytest output
         tests_run = 0
         tests_passed = 0
         tests_failed = 0
         tests_skipped = 0
-        
+
         # Look for pytest summary line
-        lines = output.split('\n')
+        lines = output.split("\n")
         for line in lines:
             if "passed" in line and "failed" in line:
                 # Parse line like "5 passed, 2 failed, 1 skipped in 10.5s"
                 parts = line.split()
                 for i, part in enumerate(parts):
                     if part == "passed" and i > 0:
-                        tests_passed = int(parts[i-1])
+                        tests_passed = int(parts[i - 1])
                     elif part == "failed" and i > 0:
-                        tests_failed = int(parts[i-1])
+                        tests_failed = int(parts[i - 1])
                     elif part == "skipped" and i > 0:
-                        tests_skipped = int(parts[i-1])
+                        tests_skipped = int(parts[i - 1])
                 break
             elif "passed" in line and "failed" not in line:
                 # Parse line like "5 passed in 10.5s"
                 parts = line.split()
                 for i, part in enumerate(parts):
                     if part == "passed" and i > 0:
-                        tests_passed = int(parts[i-1])
+                        tests_passed = int(parts[i - 1])
                 break
-        
+
         tests_run = tests_passed + tests_failed
-        
+
         return {
             "status": "completed",
             "exit_code": result.returncode,
@@ -105,9 +108,9 @@ class CompatibilityTestRunner:
             "tests_skipped": tests_skipped,
             "duration": duration,
             "output": output,
-            "success": result.returncode == 0 and tests_failed == 0
+            "success": result.returncode == 0 and tests_failed == 0,
         }
-    
+
     def generate_compatibility_report(self) -> str:
         """Generate a compatibility report."""
         if not self.sqitch_available:
@@ -152,12 +155,12 @@ The following compatibility test categories are available:
 
 Run `python -m pytest -m compatibility` after installing Perl sqitch.
 """
-        
+
         # Run tests and generate report
         results = self.run_compatibility_tests()
-        
+
         status_emoji = "✅" if results["success"] else "❌"
-        
+
         report = f"""
 # Sqlitch Compatibility Report
 
@@ -172,7 +175,7 @@ Run `python -m pytest -m compatibility` after installing Perl sqitch.
 ## Summary
 
 """
-        
+
         if results["success"]:
             report += """
 ✅ **All compatibility tests passed!**
@@ -198,14 +201,14 @@ Review the test output below for details on specific incompatibilities.
 {results["output"]}
 ```
 """
-        
+
         return report
 
 
 def main():
     """Main entry point for compatibility test runner."""
     runner = CompatibilityTestRunner()
-    
+
     if len(sys.argv) > 1 and sys.argv[1] == "--report":
         # Generate and print compatibility report
         print(runner.generate_compatibility_report())
