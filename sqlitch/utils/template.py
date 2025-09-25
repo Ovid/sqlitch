@@ -290,7 +290,7 @@ ROLLBACK;
 """,
         }
 
-    def get_source(self, environment, template):
+    def get_source(self, _environment, template):
         """Get template source."""
         if template in self.templates:
             source = self.templates[template]

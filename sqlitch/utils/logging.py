@@ -389,7 +389,7 @@ class LogContext:
 
         return logger
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+    def __exit__(self, *args: Any) -> None:
         """Exit context and restore original settings."""
         logger = get_logger()
 

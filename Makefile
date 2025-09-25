@@ -15,6 +15,9 @@ help:
 	@echo "  lint             Run linting checks"
 	@echo "  format           Format code with black and isort"
 	@echo "  mypy             Run type checking"
+	@echo "  vulture          Find unused code (high confidence)"
+	@echo "  vulture-all      Find unused code (medium confidence)"
+	@echo "  vulture-whitelist Generate whitelist for false positives"
 	@echo "  coverage         Run tests with coverage reporting"
 	@echo "  clean            Clean build artifacts and cache"
 	@echo "  build            Build distribution packages"
@@ -60,6 +63,15 @@ format:
 
 mypy:
 	mypy sqlitch
+
+vulture:
+	vulture sqlitch/ --min-confidence 80
+
+vulture-all:
+	vulture sqlitch/ --min-confidence 60
+
+vulture-whitelist:
+	vulture sqlitch/ --make-whitelist > vulture_generated_whitelist.py
 
 # Coverage target
 coverage:

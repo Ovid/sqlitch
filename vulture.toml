@@ -1,0 +1,22 @@
+[tool.vulture]
+# Minimum confidence level (0-100)
+min_confidence = 80
+
+# Paths to scan
+paths = ["sqlitch"]
+
+# Exclude patterns
+exclude = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.tox/*",
+    "*/.mypy_cache/*"
+]
+
+# Show verbose output
+verbose = false
+
+# Make whitelist (allowlist) for false positives
+# You can create a whitelist file to mark code as intentionally unused
+whitelist_file = "vulture_whitelist.py"
