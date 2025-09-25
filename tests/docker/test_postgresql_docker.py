@@ -123,20 +123,20 @@ DROP TABLE IF EXISTS users;
         # Create verify scripts
         (verify_dir / "create_users_table.sql").write_text(
             """
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_name = 'users' AND table_schema = 'public';
 """
         )
 
         (verify_dir / "add_user_indexes.sql").write_text(
             """
-SELECT 1/COUNT(*) FROM pg_indexes 
+SELECT 1/COUNT(*) FROM pg_indexes
 WHERE tablename = 'users' AND indexname = 'idx_users_username';
 
-SELECT 1/COUNT(*) FROM pg_indexes 
+SELECT 1/COUNT(*) FROM pg_indexes
 WHERE tablename = 'users' AND indexname = 'idx_users_email';
 
-SELECT 1/COUNT(*) FROM pg_indexes 
+SELECT 1/COUNT(*) FROM pg_indexes
 WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
 """
         )
@@ -176,8 +176,8 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
 
             # Check that all required tables exist
             tables_query = """
-            SELECT table_name FROM information_schema.tables 
-            WHERE table_schema = 'sqitch' 
+            SELECT table_name FROM information_schema.tables
+            WHERE table_schema = 'sqitch'
             ORDER BY table_name
             """
             conn.execute(tables_query)
@@ -225,7 +225,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify table was created
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.tables 
+                SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_name = 'users' AND table_schema = 'public'
             """
             )
@@ -238,7 +238,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify indexes were created
             conn.execute(
                 """
-                SELECT COUNT(*) FROM pg_indexes 
+                SELECT COUNT(*) FROM pg_indexes
                 WHERE tablename = 'users' AND indexname LIKE 'idx_users_%'
             """
             )
@@ -257,7 +257,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify indexes were removed
             conn.execute(
                 """
-                SELECT COUNT(*) FROM pg_indexes 
+                SELECT COUNT(*) FROM pg_indexes
                 WHERE tablename = 'users' AND indexname LIKE 'idx_users_%'
             """
             )
@@ -276,7 +276,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify table was removed
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.tables 
+                SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_name = 'users' AND table_schema = 'public'
             """
             )
@@ -332,7 +332,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify sqitch schema exists
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.schemata 
+                SELECT COUNT(*) FROM information_schema.schemata
                 WHERE schema_name = 'sqitch'
             """
             )
@@ -345,7 +345,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify user table is in public schema, not sqitch schema
             conn.execute(
                 """
-                SELECT table_schema FROM information_schema.tables 
+                SELECT table_schema FROM information_schema.tables
                 WHERE table_name = 'users'
             """
             )
@@ -355,7 +355,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
             # Verify sqitch tables are in sqitch schema
             conn.execute(
                 """
-                SELECT DISTINCT table_schema FROM information_schema.tables 
+                SELECT DISTINCT table_schema FROM information_schema.tables
                 WHERE table_name IN ('changes', 'events', 'projects')
             """
             )
@@ -416,7 +416,7 @@ WHERE tablename = 'users' AND indexname = 'idx_users_created_at';
                 # Verify no partial state was left behind
                 conn.execute(
                     """
-                    SELECT COUNT(*) FROM information_schema.tables 
+                    SELECT COUNT(*) FROM information_schema.tables
                     WHERE table_name = 'invalid_syntax_table'
                 """
                 )

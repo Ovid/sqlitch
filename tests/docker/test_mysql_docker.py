@@ -128,23 +128,23 @@ DROP TABLE IF EXISTS products;
         # Create verify scripts
         (verify_dir / "create_products_table.sql").write_text(
             """
-SELECT 1/COUNT(*) FROM information_schema.tables 
+SELECT 1/COUNT(*) FROM information_schema.tables
 WHERE table_name = 'products' AND table_schema = DATABASE();
 """
         )
 
         (verify_dir / "add_product_indexes.sql").write_text(
             """
-SELECT 1/COUNT(*) FROM information_schema.statistics 
+SELECT 1/COUNT(*) FROM information_schema.statistics
 WHERE table_name = 'products' AND index_name = 'idx_products_name' AND table_schema = DATABASE();
 
-SELECT 1/COUNT(*) FROM information_schema.statistics 
+SELECT 1/COUNT(*) FROM information_schema.statistics
 WHERE table_name = 'products' AND index_name = 'idx_products_category' AND table_schema = DATABASE();
 
-SELECT 1/COUNT(*) FROM information_schema.statistics 
+SELECT 1/COUNT(*) FROM information_schema.statistics
 WHERE table_name = 'products' AND index_name = 'idx_products_price' AND table_schema = DATABASE();
 
-SELECT 1/COUNT(*) FROM information_schema.statistics 
+SELECT 1/COUNT(*) FROM information_schema.statistics
 WHERE table_name = 'products' AND index_name = 'idx_products_created_at' AND table_schema = DATABASE();
 """
         )
@@ -184,7 +184,7 @@ WHERE table_name = 'products' AND index_name = 'idx_products_created_at' AND tab
 
             # Check that all required tables exist
             tables_query = """
-            SELECT table_name FROM information_schema.tables 
+            SELECT table_name FROM information_schema.tables
             WHERE table_schema = DATABASE() AND table_name LIKE 'sqitch_%'
             ORDER BY table_name
             """
@@ -239,7 +239,7 @@ WHERE table_name = 'products' AND index_name = 'idx_products_created_at' AND tab
             # Verify table was created
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.tables 
+                SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_name = 'products' AND table_schema = DATABASE()
             """
             )
@@ -252,8 +252,8 @@ WHERE table_name = 'products' AND index_name = 'idx_products_created_at' AND tab
             # Verify indexes were created
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.statistics 
-                WHERE table_name = 'products' AND index_name LIKE 'idx_products_%' 
+                SELECT COUNT(*) FROM information_schema.statistics
+                WHERE table_name = 'products' AND index_name LIKE 'idx_products_%'
                 AND table_schema = DATABASE()
             """
             )
@@ -274,8 +274,8 @@ WHERE table_name = 'products' AND index_name = 'idx_products_created_at' AND tab
             # Verify indexes were removed
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.statistics 
-                WHERE table_name = 'products' AND index_name LIKE 'idx_products_%' 
+                SELECT COUNT(*) FROM information_schema.statistics
+                WHERE table_name = 'products' AND index_name LIKE 'idx_products_%'
                 AND table_schema = DATABASE()
             """
             )
@@ -294,7 +294,7 @@ WHERE table_name = 'products' AND index_name = 'idx_products_created_at' AND tab
             # Verify table was removed
             conn.execute(
                 """
-                SELECT COUNT(*) FROM information_schema.tables 
+                SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_name = 'products' AND table_schema = DATABASE()
             """
             )
@@ -329,13 +329,13 @@ CREATE TABLE mysql_features_test (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insert test data with JSON
-INSERT INTO mysql_features_test (data) VALUES 
+INSERT INTO mysql_features_test (data) VALUES
 ('{"name": "test1", "value": 100}'),
 ('{"name": "test2", "value": 200}');
 
 -- Create a view
-CREATE VIEW mysql_features_view AS 
-SELECT id, JSON_EXTRACT(data, '$.name') as name, created_at 
+CREATE VIEW mysql_features_view AS
+SELECT id, JSON_EXTRACT(data, '$.name') as name, created_at
 FROM mysql_features_test;
 """
             )
@@ -371,7 +371,7 @@ FROM mysql_features_test;
                 # Verify table was created with correct engine and charset
                 conn.execute(
                     """
-                    SELECT engine, table_collation FROM information_schema.tables 
+                    SELECT engine, table_collation FROM information_schema.tables
                     WHERE table_name = 'mysql_features_test' AND table_schema = DATABASE()
                 """
                 )
@@ -386,7 +386,7 @@ FROM mysql_features_test;
                 # Verify view was created
                 conn.execute(
                     """
-                    SELECT COUNT(*) FROM information_schema.views 
+                    SELECT COUNT(*) FROM information_schema.views
                     WHERE table_name = 'mysql_features_view' AND table_schema = DATABASE()
                 """
                 )
@@ -515,7 +515,7 @@ FROM mysql_features_test;
                 # Verify no partial state was left behind
                 conn.execute(
                     """
-                    SELECT COUNT(*) FROM information_schema.tables 
+                    SELECT COUNT(*) FROM information_schema.tables
                     WHERE table_name = 'invalid_syntax_table' AND table_schema = DATABASE()
                 """
                 )
@@ -549,7 +549,7 @@ FROM mysql_features_test;
             # Check that sqitch tables use proper charset
             conn.execute(
                 """
-                SELECT table_name, table_collation FROM information_schema.tables 
+                SELECT table_name, table_collation FROM information_schema.tables
                 WHERE table_schema = DATABASE() AND table_name LIKE 'sqitch_%'
                 ORDER BY table_name
             """
