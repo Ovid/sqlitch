@@ -269,11 +269,8 @@ class TestChangeReporter:
 
         self.sqitch.debug.assert_called()
         call_args = self.sqitch.debug.call_args[0][0]
-        # Use os.path.join to handle platform-specific separators
-        import os
-
-        expected_path = os.path.join("deploy", "add_users.sql")
-        assert f"Executing {expected_path}" in call_args
+        # Expect normalized forward-slash paths for cross-platform consistency
+        assert "Executing deploy/add_users.sql" in call_args
 
     def test_report_sql_execution_with_line_count(self):
         """Test SQL execution reporting with line count."""

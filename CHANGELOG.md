@@ -39,6 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Used `Path.as_posix()` method in template listing functionality
   - Resolved test failure where Windows backslashes in template paths caused assertion mismatches
   - Ensures consistent template path display regardless of operating system
+- **Test Consistency Updates**: Updated tests to expect normalized path format
+  - Modified `test_report_sql_execution_basic` to expect forward-slash paths
+  - Ensures all path-related tests are consistent with cross-platform normalization
+  - Maintains test reliability across Windows, macOS, and Linux platforms
   - Resolved import cycles with TYPE_CHECKING blocks
   - Configured gradual typing adoption for CI/CD pipeline
 - **Test Infrastructure**: Strengthened testing framework and coverage
