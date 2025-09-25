@@ -41,7 +41,5 @@ env/
 .coverage
 .pytest_cache/
 .tox/
-
-# Claude Code
-.claude/
-sqitch.conf
+coverage.xml
+htmlcov/
