@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Exasol Database Engine**: Complete Exasol database engine implementation (COMPLETED)
+  - Implemented ExasolEngine class with full compatibility to Perl sqitch Exasol engine
+  - Added Exasol-specific connection handling with pyexasol driver
+  - Implemented Exasol registry table creation with proper schemas and constraints matching Perl implementation
+  - Added Exasol-specific SQL execution with UDF support and session configuration
+  - Implemented proper host, port, user, password, and database detection from URIs and query parameters
+  - Added support for Exasol-specific features like schema management and timezone handling
+  - Created comprehensive unit tests covering all connection scenarios and SQL operations
+  - Added integration tests for full deployment cycle testing with real Exasol databases
+  - Implemented proper error handling and connection management for Exasol-specific exceptions
+  - Added support for variable substitution in SQL scripts using &variable syntax
+  - Implemented REGEXP_LIKE regex condition support for Exasol SQL dialect
+
 - **Vertica Database Engine**: Complete Vertica database engine implementation (COMPLETED)
   - Implemented VerticaEngine class with full compatibility to Perl sqitch Vertica engine
   - Added Vertica-specific connection handling with vertica-python driver

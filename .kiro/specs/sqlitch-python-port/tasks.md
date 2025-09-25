@@ -222,7 +222,7 @@
   - Write unit tests with Vertica test database
   - _Requirements: 2.6, 7.2, 7.3, 8.3, 10.1, 10.2_
 
-- [ ] 29. Build Exasol database engine
+- [x] 29. Build Exasol database engine
   - Create ExasolEngine class in sqlitch/engines/exasol.py
   - Implement Exasol-specific connection handling with pyexasol
   - Add Exasol registry table creation with proper schemas
