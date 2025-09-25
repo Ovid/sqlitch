@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Firebird Database Engine**: Complete Firebird database engine implementation (COMPLETED)
+  - Implemented FirebirdEngine class with full compatibility to Perl sqitch Firebird engine
+  - Added Firebird-specific connection handling with fdb driver and automatic database creation
+  - Implemented Firebird registry table creation with proper schemas, generators, and constraints matching Perl implementation
+  - Added Firebird-specific SQL execution with BLOB SUB_TYPE TEXT support and procedure handling
+  - Implemented proper DSN parsing for both local and remote Firebird databases
+  - Added support for Firebird-specific features like SIMILAR TO regex patterns and LIST aggregation
+  - Created comprehensive unit tests covering all connection scenarios and SQL operations
+  - Added integration tests for full deployment cycle testing with real Firebird databases
+  - Implemented proper error handling and connection management for Firebird-specific exceptions
+  - Added SQL statement splitting and variable substitution for Firebird SQL scripts
+
 - **Exasol Database Engine**: Complete Exasol database engine implementation (COMPLETED)
   - Implemented ExasolEngine class with full compatibility to Perl sqitch Exasol engine
   - Added Exasol-specific connection handling with pyexasol driver

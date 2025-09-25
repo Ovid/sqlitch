@@ -132,25 +132,38 @@ def test_function():
     return message1, message2, message3
 ''')
         
-        # Test that the extraction script can process the file
+        # Test that the extraction script exists and can be imported
         extract_script = Path(__file__).parent.parent.parent / "sqlitch" / "i18n" / "extract_messages.py"
         
         if extract_script.exists():
-            # Run the extraction script (in a subprocess to avoid import issues)
+            # Test the extraction functionality without modifying the real POT file
             try:
-                result = subprocess.run(
-                    ["python", str(extract_script)],
-                    cwd=str(extract_script.parent.parent),
-                    capture_output=True,
-                    text=True,
-                    timeout=30
-                )
+                # Import the extraction module to test its functionality
+                import sys
+                sys.path.insert(0, str(extract_script.parent))
                 
-                # Should complete without error
-                assert result.returncode == 0 or "Warning" in result.stderr
+                from extract_messages import MessageExtractor, find_python_files
                 
-            except (subprocess.TimeoutExpired, FileNotFoundError) as e:
-                pytest.skip(f"Could not run extraction script: {e}")
+                # Test the MessageExtractor on our test file
+                extractor = MessageExtractor()
+                extractor.extract_from_file(test_file)
+                
+                # Should have found our test messages
+                messages = [msg[0] for msg in extractor.messages]
+                assert "Simple message" in messages
+                assert "Parameterized {param}" in messages
+                assert "One item" in messages or "{count} items" in messages
+                
+                # Test find_python_files function
+                python_files = find_python_files(self.temp_dir)
+                assert test_file in python_files
+                
+            except ImportError as e:
+                pytest.skip(f"Could not import extraction module: {e}")
+            finally:
+                # Clean up sys.path
+                if str(extract_script.parent) in sys.path:
+                    sys.path.remove(str(extract_script.parent))
     
     def test_po_file_validation(self):
         """Test that PO files are valid and contain expected content."""
