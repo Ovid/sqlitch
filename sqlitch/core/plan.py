@@ -431,7 +431,7 @@ class Plan:
         # Sort by timestamp
         all_items.sort(key=lambda x: x[1].timestamp)
 
-        for item_type, item in all_items:
+        for _, item in all_items:
             lines.append(str(item))
 
         # Write to file
