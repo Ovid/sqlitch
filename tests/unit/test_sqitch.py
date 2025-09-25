@@ -77,7 +77,8 @@ class TestSqitch:
 
         mock_run.side_effect = side_effect
 
-        config = Config()
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
         sqitch = Sqitch(config=config)
 
         assert sqitch.user_name == "John Doe"
@@ -101,7 +102,8 @@ class TestSqitch:
     @patch.dict(os.environ, {"SQITCH_USER_NAME": "Jane Doe"})
     def test_user_name_from_environment(self):
         """Test user name detection from environment variable."""
-        config = Config()
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
         sqitch = Sqitch(config=config)
 
         assert sqitch.user_name == "Jane Doe"
@@ -120,7 +122,8 @@ class TestSqitch:
         """Test user name fallback to USER environment variable."""
         mock_run.return_value = Mock(returncode=1)  # Git command fails
 
-        config = Config()
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
         sqitch = Sqitch(config=config)
 
         assert sqitch.user_name == "testuser"
@@ -142,7 +145,8 @@ class TestSqitch:
         """Test user detection when Git command times out."""
         mock_run.side_effect = subprocess.TimeoutExpired(["git"], 5)
 
-        config = Config()
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
         sqitch = Sqitch(config=config)
 
         # Should not raise exception, just return None
