@@ -2,12 +2,12 @@
 Unit tests for checkout command.
 """
 
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
-import subprocess
 
 from sqlitch.commands.checkout import CheckoutCommand
 from sqlitch.core.change import Change
