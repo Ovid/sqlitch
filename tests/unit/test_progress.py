@@ -66,14 +66,32 @@ class TestSpinner:
         output = StringIO()
         spinner = Spinner("Loading", file=output, interval=0.01)
 
+        # Track if spinner characters were written by monitoring writes
+        original_write = output.write
+        spinner_chars_found = []
+
+        def tracking_write(text):
+            # Check if any spinner characters are in the text being written
+            for char in Spinner.CHARS:
+                if char in text:
+                    spinner_chars_found.append(char)
+            return original_write(text)
+
+        output.write = tracking_write
+
         spinner.start()
-        time.sleep(0.05)  # Let it spin a few times
+        time.sleep(0.1)  # Let it spin several times
         spinner.stop()
+
+        # Restore original write method
+        output.write = original_write
 
         output_text = output.getvalue()
         assert "Loading" in output_text
-        # Should contain spinner characters
-        assert any(char in output_text for char in Spinner.CHARS)
+        # Should have written spinner characters during animation
+        assert (
+            len(spinner_chars_found) > 0
+        ), f"No spinner characters found in output. Output was: {repr(output_text)}"
 
     def test_spinner_cleanup(self):
         """Test spinner cleanup."""

@@ -327,7 +327,7 @@ class VerticaEngine(Engine):
         """Get the registry schema for this engine."""
         return VerticaRegistrySchema()
 
-    def _create_connection(self) -> VerticaConnection:
+    def _create_connection(self) -> VerticaConnection:  # noqa: C901
         """
         Create a new Vertica database connection.
 

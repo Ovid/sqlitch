@@ -41,6 +41,5 @@ env/
 .coverage
 .pytest_cache/
 .tox/
-
-# Claude Code
-.claude/
+coverage.xml
+htmlcov/

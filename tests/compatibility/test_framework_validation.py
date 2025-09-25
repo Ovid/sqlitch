@@ -121,15 +121,26 @@ class TestCompatibilityFramework:
         assert "sqitch.conf" not in result.stderr
 
     def test_compatibility_test_runner_import(self):
-        """Test that compatibility test runner can be imported."""
+        """Test that compatibility test runner can be imported and handles both scenarios."""
+        from unittest.mock import patch
+
         from tests.compatibility.test_runner import CompatibilityTestRunner
 
-        runner = CompatibilityTestRunner()
+        # Test when sqitch is NOT available
+        with patch.object(
+            CompatibilityTestRunner, "_check_sqitch_availability", return_value=False
+        ):
+            runner = CompatibilityTestRunner()
 
-        # Should detect that sqitch is not available
-        assert not runner.sqitch_available
+            # Should detect that sqitch is not available
+            assert not runner.sqitch_available
 
-        # Should generate appropriate report
-        report = runner.generate_compatibility_report()
-        assert "SKIPPED" in report
-        assert "Perl sqitch not available" in report
+            # Should generate appropriate report
+            report = runner.generate_compatibility_report()
+            assert "SKIPPED" in report
+            assert "Perl sqitch not available" in report
+
+        # Test when sqitch IS available (current state)
+        runner_available = CompatibilityTestRunner()
+        # This should work regardless of actual sqitch availability
+        assert isinstance(runner_available.sqitch_available, bool)

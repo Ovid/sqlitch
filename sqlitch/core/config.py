@@ -212,7 +212,7 @@ class Config:
         # Pattern to match section headers with quoted subsections
         pattern = r'^\[([a-zA-Z][a-zA-Z0-9._]*)\s+"([^"]+)"\]'
 
-        def replace_section(match):
+        def replace_section(match: re.Match[str]) -> str:
             main_section = match.group(1)
             sub_section = match.group(2)
             return f'[{main_section} "{sub_section}"]'
@@ -224,7 +224,7 @@ class Config:
         # Sort sources by priority
         self._sources.sort(key=lambda s: s.priority)
 
-        merged = {}
+        merged: Dict[str, Any] = {}
 
         # Merge each source
         for source in self._sources:
@@ -350,13 +350,14 @@ class Config:
 
         return current
 
-    def set(self, key: str, value: Any) -> None:
+    def set(self, key: str, value: Any, filename: Optional[Path] = None) -> None:
         """
         Set configuration value.
 
         Args:
             key: Configuration key in dot notation
             value: Value to set
+            filename: Optional file to write to (defaults to local config)
 
         Raises:
             ConfigurationError: If key is invalid
@@ -364,9 +365,70 @@ class Config:
         if not validate_config_key(key):
             raise ConfigurationError(f"Invalid configuration key: {key}")
 
+        # Update in-memory config
         self._set_nested_value(self._merged_config, key, value)
 
-    def get_target(self, name: str) -> Target:
+        # Write to file
+        if filename is None:
+            filename = self._get_local_config_path()
+
+        self._write_config_to_file(key, value, filename)
+
+    def _get_local_config_path(self) -> Path:
+        """Get the local configuration file path."""
+        return Path.cwd() / "sqitch.conf"
+
+    def _write_config_to_file(self, key: str, value: Any, filename: Path) -> None:
+        """Write a configuration value to a file."""
+        # Ensure directory exists
+        filename.parent.mkdir(parents=True, exist_ok=True)
+
+        # Load existing config or create new one
+        parser = configparser.ConfigParser(
+            interpolation=configparser.ExtendedInterpolation(),
+            allow_no_value=True,
+            delimiters=("=",),
+            comment_prefixes=("#", ";"),
+            strict=False,
+        )
+
+        if filename.exists():
+            try:
+                with open(filename, "r", encoding="utf-8") as f:
+                    parser.read_file(f)
+            except (OSError, IOError, configparser.Error):
+                # If we can't read the existing file, start fresh
+                pass
+
+        # Parse the key to get section and option
+        parts = key.split(".")
+        if len(parts) < 2:
+            raise ConfigurationError(f"Invalid configuration key format: {key}")
+
+        section_name = parts[0]
+        if len(parts) == 2:
+            # Simple section.key format
+            option_name = parts[1]
+        else:
+            # Handle subsections like engine.pg.target
+            section_name = f'{parts[0]} "{parts[1]}"'
+            option_name = ".".join(parts[2:])
+
+        # Ensure section exists
+        if not parser.has_section(section_name):
+            parser.add_section(section_name)
+
+        # Set the value
+        parser.set(section_name, option_name, str(value))
+
+        # Write back to file
+        try:
+            with open(filename, "w", encoding="utf-8") as f:
+                parser.write(f, space_around_delimiters=True)
+        except (OSError, IOError) as e:
+            raise ConfigurationError(f"Cannot write configuration file: {e}")
+
+    def get_target(self, name: str) -> Target:  # noqa: C901
         """
         Get target configuration.
 
@@ -493,14 +555,18 @@ class Config:
 
     def get_user_name(self) -> Optional[str]:
         """Get configured user name."""
-        return self.get("user.name")
+        value = self.get("user.name")
+        return str(value) if value is not None else None
 
     def get_user_email(self) -> Optional[str]:
         """Get configured user email."""
         email = self.get("user.email")
-        if email and not validate_email(email):
-            raise ConfigurationError(f"Invalid email address: {email}")
-        return email
+        if email is not None:
+            email_str = str(email)
+            if not validate_email(email_str):
+                raise ConfigurationError(f"Invalid email address: {email_str}")
+            return email_str
+        return None
 
     def get_core_config(self) -> Dict[str, Any]:
         """Get core configuration section."""

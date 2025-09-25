@@ -179,6 +179,13 @@ try:
 except ImportError:
     pass  # Command not available
 
+try:
+    from .commands.config import config_command
+
+    cli.add_command(config_command, name="config")
+except ImportError:
+    pass  # Command not available
+
 
 # Commands will be registered when CLI is invoked
 

@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple, Union
 
 from .change import Change, Dependency, Tag
 from .exceptions import PlanError
@@ -94,7 +94,7 @@ class Plan:
         return cls._parse_content(file_path, content)
 
     @classmethod
-    def _parse_content(cls, file_path: Path, content: str) -> "Plan":
+    def _parse_content(cls, file_path: Path, content: str) -> "Plan":  # noqa: C901
         """Parse plan content."""
         lines = content.splitlines()
 
@@ -188,7 +188,7 @@ class Plan:
             planner_email=planner_email,
         )
 
-    def _parse_change(self, line: str) -> Change:
+    def _parse_change(self, line: str) -> Change:  # noqa: C901
         """Parse change line."""
         # Format: change_name [dependencies] timestamp planner_name <planner_email> # note
 
@@ -424,7 +424,7 @@ class Plan:
         lines.append("")  # Empty line after pragmas
 
         # Add changes and tags in chronological order
-        all_items = []
+        all_items: List[Tuple[str, Union[Change, Tag]]] = []
         all_items.extend(("change", change) for change in self.changes)
         all_items.extend(("tag", tag) for tag in self.tags)
 

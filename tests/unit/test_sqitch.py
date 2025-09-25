@@ -63,8 +63,7 @@ class TestSqitch:
         clear=False,
     )
     @patch("sqlitch.core.sqitch.subprocess.run")
-    @patch("pwd.getpwuid", side_effect=KeyError())  # Mock system user lookup failure
-    def test_user_name_detection_from_git(self, mock_pwd, mock_run):
+    def test_user_name_detection_from_git(self, mock_run):
         """Test user name detection from Git configuration."""
 
         # Mock different responses for name and email calls
@@ -77,10 +76,13 @@ class TestSqitch:
 
         mock_run.side_effect = side_effect
 
-        config = Config()
-        sqitch = Sqitch(config=config)
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
 
-        assert sqitch.user_name == "John Doe"
+        # Mock environment variables to ensure they don't interfere
+        with patch.dict(os.environ, {}, clear=True):
+            sqitch = Sqitch(config=config)
+            assert sqitch.user_name == "John Doe"
 
     @patch("subprocess.run")
     def test_user_email_detection_from_git(self, mock_run):
@@ -101,7 +103,8 @@ class TestSqitch:
     @patch.dict(os.environ, {"SQITCH_USER_NAME": "Jane Doe"})
     def test_user_name_from_environment(self):
         """Test user name detection from environment variable."""
-        config = Config()
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
         sqitch = Sqitch(config=config)
 
         assert sqitch.user_name == "Jane Doe"
@@ -120,7 +123,8 @@ class TestSqitch:
         """Test user name fallback to USER environment variable."""
         mock_run.return_value = Mock(returncode=1)  # Git command fails
 
-        config = Config()
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
         sqitch = Sqitch(config=config)
 
         assert sqitch.user_name == "testuser"
@@ -137,17 +141,25 @@ class TestSqitch:
         clear=False,
     )
     @patch("sqlitch.core.sqitch.subprocess.run")
-    @patch("pwd.getpwuid", side_effect=KeyError())  # Mock system user lookup failure
-    def test_user_detection_git_timeout(self, mock_pwd, mock_run):
+    def test_user_detection_git_timeout(self, mock_run):
         """Test user detection when Git command times out."""
         mock_run.side_effect = subprocess.TimeoutExpired(["git"], 5)
 
-        config = Config()
-        sqitch = Sqitch(config=config)
+        # Use empty config files to avoid loading global config
+        config = Config(config_files=[])
 
-        # Should not raise exception, just return None
-        assert sqitch.user_name is None
-        assert sqitch.user_email is None
+        # Mock environment variables to ensure they don't interfere
+        # Also mock the system user detection to simulate complete failure
+        with patch.dict(os.environ, {}, clear=True):
+            with patch("sqlitch.core.sqitch.Sqitch._get_user_name", return_value=None):
+                with patch(
+                    "sqlitch.core.sqitch.Sqitch._get_user_email", return_value=None
+                ):
+                    sqitch = Sqitch(config=config)
+
+                    # Should not raise exception, just return None
+                    assert sqitch.user_name is None
+                    assert sqitch.user_email is None
 
     def test_user_name_from_config(self):
         """Test user name from configuration takes precedence."""

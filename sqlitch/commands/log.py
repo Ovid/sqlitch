@@ -92,7 +92,7 @@ class LogCommand(BaseCommand):
             self.error(f"Unexpected error: {e}")
             return 1
 
-    def _parse_args(self, args: List[str]) -> Dict[str, Any]:
+    def _parse_args(self, args: List[str]) -> Dict[str, Any]:  # noqa: C901
         """
         Parse command-line arguments.
 
@@ -404,7 +404,7 @@ class LogCommand(BaseCommand):
 )
 @click.option("--headers/--no-headers", default=True, help="Show/hide headers")
 @click.pass_context
-def log_command(ctx: click.Context, **kwargs) -> None:
+def log_command(ctx: click.Context, **kwargs) -> None:  # noqa: C901
     """Display database change history."""
     from ..cli import get_sqitch_from_context
 

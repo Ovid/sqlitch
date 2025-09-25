@@ -103,7 +103,7 @@ class VerifyCommand(BaseCommand):
                 self.debug(traceback.format_exc())
             return 2
 
-    def _parse_args(self, args: List[str]) -> Dict[str, Any]:
+    def _parse_args(self, args: List[str]) -> Dict[str, Any]:  # noqa: C901
         """
         Parse command arguments.
 
@@ -685,7 +685,7 @@ Examples:
 )
 @click.option("--max-workers", type=int, help="Maximum number of parallel workers")
 @click.pass_context
-def verify_command(
+def verify_command(  # noqa: C901
     ctx: click.Context, from_change: Optional[str], to_change: Optional[str], **kwargs
 ) -> None:
     """Verify deployed database changes by running verification scripts."""

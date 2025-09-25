@@ -86,6 +86,10 @@ def sqitch_config(temp_git_repo):
 [engine "sqlite"]
     target = db:sqlite:{temp_git_repo}/test.db
     registry = sqitch
+
+[user]
+    name = Test User
+    email = test@example.com
 """
 
     config_file = temp_git_repo / "sqitch.conf"

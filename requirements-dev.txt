@@ -1,0 +1,31 @@
+# Development and testing dependencies
+-r requirements.txt
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-xdist>=3.0.0
+pytest-mock>=3.10.0
+
+# Code quality
+mypy>=1.0.0
+black>=22.0.0
+flake8>=5.0.0
+isort>=5.0.0
+pre-commit>=3.0.0
+
+# Development tools
+tox>=4.0.0
+docker>=6.0.0
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.2.0
+myst-parser>=0.18.0
+
+# Optional database drivers
+cx_Oracle>=8.0.0
+snowflake-connector-python>=2.7.0
+vertica-python>=1.0.0
+pyexasol>=0.25.0
+fdb>=2.0.0

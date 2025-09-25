@@ -5,11 +5,13 @@
 [![Tests](https://img.shields.io/badge/tests-1355%20passing-brightgreen.svg)](https://github.com/sqlitch/sqlitch-python/actions)
 [![Coverage](https://img.shields.io/badge/coverage-79%25-yellow.svg)](https://codecov.io/gh/sqlitch/sqlitch-python)
 
-**Sqlitch** is a production-ready Python port of the popular [Sqitch] database change management application. It provides the same powerful, framework-agnostic approach to database schema management with the convenience and ecosystem of Python.
+**Sqlitch**, pronounced "sklitch", is here to fix your SQL itch. It's a Python port of the popular [Sqitch] database change management application. It provides the same powerful, framework-agnostic approach to database schema management with the convenience and ecosystem of Python.
+
+Currently it's in heavy development and probably NSFW.
 
 **Key Highlights:**
 - 🎯 **100% Perl Sqitch compatibility** - Drop-in replacement with identical behavior
-- 🚀 **Production ready** - 1355 tests, 79% coverage, enterprise-grade reliability  
+- 🚀 **Aims to be production ready** - 1355 tests, 79% coverage, enterprise-grade reliability  
 - 🗄️ **8 database engines** - PostgreSQL, MySQL, SQLite, Oracle, Snowflake, Vertica, Exasol, Firebird
 - 🌍 **Internationalization** - Native support for German, French, Italian with automatic locale detection
 - 🔧 **Modern Python** - Type hints, async support, comprehensive error handling
@@ -20,7 +22,7 @@ Sqlitch is a database change management system that helps you manage database sc
 
 ### Key Features
 
-* **No opinions** - Not tied to any framework, ORM, or platform. Works with any Python application or standalone.
+* **No opinions** - Not tied to any framework, ORM, programming language, or platform.
 
 * **Native scripting** - Changes are implemented as scripts native to your database engine. Writing a PostgreSQL application? Write SQL scripts for `psql`.
 

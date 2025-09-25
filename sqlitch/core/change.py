@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
+    from .plan import Plan
     from .target import Target
 
 
@@ -67,7 +68,7 @@ class Tag:
         content = f"{self.name} {self.timestamp.isoformat()} {self.planner_name} {self.planner_email} {self.note}"
         return hashlib.sha1(content.encode("utf-8")).hexdigest()
 
-    def info(self, plan=None) -> str:
+    def info(self, plan: Optional["Plan"] = None) -> str:
         """
         Return information about the tag for display.
 
@@ -169,7 +170,7 @@ class Change:
         # For nested changes, this would split on directory separators
         return [f"{self.name}.sql"]
 
-    def info(self, plan=None) -> str:
+    def info(self, plan: Optional["Plan"] = None) -> str:
         """
         Return information about the change for display.
 

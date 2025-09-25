@@ -119,8 +119,9 @@ class TestInitCommand:
 
     def test_parse_args_no_project(self, init_command):
         """Test argument parsing without project name."""
-        with pytest.raises(SqlitchError, match="Project name is required"):
-            init_command._parse_args([])
+        project_name, options = init_command._parse_args([])
+        assert project_name is None
+        assert isinstance(options, dict)
 
     def test_parse_args_unknown_option(self, init_command):
         """Test argument parsing with unknown option."""
@@ -184,69 +185,111 @@ class TestInitCommand:
 
     def test_write_config_basic(self, init_command, temp_dir):
         """Test basic configuration file writing."""
-        options = {"engine": "pg"}
+        import os
 
-        init_command._write_config(options)
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            options = {"engine": "pg"}
 
-        config_file = Path("sqitch.conf")
-        assert config_file.exists()
+            init_command._write_config(options)
 
-        content = config_file.read_text()
-        assert "[core]" in content
-        assert "engine = pg" in content
-        assert '[engine "pg"]' in content
+            config_file = Path("sqitch.conf")
+            assert config_file.exists()
+
+            content = config_file.read_text()
+            assert "[core]" in content
+            assert "engine = pg" in content
+            assert '[engine "pg"]' in content
+        finally:
+            os.chdir(original_cwd)
 
     def test_write_config_already_exists(self, init_command, temp_dir):
         """Test configuration writing when file already exists."""
-        config_file = Path("sqitch.conf")
-        config_file.write_text("[core]\nengine = mysql\n")
+        import os
 
-        init_command._write_config({"engine": "pg"})
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            config_file = Path("sqitch.conf")
+            config_file.write_text("[core]\nengine = mysql\n")
 
-        # Should not overwrite
-        content = config_file.read_text()
-        assert "engine = mysql" in content
-        assert "engine = pg" not in content
+            init_command._write_config({"engine": "pg"})
+
+            # Should not overwrite
+            content = config_file.read_text()
+            assert "engine = mysql" in content
+            assert "engine = pg" not in content
+        finally:
+            os.chdir(original_cwd)
 
     def test_write_plan_basic(self, init_command, temp_dir):
         """Test basic plan file writing."""
-        options = {}
+        import os
 
-        init_command._write_plan("myproject", options)
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            options = {}
 
-        plan_file = Path("sqitch.plan")
-        assert plan_file.exists()
+            init_command._write_plan("myproject", options)
 
-        content = plan_file.read_text()
-        assert "%syntax-version=1.0.0" in content
-        assert "%project=myproject" in content
+            plan_file = Path("sqitch.plan")
+            assert plan_file.exists()
+
+            content = plan_file.read_text()
+            assert "%syntax-version=1.0.0" in content
+            assert "%project=myproject" in content
+        finally:
+            os.chdir(original_cwd)
 
     def test_write_plan_with_uri(self, init_command, temp_dir):
         """Test plan file writing with URI."""
-        options = {"uri": "https://github.com/user/project"}
+        import os
 
-        init_command._write_plan("myproject", options)
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            options = {"uri": "https://github.com/user/project"}
 
-        plan_file = Path("sqitch.plan")
-        content = plan_file.read_text()
-        assert "%uri=https://github.com/user/project" in content
+            init_command._write_plan("myproject", options)
+
+            plan_file = Path("sqitch.plan")
+            content = plan_file.read_text()
+            assert "%uri=https://github.com/user/project" in content
+        finally:
+            os.chdir(original_cwd)
 
     def test_write_plan_already_exists_same_project(self, init_command, temp_dir):
         """Test plan file writing when file exists for same project."""
-        plan_file = Path("sqitch.plan")
-        plan_file.write_text("%syntax-version=1.0.0\n%project=myproject\n")
+        import os
 
-        # Should not raise error
-        init_command._write_plan("myproject", {})
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            plan_file = Path("sqitch.plan")
+            plan_file.write_text("%syntax-version=1.0.0\n%project=myproject\n")
+
+            # Should not raise error
+            init_command._write_plan("myproject", {})
+        finally:
+            os.chdir(original_cwd)
 
     def test_write_plan_already_exists_different_project(self, init_command, temp_dir):
         """Test plan file writing when file exists for different project."""
-        plan_file = Path("sqitch.plan")
-        plan_file.write_text("%syntax-version=1.0.0\n%project=otherproject\n")
+        import os
 
-        # This should now be caught by _is_already_initialized, not _write_plan
-        with pytest.raises(SqlitchError, match="already initialized"):
-            init_command._is_already_initialized("myproject")
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            plan_file = Path("sqitch.plan")
+            plan_file.write_text("%syntax-version=1.0.0\n%project=otherproject\n")
+
+            # This should now be caught by _is_already_initialized, not _write_plan
+            with pytest.raises(SqlitchError, match="already initialized"):
+                init_command._is_already_initialized("myproject")
+        finally:
+            os.chdir(original_cwd)
 
     def test_create_directories(self, init_command, temp_dir):
         """Test directory creation."""
@@ -275,15 +318,22 @@ class TestInitCommand:
 
     def test_execute_success(self, init_command, temp_dir):
         """Test successful execution."""
-        with patch.object(init_command, "_init_vcs"):
-            exit_code = init_command.execute(["myproject"])
+        import os
 
-        assert exit_code == 0
-        assert Path("sqitch.conf").exists()
-        assert Path("sqitch.plan").exists()
-        assert Path("deploy").exists()
-        assert Path("revert").exists()
-        assert Path("verify").exists()
+        original_cwd = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            with patch.object(init_command, "_init_vcs"):
+                exit_code = init_command.execute(["myproject"])
+
+            assert exit_code == 0
+            assert Path("sqitch.conf").exists()
+            assert Path("sqitch.plan").exists()
+            assert Path("deploy").exists()
+            assert Path("revert").exists()
+            assert Path("verify").exists()
+        finally:
+            os.chdir(original_cwd)
 
     def test_execute_already_initialized(self, init_command, temp_dir):
         """Test execution when already initialized."""

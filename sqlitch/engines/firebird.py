@@ -269,7 +269,7 @@ class FirebirdEngine(Engine):
         """Get the registry schema for this engine."""
         return self._registry_schema
 
-    def _create_connection(self) -> FirebirdConnection:
+    def _create_connection(self) -> FirebirdConnection:  # noqa: C901
         """
         Create a new Firebird database connection.
 
@@ -595,7 +595,7 @@ class FirebirdEngine(Engine):
                     f"Failed to get current state: {e}", engine_name=self.engine_type
                 ) from e
 
-    def search_events(
+    def search_events(  # noqa: C901
         self,
         event: Optional[List[str]] = None,
         change: Optional[str] = None,

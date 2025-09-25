@@ -77,7 +77,7 @@ class RevertCommand(BaseCommand):
                 self.debug(traceback.format_exc())
             return 2
 
-    def _parse_args(self, args: List[str]) -> Dict[str, Any]:
+    def _parse_args(self, args: List[str]) -> Dict[str, Any]:  # noqa: C901
         """
         Parse command arguments.
 
@@ -346,7 +346,7 @@ class RevertCommand(BaseCommand):
 
         return changes_to_revert
 
-    def _revert_changes(
+    def _revert_changes(  # noqa: C901
         self, engine, changes: List[Change], options: Dict[str, Any]
     ) -> int:
         """

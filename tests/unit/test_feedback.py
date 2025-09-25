@@ -269,6 +269,7 @@ class TestChangeReporter:
 
         self.sqitch.debug.assert_called()
         call_args = self.sqitch.debug.call_args[0][0]
+        # Expect normalized forward-slash paths for cross-platform consistency
         assert "Executing deploy/add_users.sql" in call_args
 
     def test_report_sql_execution_with_line_count(self):

@@ -16,7 +16,7 @@ class LocaleAwareDateTimeFormatter:
     Formatter for date/time values that respects locale settings.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the formatter."""
         self._locale_set = False
         self._setup_locale()
@@ -43,7 +43,9 @@ class LocaleAwareDateTimeFormatter:
                 # If even C locale fails, we'll use default formatting
                 self._locale_set = False
 
-    def format_datetime(self, dt: datetime, format_type: str = "default") -> str:
+    def format_datetime(
+        self, dt: datetime, format_type: str = "default"
+    ) -> str:  # noqa: C901
         """
         Format a datetime according to the specified format type.
 

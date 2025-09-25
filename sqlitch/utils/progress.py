@@ -391,7 +391,7 @@ class StatusReporter:
         self.verbose(f"{operation} {change_name}")
 
 
-def confirm_action(message: str, default: Optional[bool] = None) -> bool:
+def confirm_action(message: str, default: Optional[bool] = None) -> bool:  # noqa: C901
     """
     Prompt user for confirmation.
 

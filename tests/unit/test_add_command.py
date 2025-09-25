@@ -317,8 +317,11 @@ class TestAddCommand:
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         assert args[0] == "vim"
-        assert "deploy/test.sql" in args
-        assert "revert/test.sql" in args
+        # Use os.path.join or Path to handle platform-specific separators
+        import os
+
+        assert os.path.join("deploy", "test.sql") in args
+        assert os.path.join("revert", "test.sql") in args
 
     def test_open_editor_no_editor(self, add_command):
         """Test opening editor when none configured."""

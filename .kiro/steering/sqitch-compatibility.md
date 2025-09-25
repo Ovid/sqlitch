@@ -92,3 +92,10 @@ Use these Perl source files as references:
 - Use same test databases and scenarios when possible
 - Validate that registry table contents are identical
 - Ensure plan file parsing produces same internal representation
+
+## Code Formatting Standards
+- **No trailing whitespace** on any lines unless functionally required
+- This applies to all code, documentation, and configuration files
+- Remove trailing spaces from multi-line strings and comments
+- Ensure compatibility test files have clean formatting
+- Exception: Only when trailing whitespace is functionally necessary (rare cases)

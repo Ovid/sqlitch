@@ -8,7 +8,7 @@ the Perl sqitch error format and behavior.
 
 import sys
 import traceback
-from typing import Any, Optional
+from typing import Any, NoReturn, Optional
 
 
 class SqlitchError(Exception):
@@ -437,7 +437,7 @@ def hurl(
     message: Optional[str] = None,
     exitval: int = 2,
     **kwargs: Any,
-) -> None:
+) -> NoReturn:
     """
     Throw a SqlitchError exception.
 
@@ -481,7 +481,7 @@ def format_error_message(error_type: str, details: str, **context: Any) -> str:
     return f"sqlitch: {error_type}: {details}"
 
 
-def handle_exception(exc: Exception, sqitch=None) -> int:
+def handle_exception(exc: Exception, sqitch: Optional[Any] = None) -> int:
     """
     Handle exceptions and return appropriate exit codes.
 

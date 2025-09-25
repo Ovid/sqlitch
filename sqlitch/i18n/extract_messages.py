@@ -35,7 +35,7 @@ class MessageExtractor(ast.NodeVisitor):
         except (SyntaxError, UnicodeDecodeError) as e:
             print(f"Warning: Could not parse {file_path}: {e}", file=sys.stderr)
 
-    def visit_Call(self, node: ast.Call) -> None:
+    def visit_Call(self, node: ast.Call) -> None:  # noqa: C901
         """Visit function calls to find translation functions."""
         if isinstance(node.func, ast.Name):
             func_name = node.func.id

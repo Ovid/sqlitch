@@ -20,11 +20,38 @@
 - Write comprehensive unit and integration tests
 - Maintain clean, readable, and well-documented code
 
+### Code Formatting Standards
+- **No trailing whitespace** on any lines unless functionally required
+- This applies to all code, comments, documentation, and multi-line strings
+- Remove trailing spaces from docstrings and triple-quoted strings
+- Configure your editor to automatically remove trailing whitespace
+- Exception: Only when trailing whitespace is functionally necessary (very rare)
+
 ### Resource Management
 - Always clean up temporary files and resources
 - Use context managers (`with` statements) for file operations
 - Properly close database connections and file handles
-- Clean up test artifacts after test runs
+- **Clean up ALL test artifacts after test runs** - no exceptions
+
+### Test Isolation Requirements
+**MANDATORY**: Every test must be completely isolated and leave no trace:
+- **Never create files in project root** - use `tmp_path` fixtures exclusively
+- **Never modify global state** without proper restoration
+- **Always specify explicit paths** to avoid writing to current working directory
+- **Mock external dependencies** to prevent side effects
+- **Restore environment variables** and working directory after changes
+- **Use isolated filesystems** for CLI tests (`runner.isolated_filesystem()`)
+
+**Example violations that MUST be avoided:**
+```python
+# BAD: Creates files in project root
+config = Config()
+config.set("key", "value")  # Writes to ./sqitch.conf
+
+# GOOD: Uses temporary directory
+config = Config()
+config.set("key", "value", filename=tmp_path / "sqitch.conf")
+```
 
 ### Implementation Fidelity
 **MANDATORY PERL SOURCE VERIFICATION**:

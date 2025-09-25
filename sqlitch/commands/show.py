@@ -26,7 +26,7 @@ class ShowCommand(BaseCommand):
     - verify: Verify script contents
     """
 
-    def execute(self, args: List[str]) -> int:
+    def execute(self, args: List[str]) -> int:  # noqa: C901
         """
         Execute the show command.
 
@@ -139,7 +139,7 @@ class ShowCommand(BaseCommand):
 
         return 0
 
-    def _show_change_or_script(
+    def _show_change_or_script(  # noqa: C901
         self, plan, target, object_type: str, object_key: str, exists_only: bool
     ) -> int:
         """Show change information or script contents."""

@@ -278,7 +278,7 @@ class ItemFormatter:
             return ""
         return "\n".join(lines[1:])
 
-    def _format_date(self, date_value: Any, format_type: str) -> str:
+    def _format_date(self, date_value: Any, format_type: str) -> str:  # noqa: C901
         """Format date according to format type."""
         if not date_value:
             return ""

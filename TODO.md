@@ -4,6 +4,10 @@ None of this work should be done now, but things to consider.
 
 # Tasks
 
+## Vulture?
+
+Use vulture to find unused code?
+
 ## Docs
 
 README references missing docs
@@ -38,6 +42,53 @@ https://gist.github.com/Ovid/fd8ba5b758f86b02f1c5f2a0a75c88f4
 Investigate ways that we can automatically detect how to manage sqitch
 deployments such that when we switch directories, our sqitch is deployed
 to the right level.
+
+## flake8
+
+Temporarily suppressed cyclomatic complexity errors. These will need to be
+addressed:
+
+	sqlitch/commands/add.py:97:5: C901 'AddCommand._parse_args' is too complex (31)
+	sqlitch/commands/add.py:455:1: C901 'add_command' is too complex (14)
+	sqlitch/commands/bundle.py:53:5: C901 'BundleCommand._parse_args' is too complex (14)
+	sqlitch/commands/bundle.py:496:5: C901 'BundleCommand._find_change_index' is too complex (13)
+	sqlitch/commands/checkout.py:129:5: C901 'CheckoutCommand._parse_args' is too complex (27)
+	sqlitch/commands/deploy.py:69:5: C901 'DeployCommand._parse_args' is too complex (22)
+	sqlitch/commands/deploy.py:341:5: C901 'DeployCommand._deploy_changes' is too complex (16)
+	sqlitch/commands/deploy.py:454:5: C901 'DeployCommand._deploy_changes_with_feedback' is too complex (11)
+	sqlitch/commands/init.py:69:5: C901 'InitCommand._parse_args' is too complex (29)
+	sqlitch/commands/log.py:95:5: C901 'LogCommand._parse_args' is too complex (61)
+	sqlitch/commands/log.py:407:1: C901 'log_command' is too complex (12)
+	sqlitch/commands/rebase.py:73:5: C901 'RebaseCommand._parse_args' is too complex (47)
+	sqlitch/commands/rebase.py:501:1: C901 'rebase_command' is too complex (18)
+	sqlitch/commands/revert.py:80:5: C901 'RevertCommand._parse_args' is too complex (24)
+	sqlitch/commands/revert.py:349:5: C901 'RevertCommand._revert_changes' is too complex (15)
+	sqlitch/commands/show.py:29:5: C901 'ShowCommand.execute' is too complex (14)
+	sqlitch/commands/show.py:142:5: C901 'ShowCommand._show_change_or_script' is too complex (14)
+	sqlitch/commands/status.py:83:5: C901 'StatusCommand._parse_args' is too complex (14)
+	sqlitch/commands/tag.py:50:5: C901 'TagCommand._parse_args' is too complex (12)
+	sqlitch/commands/tag.py:106:5: C901 'TagCommand._add_tag' is too complex (13)
+	sqlitch/commands/verify.py:106:5: C901 'VerifyCommand._parse_args' is too complex (23)
+	sqlitch/commands/verify.py:688:1: C901 'verify_command' is too complex (11)
+	sqlitch/core/config.py:369:5: C901 'Config.get_target' is too complex (12)
+	sqlitch/core/plan.py:97:5: C901 'Plan._parse_content' is too complex (11)
+	sqlitch/core/plan.py:191:5: C901 'Plan._parse_change' is too complex (13)
+	sqlitch/core/sqitch.py:62:5: C901 'Sqitch._get_user_name' is too complex (11)
+	sqlitch/core/target.py:76:5: C901 'Target.from_config' is too complex (18)
+	sqlitch/engines/base.py:535:5: C901 'Engine.search_events' is too complex (16)
+	sqlitch/engines/base.py:1240:5: C901 'EngineRegistry.revert' is too complex (13)
+	sqlitch/engines/base.py:1303:5: C901 'EngineRegistry.deploy' is too complex (15)
+	sqlitch/engines/firebird.py:272:5: C901 'FirebirdEngine._create_connection' is too complex (11)
+	sqlitch/engines/firebird.py:598:5: C901 'FirebirdEngine.search_events' is too complex (16)
+	sqlitch/engines/mysql.py:328:5: C901 'MySQLEngine._parse_connection_string' is too complex (20)
+	sqlitch/engines/mysql.py:529:5: C901 'MySQLEngine._split_sql_statements' is too complex (11)
+	sqlitch/engines/snowflake.py:323:5: C901 'SnowflakeEngine._create_connection' is too complex (12)
+	sqlitch/engines/vertica.py:330:5: C901 'VerticaEngine._create_connection' is too complex (11)
+	sqlitch/i18n/date_time.py:46:5: C901 'LocaleAwareDateTimeFormatter.format_datetime' is too complex (14)
+	sqlitch/i18n/extract_messages.py:38:5: C901 'MessageExtractor.visit_Call' is too complex (11)
+	sqlitch/utils/feedback.py:256:1: C901 'format_error_with_suggestions' is too complex (11)
+	sqlitch/utils/formatter.py:281:5: C901 'ItemFormatter._format_date' is too complex (12)
+	sqlitch/utils/progress.py:394:1: C901 'confirm_action' is too complex (12)
 
 # Issues
 
@@ -97,3 +148,9 @@ still kept getting the terminal error. Finally rebooted my Mac and it worked
 Sometimes it will have a command that says "Waiting on your input" and you can
 click "run" to run it, but it doesn't run. You have to scroll up to the top of
 the command and click the "Run" icon there and it works.
+
+Quite often Kiro will run something in the terminal which runs in a pager, or
+piped to less or something. When that happens, Kiro cheerfully blocks and you
+have to manually exit the pager to allow Kiro to continue. However, you don't
+want to hit 'escape' because that might terminate the pager *before* it emits
+the output that Kiro is looking for. Oops.

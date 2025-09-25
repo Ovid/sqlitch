@@ -50,7 +50,7 @@ class BundleCommand(BaseCommand):
         except Exception as e:
             return self.handle_error(e)
 
-    def _parse_args(
+    def _parse_args(  # noqa: C901
         self, args: List[str]
     ) -> Tuple[Dict[str, Any], List[str], List[str]]:
         """
@@ -493,7 +493,9 @@ class BundleCommand(BaseCommand):
         content = "\n".join(lines) + "\n"
         dest_file.write_text(content, encoding="utf-8")
 
-    def _find_change_index(self, plan: Plan, change_spec: str) -> Optional[int]:
+    def _find_change_index(
+        self, plan: Plan, change_spec: str
+    ) -> Optional[int]:  # noqa: C901
         """
         Find index of change in plan.
 

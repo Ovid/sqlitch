@@ -3,10 +3,11 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Union
 
 if TYPE_CHECKING:
     from .config import Config
+    from .plan import Plan
 
 
 @dataclass
@@ -18,11 +19,11 @@ class Target:
     engine: str = "pg"
     registry: Optional[str] = None
     client: Optional[str] = None
-    top_dir: Path = Path(".")
-    deploy_dir: Path = Path("deploy")
-    revert_dir: Path = Path("revert")
-    verify_dir: Path = Path("verify")
-    plan_file: Path = Path("sqitch.plan")
+    top_dir: Union[Path, str] = Path(".")
+    deploy_dir: Union[Path, str] = Path("deploy")
+    revert_dir: Union[Path, str] = Path("revert")
+    verify_dir: Union[Path, str] = Path("verify")
+    plan_file: Union[Path, str] = Path("sqitch.plan")
 
     def __post_init__(self) -> None:
         """Convert string paths to Path objects."""
@@ -44,20 +45,26 @@ class Target:
     @property
     def engine_type(self) -> str:
         """Extract engine type from URI or use configured engine."""
-        if self.uri.startswith("db:pg:"):
+        if (
+            self.uri.startswith("db:pg:")
+            or self.uri.startswith("pg:")
+            or self.uri.startswith("postgresql:")
+        ):
             return "pg"
-        elif self.uri.startswith("db:mysql:"):
+        elif self.uri.startswith("db:mysql:") or self.uri.startswith("mysql:"):
             return "mysql"
-        elif self.uri.startswith("db:sqlite:"):
+        elif self.uri.startswith("db:sqlite:") or self.uri.startswith("sqlite:"):
             return "sqlite"
-        elif self.uri.startswith("db:oracle:"):
+        elif self.uri.startswith("db:oracle:") or self.uri.startswith("oracle:"):
             return "oracle"
-        elif self.uri.startswith("db:snowflake:"):
+        elif self.uri.startswith("db:snowflake:") or self.uri.startswith("snowflake:"):
             return "snowflake"
-        elif self.uri.startswith("db:vertica:"):
+        elif self.uri.startswith("db:vertica:") or self.uri.startswith("vertica:"):
             return "vertica"
-        elif self.uri.startswith("db:exasol:"):
+        elif self.uri.startswith("db:exasol:") or self.uri.startswith("exasol:"):
             return "exasol"
+        elif self.uri.startswith("db:firebird:") or self.uri.startswith("firebird:"):
+            return "firebird"
         elif self.uri.startswith("db:"):
             # URI has db: scheme but unsupported engine type
             raise ValueError(f"Unsupported engine type in URI: {self.uri}")
@@ -66,14 +73,14 @@ class Target:
             return self.engine
 
     @property
-    def plan(self):
+    def plan(self) -> "Plan":
         """Get the plan for this target."""
         from .plan import Plan
 
-        return Plan.from_file(self.plan_file)
+        return Plan.from_file(Path(self.plan_file))
 
     @classmethod
-    def from_config(
+    def from_config(  # noqa: C901
         cls, config: "Config", target_name: Optional[str] = None
     ) -> "Target":
         """
@@ -108,7 +115,9 @@ class Target:
                 # Look for core.engine and construct default URI
                 engine = config.get("core.engine")
                 if not engine:
-                    if config.initialized:
+                    # Check if we have any config files loaded to determine if project is initialized
+                    has_config = any(config.get_section("core"))
+                    if has_config:
                         hurl(
                             "target",
                             "No engine specified; specify via target or core.engine",
@@ -156,6 +165,9 @@ class Target:
                 f'No engine specified by URI {uri}; URI must start with "db:$engine:"',
             )
 
+        # At this point engine is guaranteed to be not None due to hurl() above
+        assert engine is not None
+
         # If name is None (URI case), set it to URI without password
         if name is None:
             name = uri
@@ -166,7 +178,7 @@ class Target:
 
                     parsed = urlparse(uri)
                     if parsed.password:
-                        netloc = parsed.username
+                        netloc = parsed.username or ""
                         if parsed.hostname:
                             netloc += f"@{parsed.hostname}"
                         if parsed.port:
@@ -233,6 +245,21 @@ class Target:
             parts = uri.split(":", 2)
             if len(parts) >= 2:
                 return parts[1]
+        else:
+            # Check for direct engine URIs like sqlite:, mysql:, etc.
+            for engine in [
+                "sqlite",
+                "mysql",
+                "pg",
+                "postgresql",
+                "oracle",
+                "snowflake",
+                "vertica",
+                "exasol",
+                "firebird",
+            ]:
+                if uri.startswith(f"{engine}:"):
+                    return "pg" if engine == "postgresql" else engine
         return None
 
     @staticmethod
@@ -249,13 +276,14 @@ class Target:
         if target_name:
             value = config.get(f"target.{target_name}.{key}")
             if value:
-                return value
+                return str(value) if value is not None else None
 
         # Try engine-specific config
         if engine:
             value = config.get(f"engine.{engine}.{key}")
             if value:
-                return value
+                return str(value) if value is not None else None
 
         # Try core config
-        return config.get(f"core.{key}")
+        value = config.get(f"core.{key}")
+        return str(value) if value is not None else None
