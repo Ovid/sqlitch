@@ -142,7 +142,7 @@ engine = pg
 
         with (
             patch("sys.platform", "linux"),
-            patch("sqlitch.core.config.Path.home", return_value=Path("/home/user")),
+            patch("pathlib.Path.home", return_value=Path("/home/user")),
         ):
             path = config._get_global_config_path()
 
