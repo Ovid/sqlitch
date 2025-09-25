@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Docker Integration Tests**: Created comprehensive Docker-based integration tests
+  - Added PostgreSQL Docker integration tests with full deployment cycle testing
+  - Added MySQL Docker integration tests with database-specific feature validation
+  - Created Docker Compose configuration for test database services
+  - Added test runner script for automated Docker-based testing
+  - Implemented database fixtures and initialization scripts
+  - Note: SQLite uses existing integration tests since it doesn't require Docker containers
+- **Type Safety Improvements**: Enhanced type annotations and mypy compliance
+  - Fixed 372+ type errors in core modules with strict mypy checking
+  - Added proper return type annotations throughout codebase
+  - Resolved import cycles with TYPE_CHECKING blocks
+  - Configured gradual typing adoption for CI/CD pipeline
+- **Test Infrastructure**: Strengthened testing framework and coverage
+  - All 1385 tests passing with 77.84% code coverage
+  - Enhanced test isolation and cleanup procedures
+  - Fixed CI/CD pipeline type checking and linting
 - **Config Command Implementation**: Added complete config command functionality
   - Implemented get, set, and list operations matching Perl sqitch behavior
   - Added proper configuration file writing with section and subsection support

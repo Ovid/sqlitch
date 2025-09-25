@@ -140,7 +140,8 @@ engine = pg
         """Test global configuration path on Unix-like systems."""
         with (
             patch("sys.platform", "linux"),
-            patch("sqlitch.core.config.Path.home", return_value=Path("/home/user")),
+            patch("pathlib.Path.home", return_value=Path("/home/user")),
+            patch.dict(os.environ, {}, clear=True),  # Clear XDG_CONFIG_HOME
         ):
             config = Config()
             path = config._get_global_config_path()
