@@ -5,13 +5,11 @@ This module provides the config command for getting and setting
 configuration values in sqlitch projects.
 """
 
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import click
 
-from ..core.config import Config
-from ..core.exceptions import ConfigurationError, SqlitchError
+from ..core.exceptions import SqlitchError
 from .base import BaseCommand
 
 
