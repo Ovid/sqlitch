@@ -44,3 +44,4 @@ env/
 
 # Claude Code
 .claude/
+sqitch.conf

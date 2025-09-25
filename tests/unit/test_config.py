@@ -333,22 +333,30 @@ verbosity = not_a_number
 
         assert "Invalid configuration key" in str(exc_info.value)
 
-    def test_set_value(self):
+    def test_set_value(self, tmp_path):
         """Test setting configuration values."""
+        config_file = tmp_path / "sqitch.conf"
         config = Config()
 
-        config.set("core.engine", "mysql")
-        config.set("user.name", "Test User")
+        config.set("core.engine", "mysql", filename=config_file)
+        config.set("user.name", "Test User", filename=config_file)
 
         assert config.get("core.engine") == "mysql"
         assert config.get("user.name") == "Test User"
+        
+        # Verify file was written correctly
+        assert config_file.exists()
+        content = config_file.read_text()
+        assert "engine = mysql" in content
+        assert "name = Test User" in content
 
-    def test_set_invalid_key(self):
+    def test_set_invalid_key(self, tmp_path):
         """Test setting value with invalid key."""
+        config_file = tmp_path / "sqitch.conf"
         config = Config()
 
         with pytest.raises(ConfigurationError) as exc_info:
-            config.set("invalid key", "value")
+            config.set("invalid key", "value", filename=config_file)
 
         assert "Invalid configuration key" in str(exc_info.value)
 

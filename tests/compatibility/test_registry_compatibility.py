@@ -15,8 +15,6 @@ from typing import Any, Dict, List, Optional
 
 import pytest
 
-import pytest
-
 
 @pytest.mark.compatibility
 class TestRegistryCompatibility:
@@ -150,10 +148,13 @@ class TestRegistryCompatibility:
         assert (
             sqlitch_result.returncode == 0
         ), f"sqlitch deploy failed: {sqlitch_result.stderr}"
-        
+
         # Check if Perl sqitch has SQLite support
         if sqitch_result.returncode != 0:
-            if "DBD::SQLite" in sqitch_result.stderr or "required to manage SQLite" in sqitch_result.stderr:
+            if (
+                "DBD::SQLite" in sqitch_result.stderr
+                or "required to manage SQLite" in sqitch_result.stderr
+            ):
                 pytest.skip("Perl sqitch does not have SQLite driver installed")
             else:
                 assert False, f"sqitch deploy failed: {sqitch_result.stderr}"
@@ -239,17 +240,17 @@ class TestRegistryCompatibility:
         # Check for various possible messages indicating no changes to deploy
         no_changes_indicators = [
             "Nothing to deploy",
-            "up to date", 
+            "up to date",
             "no changes",
             "already deployed",
-            "current"
+            "current",
         ]
-        
+
         has_no_changes_message = any(
             indicator in result2.stdout.lower() or indicator in result2.stderr.lower()
             for indicator in no_changes_indicators
         )
-        
+
         if not has_no_changes_message:
             # Print actual output for debugging
             print(f"Deploy stdout: {result2.stdout}")
@@ -292,12 +293,12 @@ class TestRegistryCompatibility:
         # Check if Perl sqitch has SQLite support
         if sqitch_status.returncode != 0 and "DBD::SQLite" in sqitch_status.stderr:
             pytest.skip("Perl sqitch does not have SQLite driver installed")
-            
+
         # sqlitch should succeed
         if sqlitch_status.returncode != 0:
             print(f"sqlitch status failed: {sqlitch_status.stderr}")
             pytest.skip("sqlitch status command not working as expected")
-            
+
         assert sqitch_status.returncode == 0
 
         # Both should indicate up-to-date status
