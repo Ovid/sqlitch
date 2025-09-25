@@ -134,7 +134,7 @@ jobs:
         
     - name: Run integration tests
       run: |
-        pytest tests/integration/ -v --tb=short
+        pytest tests/integration/ -v --tb=short --no-cov
       env:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: 5432
