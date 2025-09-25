@@ -43,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Modified `test_report_sql_execution_basic` to expect forward-slash paths
   - Ensures all path-related tests are consistent with cross-platform normalization
   - Maintains test reliability across Windows, macOS, and Linux platforms
+- **Enhanced Cross-Platform Test Mocking**: Improved Windows compatibility for user detection tests
+  - Replaced problematic `os.getuid` mocking with method-level mocking
+  - Used comprehensive mocking approach to handle Unix-only functions on Windows
+  - Tests now properly isolate user detection logic across all platforms
   - Resolved import cycles with TYPE_CHECKING blocks
   - Configured gradual typing adoption for CI/CD pipeline
 - **Test Infrastructure**: Strengthened testing framework and coverage
