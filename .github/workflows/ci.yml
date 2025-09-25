@@ -36,7 +36,11 @@ jobs:
       run: flake8 sqlitch tests
       
     - name: Run mypy
-      run: mypy sqlitch
+      run: |
+        # Run mypy with current configuration (relaxed for engines/utils)
+        mypy sqlitch
+        # Also run strict checking on core modules to ensure they stay clean
+        mypy --strict sqlitch/core/target.py sqlitch/core/config.py sqlitch/core/change.py sqlitch/core/plan.py sqlitch/core/types.py sqlitch/core/exceptions.py
 
   test:
     runs-on: ${{ matrix.os }}

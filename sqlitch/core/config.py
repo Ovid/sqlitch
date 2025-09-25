@@ -8,7 +8,6 @@ INI-style format as Perl sqitch with proper type coercion and validation.
 
 import configparser
 import os
-import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
