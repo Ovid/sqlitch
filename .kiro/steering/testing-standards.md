@@ -220,11 +220,18 @@ def test_resource_cleanup(tmp_path):
 ```python
 def test_user_detection_from_git_config():
     """Test user name detection from Git configuration.
-    
+
     Verifies that when no config file user is set and environment
     variables are empty, the system falls back to Git config.
     """
 ```
+
+### Code Formatting in Tests
+- **No trailing whitespace** on any lines unless functionally required
+- This includes test docstrings, multi-line strings, and comments
+- Remove trailing spaces from all test code and documentation
+- Configure your editor to show and remove trailing whitespace
+- Exception: Only when trailing whitespace is functionally necessary (rare cases)
 
 ## Enforcement
 

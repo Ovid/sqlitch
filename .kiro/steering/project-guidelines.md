@@ -20,6 +20,13 @@
 - Write comprehensive unit and integration tests
 - Maintain clean, readable, and well-documented code
 
+### Code Formatting Standards
+- **No trailing whitespace** on any lines unless functionally required
+- This applies to all code, comments, documentation, and multi-line strings
+- Remove trailing spaces from docstrings and triple-quoted strings
+- Configure your editor to automatically remove trailing whitespace
+- Exception: Only when trailing whitespace is functionally necessary (very rare)
+
 ### Resource Management
 - Always clean up temporary files and resources
 - Use context managers (`with` statements) for file operations

@@ -14,6 +14,13 @@
 - Use meaningful variable and function names
 - Prefer explicit over implicit code
 
+### Whitespace Standards
+- **No trailing whitespace** on any lines unless functionally required
+- This includes multi-line strings (docstrings, triple-quoted strings)
+- Remove trailing spaces from code, comments, and documentation
+- Configure your editor to show and remove trailing whitespace automatically
+- Exception: Only when trailing whitespace is functionally necessary (rare cases)
+
 ## Project Structure
 - Organize code into logical modules and packages
 - Use `__init__.py` files to define package interfaces
