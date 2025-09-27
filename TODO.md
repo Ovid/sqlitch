@@ -8,9 +8,10 @@ None of this work should be done now, but things to consider.
 
 Use `argparse` for arguments
 
-## Vulture?
+## Side-by-side
 
-Use vulture to find unused code?
+*Manually* run side-by-side (sqlitch versus sqitch) checks of full workflows.
+It's already caught critical bugs.
 
 ## Docs
 
