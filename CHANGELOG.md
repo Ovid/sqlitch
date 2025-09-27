@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Created 50+ test cases covering Target dataclass, configuration loading, URI parsing, and error handling
   - Implemented proper test isolation to prevent test pollution and ensure reliable test execution
   - Added tests for edge cases including password removal, configuration priority, and engine detection
+- **Documentation**: Added comprehensive FAQ.md file
+  - Explains why files use `sqitch.plan` instead of `sqlitch.plan` (Perl Sqitch compatibility)
+  - Covers installation, configuration, database support, and troubleshooting
+  - Addresses common questions about migration from Perl Sqitch
+  - Includes performance, integration, and development information
 - **Test Coverage Improvements**: Significantly increased test coverage for core modules
   - Added comprehensive unit tests for `sqlitch.i18n.extract_messages` module
   - Achieved 100% code coverage for message extraction functionality
