@@ -290,6 +290,7 @@ Sqlitch maintains the highest standards of code quality and reliability:
 
 ## Documentation
 
+* [FAQ](FAQ.md) - Frequently asked questions and common issues
 * [Getting Started Guide](docs/getting-started.md) - Your first steps with Sqlitch
 * [Command Reference](docs/commands.md) - Complete command documentation
 * [Configuration](docs/configuration.md) - How to configure Sqlitch

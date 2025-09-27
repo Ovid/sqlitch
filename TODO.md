@@ -4,9 +4,14 @@ None of this work should be done now, but things to consider.
 
 # Tasks
 
-## Vulture?
+## agrgparse
 
-Use vulture to find unused code?
+Use `argparse` for arguments
+
+## Side-by-side
+
+*Manually* run side-by-side (sqlitch versus sqitch) checks of full workflows.
+It's already caught critical bugs.
 
 ## Docs
 

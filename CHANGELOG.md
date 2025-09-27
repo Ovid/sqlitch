@@ -18,6 +18,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Type Safety Improvements**: Enhanced type annotations and mypy compliance
   - Fixed 372+ type errors in core modules with strict mypy checking
   - Added proper return type annotations throughout codebase
+- **Test Coverage Improvements**: Significantly improved test coverage for core modules
+  - Added comprehensive test suite for `sqlitch.core.target` module (97.25% coverage)
+  - Created 50+ test cases covering Target dataclass, configuration loading, URI parsing, and error handling
+  - Implemented proper test isolation to prevent test pollution and ensure reliable test execution
+  - Added tests for edge cases including password removal, configuration priority, and engine detection
+- **Documentation**: Added comprehensive FAQ.md file
+  - Explains why files use `sqitch.plan` instead of `sqlitch.plan` (Perl Sqitch compatibility)
+  - Covers installation, configuration, database support, and troubleshooting
+  - Addresses common questions about migration from Perl Sqitch
+  - Includes performance, integration, and development information
+- **Test Coverage Improvements**: Significantly increased test coverage for core modules
+  - Added comprehensive unit tests for `sqlitch.i18n.extract_messages` module
+  - Achieved 100% code coverage for message extraction functionality
+  - Added tests for AST parsing, file handling, POT generation, and error conditions
+  - Improved test coverage for `sqlitch.engines.base` module from 45.66% to 68.02%
+  - Added 33 new test cases covering engine functionality, registry operations, and error handling
+  - Enhanced test isolation and cleanup to prevent test pollution across all test suites
 
 ### Fixed
 - **Init Command URI Bug**: Fixed critical bug where `--uri` parameter was incorrectly used as database target URI
