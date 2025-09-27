@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Type Safety Improvements**: Enhanced type annotations and mypy compliance
   - Fixed 372+ type errors in core modules with strict mypy checking
   - Added proper return type annotations throughout codebase
+- **Test Coverage Improvements**: Significantly increased test coverage for i18n module
+  - Added comprehensive unit tests for `sqlitch.i18n.extract_messages` module
+  - Achieved 100% code coverage for message extraction functionality
+  - Added tests for AST parsing, file handling, POT generation, and error conditions
+  - Improved test isolation and cleanup to prevent test pollution
 
 ### Fixed
 - **Init Command URI Bug**: Fixed critical bug where `--uri` parameter was incorrectly used as database target URI
