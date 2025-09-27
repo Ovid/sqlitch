@@ -4,6 +4,10 @@ None of this work should be done now, but things to consider.
 
 # Tasks
 
+## agrgparse
+
+Use `argparse` for arguments
+
 ## Vulture?
 
 Use vulture to find unused code?
